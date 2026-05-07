@@ -1,0 +1,5 @@
+# Mooie URLs naar het portaal (index.html op root)
+/reseller        /index.html    200
+/reseller/       /index.html    200
+/reseller-login  /index.html    200
+/login           /index.html    200

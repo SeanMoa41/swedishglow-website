@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\ittai\\\\Coding\\\\TSG Website\\\\assets\\\\reseller-portaal-netlify-v2\" -Recurse | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\ittai\\\\Coding\\\\TSG Website\\\\assets\\\\the-swedish-glow-website\" -Recurse | ForEach-Object { $_.FullName })",
+      "mcp__plugin_claude-mem_mcp-search__smart_outline",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs"
+    ]
+  }
+}

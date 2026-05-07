@@ -1,0 +1,5288 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reseller Portaal — The Swedish Glow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bone: #f6f1e8;
+  --bone-warm: #ede5d3;
+  --cream: #faf6ee;
+  --ink: #1c1c1a;
+  --ink-soft: #3a3a35;
+  --moss: #2d3a32;
+  --moss-deep: #1f2a23;
+  --gold: #b8924a;
+  --gold-soft: #d4b478;
+  --gold-light: #e8d5a8;
+  --stone: #8b8579;
+  --stone-light: #c8c2b6;
+  --line: rgba(28, 28, 26, 0.12);
+  --line-strong: rgba(28, 28, 26, 0.22);
+  --green: #4a6b52;
+  --rose: #a06b7a;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter Tight', -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  background: var(--bone);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font-body); cursor: pointer; }
+input, select, textarea { font-family: var(--font-body); font-size: 14px; color: var(--ink); }
+.serif { font-family: var(--font-display); }
+em { font-style: italic; }
+
+/* ═══════════════════════════════════════════════
+   LOGIN OVERLAY
+   ═══════════════════════════════════════════════ */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bone);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.login-utility-bar {
+  background: var(--moss-deep);
+  color: var(--bone);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8px 20px;
+  font-weight: 400;
+}
+.login-utility-bar span { color: var(--gold-soft); }
+
+.login-header {
+  padding: 18px 60px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: center;
+  background: var(--bone);
+}
+.login-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.login-logo .logo-text {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.login-logo .logo-text em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.login-stage {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.login-aside {
+  position: relative;
+  background: var(--moss-deep);
+  color: var(--bone);
+  padding: clamp(40px, 5vw, 64px) clamp(40px, 5vw, 64px) clamp(56px, 6vw, 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+/* Photo carousel layer */
+.login-aside-photos {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.login-aside-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: kenburns 18s ease-out infinite;
+}
+.login-aside-photo.active { opacity: 1; }
+@keyframes kenburns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1%, -1%); }
+}
+/* Dark overlay layer */
+.login-aside-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(165deg, rgba(45, 58, 50, 0.85) 0%, rgba(31, 42, 35, 0.92) 100%),
+    radial-gradient(ellipse at 80% 0%, rgba(212, 180, 120, 0.20) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 100%, rgba(212, 180, 120, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.login-aside-content {
+  position: relative;
+  z-index: 2;
+}
+/* Photo indicator dots */
+.login-photo-dots {
+  position: absolute;
+  bottom: 36px;
+  right: 80px;
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+.login-photo-dot {
+  width: 24px;
+  height: 1px;
+  background: rgba(246, 241, 232, 0.25);
+  transition: background 0.4s ease;
+}
+.login-photo-dot.active {
+  background: var(--gold-soft);
+}
+.login-aside-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--gold-soft);
+  margin-bottom: clamp(12px, 1.4vw, 18px);
+}
+.login-aside-eyebrow::before {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: var(--gold-soft);
+}
+.login-aside h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: clamp(10px, 1.4vw, 16px);
+  color: var(--bone);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.3);
+}
+.login-aside h1 em {
+  font-style: italic;
+  color: var(--gold-soft);
+  font-weight: 300;
+}
+.login-aside-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  font-weight: 400;
+  color: var(--gold-soft);
+  margin-bottom: clamp(12px, 1.6vw, 18px);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+.login-aside-lead {
+  font-size: clamp(0.8rem, 0.9vw, 0.88rem);
+  line-height: 1.55;
+  color: rgba(246, 241, 232, 0.85);
+  max-width: 460px;
+  margin-bottom: clamp(16px, 2.2vw, 28px);
+  font-weight: 300;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+.login-aside-pillars {
+  display: grid;
+  gap: clamp(8px, 1vw, 12px);
+  max-width: 460px;
+}
+.login-pillar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding-bottom: clamp(8px, 1vw, 12px);
+  border-bottom: 1px solid rgba(246, 241, 232, 0.18);
+}
+.login-pillar:last-child { border-bottom: none; padding-bottom: 0; }
+.login-pillar-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--gold-soft);
+  line-height: 1;
+  width: 22px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+.login-pillar-text {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(246, 241, 232, 0.92);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+.login-pillar-text strong {
+  display: block;
+  font-weight: 500;
+  font-size: 0.86rem;
+  color: var(--bone);
+  margin-bottom: 2px;
+  letter-spacing: 0.01em;
+}
+
+.login-form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 5vw, 56px);
+  background: var(--bone);
+}
+.login-form {
+  width: 100%;
+  max-width: 420px;
+}
+.login-form .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.login-form .eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+.login-form h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 2.6vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.login-form h2 em {
+  font-style: italic;
+  color: var(--moss);
+  font-weight: 300;
+}
+.login-form .lead {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin-bottom: 26px;
+  line-height: 1.55;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+.field-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  height: 48px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 0 0 8px;
+  font-size: 15px;
+  outline: none;
+  color: var(--ink);
+  transition: border-color 0.3s ease;
+}
+.field textarea {
+  height: auto;
+  min-height: 80px;
+  padding: 8px 0;
+  resize: vertical;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-bottom-color: var(--gold);
+}
+.field input::placeholder { color: var(--stone-light); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 32px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bone);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+}
+.btn:hover {
+  background: var(--moss-deep);
+  border-color: var(--moss-deep);
+  transform: translateY(-1px);
+}
+.btn-outline { background: transparent; color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: var(--bone); transform: none; }
+.btn-gold { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.btn-gold:hover { background: var(--gold-soft); border-color: var(--gold-soft); }
+.btn-block { width: 100%; }
+.btn-sm { padding: 10px 20px; font-size: 0.68rem; }
+.btn .arrow { transition: transform 0.3s ease; }
+.btn:hover .arrow { transform: translateX(4px); }
+
+.login-error {
+  display: none;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba(160, 107, 122, 0.08);
+  border-left: 2px solid var(--rose);
+  font-size: 0.85rem;
+  color: var(--rose);
+}
+.login-error.show { display: block; }
+
+.login-footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  line-height: 1.9;
+}
+.login-footer a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+}
+.login-footer a:hover {
+  color: var(--gold);
+}
+
+/* Login screens (register / reset) — hidden by default */
+.login-screen { display: none; }
+.login-screen.active { display: block; }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+.back-link:hover { color: var(--ink); }
+
+.success-msg {
+  background: rgba(74, 107, 82, 0.08);
+  border-left: 2px solid var(--green);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: var(--green);
+}
+
+/* ═══════════════════════════════════════════════
+   PORTAL SHELL — sidebar + main
+   ═══════════════════════════════════════════════ */
+.shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: linear-gradient(180deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--bone);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -50%;
+  width: 200%;
+  height: 50%;
+  background: radial-gradient(ellipse, rgba(212, 180, 120, 0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.sidebar-brand {
+  padding: 28px 32px 22px;
+  border-bottom: 1px solid rgba(246, 241, 232, 0.10);
+  position: relative;
+  z-index: 1;
+}
+.sidebar-brand .brand-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.sidebar-brand .brand-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--bone);
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+.sidebar-brand .brand-name em {
+  font-style: italic;
+  color: var(--gold-soft);
+  font-weight: 400;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 28px 0;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+.nav-section {
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(212, 180, 120, 0.6);
+  padding: 0 32px;
+  margin: 22px 0 12px;
+  font-weight: 500;
+}
+.nav-section:first-child { margin-top: 0; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 32px 11px 30px;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: rgba(246, 241, 232, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+  letter-spacing: 0.01em;
+}
+.nav-item:hover {
+  color: var(--bone);
+  background: rgba(246, 241, 232, 0.04);
+}
+.nav-item.active {
+  color: var(--bone);
+  border-left-color: var(--gold);
+  background: rgba(246, 241, 232, 0.06);
+}
+.nav-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  stroke-width: 1.4;
+}
+.nav-item.active svg,
+.nav-item:hover svg { opacity: 1; }
+.nav-item .badge {
+  margin-left: auto;
+  font-size: 0.62rem;
+  font-weight: 500;
+  background: var(--gold);
+  color: var(--moss-deep);
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+  display: none;
+}
+.nav-item .badge.show { display: inline-block; }
+
+.sidebar-user {
+  padding: 22px 32px;
+  border-top: 1px solid rgba(246, 241, 232, 0.10);
+  position: relative;
+  z-index: 1;
+}
+.sidebar-user-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sidebar-user .name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--bone);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.sidebar-user .company {
+  font-size: 0.74rem;
+  color: rgba(246, 241, 232, 0.55);
+  margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+.tier-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  margin-top: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid;
+  position: relative;
+  overflow: hidden;
+}
+.tier-pill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.18) 50%, transparent 100%);
+  animation: shimmer-pill 4s ease-in-out infinite;
+}
+@keyframes shimmer-pill {
+  0%, 60% { left: -100%; }
+  100%    { left: 200%; }
+}
+.tier-pill::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tier-bronze { color: var(--stone-light); border-color: rgba(200, 194, 182, 0.4); }
+.tier-silver { color: #d8a8b8; border-color: rgba(216, 168, 184, 0.4); }
+.tier-gold   { color: var(--gold-soft); border-color: rgba(212, 180, 120, 0.5); }
+.tier-platinum { color: #a8c8d8; border-color: rgba(168, 200, 216, 0.4); }
+.tier-black  { color: var(--bone); border-color: rgba(246, 241, 232, 0.5); }
+.tier-admin  { color: var(--gold-soft); border-color: var(--gold-soft); background: rgba(184, 146, 74, 0.12); }
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: rgba(246, 241, 232, 0.5);
+  transition: color 0.2s ease;
+}
+.logout-btn:hover { color: var(--gold-soft); }
+
+/* MAIN */
+.main {
+  padding: 48px 56px 80px;
+  max-width: 1280px;
+  width: 100%;
+}
+
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PAGE HEADER */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.page-header-text {
+  flex: 1;
+  min-width: 280px;
+}
+.page-header .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.page-header .eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+.page-header h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.page-header h1 em {
+  font-style: italic;
+  color: var(--moss);
+  font-weight: 300;
+}
+.page-header h1 .accent {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 300;
+}
+.page-header-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* CARDS */
+.card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.card-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.card-eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: -0.005em;
+  margin-bottom: 18px;
+  color: var(--ink);
+}
+.card-title em { font-style: italic; color: var(--moss); font-weight: 400; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* DASHBOARD */
+.welcome {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 100%, rgba(212, 180, 120, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 0%, rgba(212, 180, 120, 0.18) 0%, transparent 55%),
+    linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--bone);
+  padding: 56px 60px;
+  margin-bottom: 36px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 40px;
+  border: 1px solid rgba(212, 180, 120, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(212, 180, 120, 0.08) inset,
+    0 30px 60px -32px rgba(28, 42, 35, 0.5);
+}
+/* Decorative hairline frame */
+.welcome::before {
+  content: '';
+  position: absolute;
+  top: 14px; left: 14px; right: 14px; bottom: 14px;
+  border: 1px solid rgba(212, 180, 120, 0.15);
+  pointer-events: none;
+}
+/* Decorative serif ornament — large italic letterform fading in background */
+.welcome::after {
+  content: '∞';
+  position: absolute;
+  bottom: -60px;
+  left: -20px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--gold-soft);
+  opacity: 0.04;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+}
+.welcome-content {
+  position: relative;
+  z-index: 2;
+}
+/* Top-right corner flourish */
+.welcome-flourish {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold-soft);
+  opacity: 0.5;
+  letter-spacing: 0.15em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+.welcome-flourish::before,
+.welcome-flourish::after {
+  content: '';
+  width: 18px;
+  height: 1px;
+  background: var(--gold-soft);
+  opacity: 0.6;
+}
+
+.welcome-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--gold-soft);
+  margin-bottom: 18px;
+}
+.welcome-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-soft) 100%);
+}
+.welcome h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+  line-height: 1.05;
+  margin-bottom: 14px;
+  color: var(--bone);
+  letter-spacing: -0.015em;
+}
+.welcome h2 em {
+  font-style: italic;
+  color: var(--gold-soft);
+  font-weight: 300;
+}
+.welcome p {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: rgba(246, 241, 232, 0.8);
+  max-width: 540px;
+  font-weight: 300;
+}
+.welcome-tier {
+  text-align: right;
+  position: relative;
+  z-index: 2;
+  padding: 18px 28px 18px 0;
+}
+/* Vertical gold accent line */
+.welcome-tier::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -28px;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(212, 180, 120, 0.4) 30%,
+    rgba(212, 180, 120, 0.4) 70%,
+    transparent 100%);
+}
+.welcome-tier .label {
+  font-size: 0.62rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+.welcome-tier .value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 3.6rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg,
+    #f0d896 0%,
+    var(--gold-soft) 25%,
+    #f0e0a8 50%,
+    var(--gold-soft) 75%,
+    #c9a155 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+.welcome-tier .value-flourish {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold-soft);
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  margin-top: 6px;
+  display: block;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.stat {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  padding: 30px 28px 28px;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+.stat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 40px -24px rgba(28, 28, 26, 0.18);
+  border-color: var(--gold-soft);
+}
+/* Top hairline accent */
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  opacity: 0.5;
+}
+/* Decorative corner ornament */
+.stat::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 22px;
+  height: 22px;
+  border-top: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+.stat:hover::after { opacity: 0.7; }
+.stat-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 2.4rem;
+  line-height: 1.05;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  font-style: italic;
+}
+.stat-value.gold {
+  background: linear-gradient(135deg, #d4b478 0%, #f0d896 30%, var(--gold) 70%, #b8924a 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-style: italic;
+  font-weight: 400;
+  animation: shimmer 5s linear infinite;
+}
+.stat-value.moss { color: var(--moss); }
+.stat-sub {
+  font-size: 0.78rem;
+  color: var(--stone);
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.92rem;
+}
+.stat-sub.green { color: var(--green); }
+
+/* TIER PROGRESS */
+.tier-progress {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--cream) 0%, var(--bone) 100%);
+  border: 1px solid var(--line);
+  padding: 38px 40px 36px;
+  margin-bottom: 36px;
+  overflow: hidden;
+}
+.tier-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-soft) 30%, var(--gold) 50%, var(--gold-soft) 70%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 7s linear infinite;
+  opacity: 0.6;
+}
+/* Decorative italic ornament behind */
+.tier-progress::after {
+  content: '∽';
+  position: absolute;
+  top: -50px;
+  right: -20px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.05;
+  pointer-events: none;
+}
+.tier-progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+.tier-progress-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.tier-progress-eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+.tier-progress-title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+.tier-progress-title em { font-style: italic; color: var(--gold); font-weight: 400; }
+.tier-progress-desc {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.tier-track {
+  position: relative;
+  margin: 32px 0 28px;
+}
+.tier-line {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+.tier-line-fill {
+  position: absolute;
+  top: 13px;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--gold) 0%,
+    #f0d896 25%,
+    var(--gold-soft) 50%,
+    #f0d896 75%,
+    var(--gold) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 5s linear infinite;
+  transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 8px rgba(212, 180, 120, 0.4);
+}
+.tier-stops {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.tier-stop {
+  text-align: center;
+}
+.tier-stop-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bone);
+  border: 1px solid var(--line-strong);
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--stone);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+.tier-stop.done .tier-stop-dot {
+  background: linear-gradient(135deg, #f0d896 0%, var(--gold) 50%, #b8924a 100%);
+  border-color: var(--gold);
+  color: var(--bone);
+  box-shadow: 0 2px 8px rgba(184, 146, 74, 0.3);
+}
+.tier-stop.current .tier-stop-dot {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(212, 180, 120, 0.4) 0%, transparent 60%),
+    linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  border-color: var(--gold-soft);
+  color: var(--gold-soft);
+  width: 36px;
+  height: 36px;
+  margin-top: -4px;
+  font-size: 1rem;
+  box-shadow:
+    0 0 0 4px rgba(212, 180, 120, 0.12),
+    0 0 0 1px var(--gold-soft),
+    0 8px 16px -4px rgba(28, 42, 35, 0.4);
+  animation: float-pulse 3s ease-in-out infinite;
+}
+.tier-stop-name {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone);
+  font-weight: 500;
+}
+.tier-stop.done .tier-stop-name,
+.tier-stop.current .tier-stop-name { color: var(--ink); }
+.tier-stop.current .tier-stop-name {
+  color: var(--moss);
+  font-weight: 600;
+}
+
+.tier-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.tier-detail-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.tier-detail-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.progress-bar {
+  height: 4px;
+  background: var(--line);
+  margin: 12px 0 8px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--gold);
+  width: 0%;
+  transition: width 0.6s ease;
+}
+.tier-detail-needed {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.tier-benefits {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tier-benefits li {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  padding-left: 22px;
+  position: relative;
+}
+.tier-benefits li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 14px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* TABLES */
+.table-wrap {
+  border: 1px solid var(--line);
+  background: var(--cream);
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+table th {
+  text-align: left;
+  padding: 16px 20px;
+  font-weight: 500;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--bone);
+  white-space: nowrap;
+}
+table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  vertical-align: middle;
+}
+table tr:last-child td { border-bottom: none; }
+table tr:hover td { background: var(--bone); }
+.td-mid { color: var(--ink-soft); }
+.td-strong { font-weight: 500; }
+.td-gold { color: var(--gold); font-weight: 500; }
+.td-moss { color: var(--moss); font-weight: 500; }
+.td-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--gold);
+}
+
+.empty-row td {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--stone);
+  font-style: italic;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+/* STATUS BADGES */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  font-weight: 500;
+  border: 1px solid;
+}
+.badge-status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-delivered { color: var(--green); border-color: rgba(74, 107, 82, 0.3); }
+.status-shipped   { color: var(--gold); border-color: rgba(184, 146, 74, 0.3); }
+.status-processing { color: var(--rose); border-color: rgba(160, 107, 122, 0.3); }
+.status-pending   { color: var(--stone); border-color: var(--line-strong); }
+
+/* TOOLBAR */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 1;
+  max-width: 320px;
+  height: 42px;
+  padding: 0 16px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.search-input:focus { border-color: var(--gold); }
+
+/* PRODUCTS GRID */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+}
+.product-card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.45s ease,
+              border-color 0.3s ease;
+  position: relative;
+}
+.product-card:hover {
+  border-color: var(--gold-soft);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 50px -28px rgba(28, 28, 26, 0.22);
+}
+.product-image-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background:
+    linear-gradient(135deg, var(--bone-warm) 0%, var(--cream) 100%);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.product-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.product-card:hover .product-image-wrap img {
+  transform: scale(1.04);
+}
+/* Fallback when image fails to load */
+.product-image-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.product-image-fallback .num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 4.5rem;
+  font-weight: 300;
+  line-height: 1;
+  background: linear-gradient(135deg, #d4b478 0%, #f0d896 50%, #b8924a 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+.product-image-fallback .label {
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--stone);
+  font-weight: 500;
+}
+.product-image-num {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--bone);
+  text-shadow: 0 2px 8px rgba(28, 28, 26, 0.4);
+  z-index: 2;
+  line-height: 1;
+}
+.product-image-discount {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--moss-deep);
+  background: linear-gradient(135deg, #f0d896 0%, var(--gold-soft) 50%, var(--gold) 100%);
+  background-size: 200% 200%;
+  padding: 5px 11px;
+  animation: shimmer 4s linear infinite;
+  z-index: 2;
+}
+.product-body {
+  padding: 24px 26px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.product-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.product-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.product-desc {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.product-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.product-price-list {
+  font-size: 0.82rem;
+  color: var(--stone);
+  text-decoration: line-through;
+}
+.product-price-net {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--moss);
+  font-style: italic;
+}
+
+/* TIER PAGE */
+/* ═══ TIERS DISPLAY — luxury edition ═══ */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes shine-sweep {
+  0%   { transform: translateX(-120%) skewX(-15deg); opacity: 0; }
+  20%  { opacity: 0.6; }
+  60%  { opacity: 0; }
+  100% { transform: translateX(180%) skewX(-15deg); opacity: 0; }
+}
+@keyframes float-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+.tiers-display {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  position: relative;
+  padding: 4px;
+}
+
+.tier-card {
+  position: relative;
+  padding: 36px 26px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s ease, border-color 0.3s ease;
+}
+.tier-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 50px -24px rgba(28, 28, 26, 0.22);
+  border-color: var(--gold-soft);
+}
+
+/* Roman numeral as ornament behind content */
+.tier-card-numeral {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 4.5rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.16;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.tier-card:hover .tier-card-numeral {
+  opacity: 0.32;
+  transform: rotate(-4deg) scale(1.05);
+}
+
+/* Top accent line — tier-specific */
+.tier-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--tier-accent, var(--gold)) 50%, transparent 100%);
+  opacity: 0.4;
+}
+
+/* Shine sweep on hover */
+.tier-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-120%) skewX(-15deg);
+}
+.tier-card:hover::after {
+  animation: shine-sweep 1.1s ease forwards;
+}
+
+/* Per-tier accent colors via CSS variable */
+.tier-card[data-tier="Pearl"]  { --tier-accent: #d8d4c8; }
+.tier-card[data-tier="Rose"]   { --tier-accent: #c89aa0; }
+.tier-card[data-tier="Pro"]    { --tier-accent: #c9a155; }
+.tier-card[data-tier="Elite"]  { --tier-accent: #8aa6b8; }
+.tier-card[data-tier="Black"]  { --tier-accent: #d4b478; }
+
+/* Per-tier numeral colors */
+.tier-card[data-tier="Pearl"] .tier-card-numeral  { color: #b8b4a8; }
+.tier-card[data-tier="Rose"] .tier-card-numeral   { color: #b07a82; }
+.tier-card[data-tier="Pro"] .tier-card-numeral    { color: var(--gold); }
+.tier-card[data-tier="Elite"] .tier-card-numeral  { color: #6a8090; }
+.tier-card[data-tier="Black"] .tier-card-numeral  { color: var(--gold-soft); }
+
+/* CURRENT tier — full luxe treatment */
+.tier-card.is-current {
+  background:
+    radial-gradient(ellipse at top right, rgba(212, 180, 120, 0.22) 0%, transparent 55%),
+    linear-gradient(165deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--bone);
+  border-color: rgba(212, 180, 120, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(212, 180, 120, 0.25),
+    0 30px 60px -28px rgba(28, 42, 35, 0.6);
+}
+.tier-card.is-current::before {
+  height: 3px;
+  opacity: 1;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--gold-soft) 20%,
+    #f0d896 50%,
+    var(--gold-soft) 80%,
+    transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 6s linear infinite;
+}
+.tier-card.is-current .tier-card-numeral {
+  color: var(--gold-soft);
+  opacity: 0.28;
+}
+.tier-card.is-current:hover .tier-card-numeral {
+  opacity: 0.42;
+}
+.tier-card.is-current .tier-card-name,
+.tier-card.is-current .tier-card-min,
+.tier-card.is-current .tier-perks li { color: var(--bone); }
+.tier-card.is-current .tier-card-eyebrow { color: var(--gold-soft); }
+.tier-card.is-current .tier-perks li::before { background: var(--gold-soft); }
+
+/* "Jouw tier" badge */
+.tier-card-current-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--moss-deep);
+  background: linear-gradient(135deg, #f0d896 0%, var(--gold-soft) 50%, var(--gold) 100%);
+  background-size: 200% 200%;
+  padding: 5px 10px;
+  animation: shimmer 4s linear infinite;
+  z-index: 2;
+}
+
+.tier-card-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+.tier-card-name {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 1;
+  line-height: 1.05;
+}
+.tier-card-min {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 1;
+}
+.tier-card-discount {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 16px 0 14px;
+  margin-top: 4px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+}
+.tier-card.is-current .tier-card-discount {
+  border-color: rgba(212, 180, 120, 0.22);
+}
+.tier-card-discount-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2.8rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg,
+    #d4b478 0%,
+    #f0d896 25%,
+    var(--gold) 55%,
+    #b8924a 80%,
+    #d4b478 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+.tier-card[data-tier="Pearl"] .tier-card-discount-num {
+  background: linear-gradient(135deg, #c8c2b6 0%, #f0ece2 50%, #b8b4a8 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tier-card[data-tier="Rose"] .tier-card-discount-num {
+  background: linear-gradient(135deg, #b07a82 0%, #e8b8c0 50%, #b07a82 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tier-card[data-tier="Elite"] .tier-card-discount-num {
+  background: linear-gradient(135deg, #6a8090 0%, #b8d0e0 50%, #6a8090 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tier-card[data-tier="Black"] .tier-card-discount-num {
+  background: linear-gradient(135deg, #1c1c1a 0%, #4a4a45 30%, #d4b478 50%, #4a4a45 70%, #1c1c1a 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tier-card-discount-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.tier-card.is-current .tier-card-discount-label { color: rgba(246, 241, 232, 0.7); }
+
+.tier-perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  position: relative;
+  z-index: 1;
+}
+.tier-perks li {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  padding-left: 16px;
+  position: relative;
+}
+.tier-perks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* MARKETING FILES */
+.file-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--cream);
+  transition: background 0.2s ease;
+}
+.file-row:hover { background: var(--bone); }
+.file-row:last-child { border-bottom: none; }
+.file-row.locked { opacity: 0.5; }
+.file-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bone);
+  color: var(--moss);
+  border: 1px solid var(--line);
+}
+.file-row.locked .file-icon { color: var(--stone); }
+.file-info .file-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.file-info .file-meta {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.file-tier-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.file-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.icon-btn {
+  background: none;
+  border: 1px solid var(--line-strong);
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all 0.2s ease;
+}
+.icon-btn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin: 28px 0 14px;
+}
+.section-eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+.section-eyebrow.muted { color: var(--stone); }
+.section-eyebrow.muted::before { background: var(--stone); }
+
+/* ADMIN UPLOAD */
+.upload-panel {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--bone);
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.upload-panel::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 40%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(212, 180, 120, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.upload-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.upload-eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.upload-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--bone);
+}
+.upload-title em { font-style: italic; color: var(--gold-soft); font-weight: 400; }
+.admin-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid var(--gold-soft);
+  color: var(--gold-soft);
+  font-weight: 500;
+}
+.upload-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+  position: relative;
+  z-index: 1;
+}
+.upload-form .field-label { color: var(--gold-soft); }
+.upload-form input,
+.upload-form select {
+  background: rgba(246, 241, 232, 0.06);
+  border: 1px solid rgba(246, 241, 232, 0.18);
+  border-bottom: 1px solid rgba(246, 241, 232, 0.18);
+  padding: 0 14px;
+  color: var(--bone);
+  height: 44px;
+}
+.upload-form input::placeholder { color: rgba(246, 241, 232, 0.4); }
+.upload-form select option { background: var(--moss-deep); color: var(--bone); }
+.upload-file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  background: rgba(246, 241, 232, 0.06);
+  border: 1px solid rgba(246, 241, 232, 0.18);
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: rgba(246, 241, 232, 0.7);
+  letter-spacing: 0.05em;
+  padding: 0 14px;
+  gap: 8px;
+}
+.upload-file-label:hover { color: var(--bone); }
+.btn-upload {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--moss-deep);
+  height: 44px;
+  padding: 0 24px;
+}
+.btn-upload:hover {
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
+  color: var(--moss-deep);
+  transform: none;
+}
+
+/* ACCOUNT */
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--moss);
+  color: var(--gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 500;
+  font-style: italic;
+  position: relative;
+  overflow: hidden;
+}
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.photo-camera {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  background: var(--gold);
+  color: var(--moss-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.photo-camera:hover { background: var(--gold-soft); }
+.profile-id .name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.profile-id .company {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.profile-photo-actions {
+  display: flex;
+  gap: 12px;
+  font-size: 0.78rem;
+}
+.profile-photo-actions a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.profile-photo-actions a:hover { color: var(--ink); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+
+.notif-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.notif-row:last-child { border-bottom: none; }
+.notif-info .notif-title {
+  font-size: 0.92rem;
+  margin-bottom: 2px;
+}
+.notif-info .notif-desc {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: var(--line-strong);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: var(--bone);
+  transition: left 0.2s ease;
+}
+.toggle.on { background: var(--moss); }
+.toggle.on::after { left: 20px; }
+
+/* CONTACT PAGE */
+.contact-card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  padding: 36px 40px;
+}
+.contact-person {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.contact-avatar {
+  width: 88px;
+  height: 88px;
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 400;
+}
+.contact-info .contact-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.contact-info .contact-role {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.92rem;
+}
+.contact-meta a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.contact-meta a:hover { color: var(--gold); }
+
+.hours-note {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: rgba(184, 146, 74, 0.06);
+  border-left: 2px solid var(--gold);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.support-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.support-item {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  padding: 22px 26px;
+  transition: border-color 0.2s ease;
+}
+.support-item:hover { border-color: var(--gold); }
+.support-item .support-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.support-item .support-desc {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.support-item a {
+  font-size: 0.85rem;
+  color: var(--moss);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+}
+.support-locked {
+  background: var(--bone);
+  border: 1px dashed var(--line-strong);
+  padding: 22px 26px;
+}
+.support-locked .support-title { color: var(--stone); }
+.support-locked .support-desc { color: var(--stone); }
+
+/* ADMIN STATS — losse luxe kaarten (matched met dashboard stats) */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+/* ═══ ADMIN — REVENUE CHART ═══ */
+.chart-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--bone) 100%);
+  border: 1px solid var(--line);
+  padding: 32px 36px 28px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-soft) 50%, transparent 100%);
+  opacity: 0.5;
+}
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.chart-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+}
+.chart-toggle button {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-right: 1px solid var(--line-strong);
+}
+.chart-toggle button:last-child { border-right: none; }
+.chart-toggle button:hover { color: var(--ink); }
+.chart-toggle button.active {
+  background: var(--moss);
+  color: var(--gold-soft);
+}
+.chart-svg {
+  width: 100%;
+  height: 240px;
+  display: block;
+}
+.chart-svg .grid-line { stroke: var(--line); stroke-width: 1; }
+.chart-svg .axis-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  fill: var(--stone);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.chart-svg .area-path {
+  fill: url(#chart-gradient);
+  opacity: 0.5;
+}
+.chart-svg .line-path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.chart-svg .data-dot {
+  fill: var(--cream);
+  stroke: var(--gold);
+  stroke-width: 2;
+  transition: r 0.2s ease;
+}
+.chart-svg .data-dot:hover { r: 6; }
+.chart-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.chart-stat-mini .label {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 4px;
+}
+.chart-stat-mini .value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+.chart-stat-mini .value.gold {
+  background: linear-gradient(135deg, #d4b478 0%, var(--gold) 50%, #b8924a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ═══ ADMIN — TOP PRODUCTS ═══ */
+.top-products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.top-product-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.top-product-row:last-child { border-bottom: none; }
+.top-product-rank {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--gold);
+  width: 32px;
+  line-height: 1;
+  text-align: center;
+}
+.top-product-rank.medal {
+  background: linear-gradient(135deg, #d4b478 0%, #f0d896 50%, #b8924a 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+.top-product-info .top-product-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.top-product-info .top-product-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.top-product-bar-wrap {
+  width: 120px;
+  height: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+.top-product-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+  transition: width 0.6s ease;
+}
+.top-product-units {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink);
+  text-align: right;
+  min-width: 60px;
+}
+
+/* ═══ ADMIN — GEOGRAPHIC ═══ */
+.geo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.geo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.geo-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.geo-row:last-child { border-bottom: none; }
+.geo-flag {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.geo-name {
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.geo-bar-wrap {
+  width: 80px;
+  height: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+.geo-bar {
+  height: 100%;
+  background: var(--moss);
+  transition: width 0.6s ease;
+}
+.geo-count {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink);
+  min-width: 30px;
+  text-align: right;
+}
+
+/* ═══ ADMIN — TIER PROGRESSION TRACKER ═══ */
+.progression-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.progression-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.progression-row:last-child { border-bottom: none; }
+.progression-info .progression-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+.progression-info .progression-detail {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.progression-arrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.progression-arrow .from-tier {
+  color: var(--stone);
+}
+.progression-arrow .arrow-glyph {
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+}
+.progression-arrow .to-tier {
+  color: var(--moss);
+  font-weight: 600;
+}
+.progression-progress {
+  width: 100px;
+  height: 3px;
+  background: var(--line);
+  overflow: hidden;
+  position: relative;
+}
+.progression-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+  transition: width 0.6s ease;
+}
+
+/* ═══ ADMIN — ALL ORDERS TABLE ═══ */
+.orders-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-pill {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  padding: 6px 14px;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+.filter-pill:hover { color: var(--ink); border-color: var(--ink); }
+.filter-pill.active {
+  background: var(--moss);
+  color: var(--gold-soft);
+  border-color: var(--moss);
+}
+
+/* ═══ ADMIN — MARKETING DOWNLOADS ═══ */
+.download-stat-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.download-stat-row:last-child { border-bottom: none; }
+.download-stat-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: var(--bone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--moss);
+}
+.download-stat-info .download-stat-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.download-stat-info .download-stat-tier {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.download-stat-bar-wrap {
+  width: 100px;
+  height: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+.download-stat-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+}
+.download-stat-count {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink);
+  min-width: 60px;
+  text-align: right;
+}
+
+/* ═══ PARTNER DETAIL MODAL ═══ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 28, 26, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.3s ease;
+}
+.modal-overlay.show { display: flex; }
+.modal-card {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  background: var(--cream);
+  border: 1px solid rgba(212, 180, 120, 0.3);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 40px 80px -20px rgba(28, 28, 26, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+.modal-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 6s linear infinite;
+}
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+.modal-close:hover { background: var(--ink); color: var(--bone); border-color: var(--ink); }
+.modal-head {
+  position: relative;
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--bone);
+  padding: 36px 40px 32px;
+  overflow: hidden;
+}
+.modal-head::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 50%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(212, 180, 120, 0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.modal-head-content {
+  position: relative;
+  z-index: 1;
+}
+.modal-head .eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.modal-head .partner-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+.modal-head .partner-name em { font-style: italic; color: var(--gold-soft); font-weight: 400; }
+.modal-head .partner-meta {
+  font-size: 0.88rem;
+  color: rgba(246, 241, 232, 0.78);
+}
+.modal-head .partner-tier {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 1px solid var(--gold-soft);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 500;
+}
+.modal-head .partner-tier::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+}
+.modal-body {
+  padding: 32px 40px 36px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal-section {
+  margin-bottom: 28px;
+}
+.modal-section:last-child { margin-bottom: 0; }
+.modal-section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+.modal-section-eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.modal-stat {
+  background: var(--bone);
+  border: 1px solid var(--line);
+  padding: 18px 20px;
+}
+.modal-stat .label {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.modal-stat .value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.modal-stat .value.gold {
+  background: linear-gradient(135deg, #d4b478 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.modal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 24px;
+}
+.modal-info-row .label {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+.modal-info-row .value {
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+/* Make table rows clickable in admin */
+.partner-row {
+  cursor: pointer;
+}
+.partner-row:hover td {
+  background: var(--bone);
+}
+
+/* Tier-bar variant */
+.tier-bar-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 40px;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.tier-bar-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.tier-bar {
+  height: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+.tier-bar-fill {
+  height: 100%;
+  transition: width 0.6s ease;
+}
+.tier-bar-count {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  text-align: right;
+  color: var(--ink);
+}
+
+.pending-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
+}
+.pending-row:last-child { border-bottom: none; }
+.pending-row .pending-info .pending-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.pending-row .pending-info .pending-meta {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.pending-actions {
+  display: flex;
+  gap: 8px;
+}
+.btn-mini {
+  padding: 6px 14px;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-mini.approve { border-color: var(--green); color: var(--green); }
+.btn-mini.approve:hover { background: var(--green); color: var(--bone); }
+.btn-mini.reject { border-color: var(--rose); color: var(--rose); }
+.btn-mini.reject:hover { background: var(--rose); color: var(--bone); }
+
+/* ═══ PENDING APPLICATIONS — uitklapbaar ═══ */
+.applications-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--bone) 100%);
+  border: 1px solid var(--line);
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.applications-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  opacity: 0.5;
+}
+.applications-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.applications-count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #f0d896 0%, var(--gold-soft) 50%, var(--gold) 100%);
+  background-size: 200% 200%;
+  animation: shimmer 5s linear infinite;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--moss-deep);
+}
+.applications-count-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--moss-deep);
+}
+
+.application-row {
+  border: 1px solid var(--line);
+  background: var(--bone);
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.application-row:last-child { margin-bottom: 0; }
+.application-row:hover { border-color: var(--gold-soft); }
+.application-row.expanded {
+  border-color: var(--gold);
+  box-shadow: 0 12px 28px -16px rgba(28, 28, 26, 0.18);
+}
+
+.application-summary {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 22px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.application-summary:hover { background: var(--cream); }
+.application-row.expanded .application-summary { background: var(--cream); }
+
+.application-info .application-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 3px;
+  letter-spacing: -0.005em;
+}
+.application-info .application-meta {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.application-meta-sep {
+  color: var(--gold);
+  font-style: italic;
+  font-family: var(--font-display);
+  margin: 0 6px;
+}
+.application-date {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.application-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-soft);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.application-tag.new {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.application-chevron {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  transition: transform 0.3s ease;
+}
+.application-row.expanded .application-chevron {
+  transform: rotate(180deg);
+  color: var(--gold);
+}
+
+/* Expanded body */
+.application-body {
+  display: none;
+  padding: 0 22px 22px;
+  border-top: 1px solid var(--line);
+}
+.application-row.expanded .application-body { display: block; }
+
+.application-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 28px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 22px;
+}
+.application-field .label {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.application-field .value {
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.application-field.full { grid-column: 1 / -1; }
+.application-field.full .value {
+  background: var(--cream);
+  border-left: 2px solid var(--gold);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+}
+
+.application-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.application-tier-select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 280px;
+}
+.application-tier-select-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.application-tier-select select {
+  flex: 1;
+  height: 40px;
+  padding: 0 14px;
+  background: var(--cream);
+  border: 1px solid var(--line-strong);
+  font-size: 0.9rem;
+  color: var(--ink);
+  font-family: var(--font-body);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.application-tier-select select:focus { border-color: var(--gold); }
+
+.application-action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.applications-empty {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--stone);
+  font-style: italic;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.application-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--moss-deep);
+  color: var(--bone);
+  padding: 14px 24px;
+  font-size: 0.88rem;
+  border: 1px solid rgba(212, 180, 120, 0.3);
+  box-shadow: 0 20px 40px -12px rgba(28, 28, 26, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.application-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.application-toast::before {
+  content: '✓';
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2rem;
+}
+.application-toast.reject::before {
+  content: '×';
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .three-col { grid-template-columns: 1fr 1fr; }
+  .stats-grid, .admin-stats { grid-template-columns: repeat(2, 1fr); }
+  .tiers-display { grid-template-columns: repeat(3, 1fr); }
+  .upload-form { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 880px) {
+  .login-stage {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .login-aside {
+    padding: 60px 32px;
+    min-height: 480px;
+  }
+  .login-form-wrap { padding: 40px 32px 60px; }
+  .login-photo-dots { right: 32px; bottom: 22px; }
+  .login-aside h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  .shell { grid-template-columns: 1fr; }
+  .sidebar {
+    position: relative;
+    height: auto;
+    width: 100%;
+  }
+  .sidebar-nav { padding: 14px 0; }
+  .nav-item { padding: 10px 24px; }
+  .main { padding: 32px 24px 60px; }
+  .welcome { grid-template-columns: 1fr; padding: 32px 28px; }
+  .welcome-tier { text-align: left; }
+  .two-col { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr; }
+  .stats-grid, .admin-stats { grid-template-columns: 1fr 1fr; }
+  .tiers-display { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .tier-detail { grid-template-columns: 1fr; }
+  .upload-form { grid-template-columns: 1fr; }
+  .contact-person { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN OVERLAY
+     ═══════════════════════════════════════════════ -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-utility-bar">
+    Reseller Programma · Premium Nordic Beauty · <span>Familiemerk uit Zweden</span>
+  </div>
+
+  <div class="login-header">
+    <div class="login-logo">
+      <span class="logo-text">The Swedish <em>Glow</em></span>
+    </div>
+  </div>
+
+  <div class="login-stage">
+    <aside class="login-aside">
+      <div class="login-aside-photos" id="login-photos">
+        <div class="login-aside-photo active" style="background-image:url('https://gentle-basbousa-163655.netlify.app/images/marine-collagen-13000-ritueel-voor-stralende-huid-.jpg');"></div>
+        <div class="login-aside-photo" style="background-image:url('https://gentle-basbousa-163655.netlify.app/images/hermade-hands.jpg');"></div>
+        <div class="login-aside-photo" style="background-image:url('https://gentle-basbousa-163655.netlify.app/images/elin-hellqvist-moayedi-oprichtster-van-the-swedish.jpg');"></div>
+        <div class="login-aside-photo" style="background-image:url('https://gentle-basbousa-163655.netlify.app/images/marine-collageen-13000-lifestyle.jpg');"></div>
+        <div class="login-aside-photo" style="background-image:url('https://gentle-basbousa-163655.netlify.app/images/waarom-we-kozen-voor-branno.jpg');"></div>
+      </div>
+      <div class="login-aside-overlay"></div>
+      <div class="login-aside-content">
+        <div class="login-aside-eyebrow">Reseller Portaal · sinds 2022</div>
+        <h1>Een ritueel,<br>gedeeld in <em>vertrouwen</em>.</h1>
+        <p class="login-aside-tagline">Voor partners die zorg dragen voor onze essences.</p>
+        <p class="login-aside-lead">
+          Welkom in het partnerportaal van The Swedish Glow. Hier vind je alles wat je nodig hebt om onze rituelen met passie en precisie aan jouw klanten door te geven.
+        </p>
+        <div class="login-aside-pillars">
+          <div class="login-pillar">
+            <div class="login-pillar-num">I</div>
+            <div class="login-pillar-text">
+              <strong>Premium voorwaarden</strong>
+              Toegang tot scherpe inkoopprijzen en oplopende kortingen via ons tier-systeem.
+            </div>
+          </div>
+          <div class="login-pillar">
+            <div class="login-pillar-num">II</div>
+            <div class="login-pillar-text">
+              <strong>Marketingmateriaal</strong>
+              Productfotografie, social media kits en print-ready materialen op maat.
+            </div>
+          </div>
+          <div class="login-pillar">
+            <div class="login-pillar-num">III</div>
+            <div class="login-pillar-text">
+              <strong>Persoonlijke begeleiding</strong>
+              Een vast aanspreekpunt en directe lijn met het team in Den Bosch.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="login-photo-dots" id="login-dots">
+        <div class="login-photo-dot active"></div>
+        <div class="login-photo-dot"></div>
+        <div class="login-photo-dot"></div>
+        <div class="login-photo-dot"></div>
+        <div class="login-photo-dot"></div>
+      </div>
+    </aside>
+
+    <div class="login-form-wrap">
+      <div class="login-form">
+
+        <!-- LOGIN -->
+        <div class="login-screen active" id="screen-login">
+          <div class="eyebrow">Inloggen</div>
+          <h2>Welkom <em>terug</em></h2>
+          <p class="lead">Voer je gegevens in om door te gaan naar het portaal.</p>
+
+          <div class="login-error" id="login-err">E-mailadres of wachtwoord onjuist.</div>
+
+          <div class="field">
+            <label class="field-label">E-mailadres</label>
+            <input type="email" id="login-email" placeholder="naam@bedrijf.nl" autocomplete="email">
+          </div>
+          <div class="field">
+            <label class="field-label">Wachtwoord</label>
+            <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+          </div>
+
+          <button class="btn btn-block" onclick="doLogin()">
+            Inloggen <span class="arrow">→</span>
+          </button>
+
+          <div class="login-footer">
+            Nog geen partner? <a onclick="showScreen('register')">Aanmelden als reseller</a><br>
+            <a onclick="showScreen('reset')">Wachtwoord vergeten?</a>
+          </div>
+        </div>
+
+        <!-- REGISTER -->
+        <div class="login-screen" id="screen-register">
+          <a class="back-link" onclick="showScreen('login')">← Terug naar inloggen</a>
+          <div class="eyebrow">Aanmelden</div>
+          <h2>Word <em>partner</em></h2>
+          <p class="lead">Vul je gegevens in en we nemen binnen 2 werkdagen contact met je op.</p>
+
+          <div id="register-step1">
+            <div class="field">
+              <label class="field-label">Voornaam</label>
+              <input type="text" id="reg-firstname" placeholder="Voornaam">
+            </div>
+            <div class="field">
+              <label class="field-label">Achternaam</label>
+              <input type="text" id="reg-lastname" placeholder="Achternaam">
+            </div>
+            <div class="field">
+              <label class="field-label">Bedrijfsnaam</label>
+              <input type="text" id="reg-company" placeholder="Salon, winkel of webshop">
+            </div>
+            <div class="field">
+              <label class="field-label">E-mailadres</label>
+              <input type="email" id="reg-email" placeholder="naam@bedrijf.nl">
+            </div>
+            <div class="field">
+              <label class="field-label">Telefoonnummer</label>
+              <input type="tel" id="reg-phone" placeholder="+31 6 ..">
+            </div>
+            <div class="field">
+              <label class="field-label">Vertel kort over je bedrijf</label>
+              <textarea id="reg-message" placeholder="Type bedrijf, locatie, doelgroep ..."></textarea>
+            </div>
+            <button class="btn btn-block" onclick="submitRegister()">
+              Verstuur aanvraag <span class="arrow">→</span>
+            </button>
+          </div>
+
+          <div id="register-success" style="display:none;">
+            <div class="success-msg">
+              ✓ Bedankt voor je aanvraag. We nemen binnen 2 werkdagen contact met je op.
+            </div>
+            <button class="btn btn-outline btn-block" onclick="showScreen('login')">
+              Terug naar inloggen
+            </button>
+          </div>
+        </div>
+
+        <!-- RESET -->
+        <div class="login-screen" id="screen-reset">
+          <a class="back-link" onclick="showScreen('login')">← Terug naar inloggen</a>
+          <div class="eyebrow">Wachtwoord</div>
+          <h2>Vergeten? <em>Geen probleem</em></h2>
+          <p class="lead">Vul je e-mailadres in. Je ontvangt binnen enkele minuten een herstelmail.</p>
+
+          <div id="reset-step1">
+            <div class="field">
+              <label class="field-label">E-mailadres</label>
+              <input type="email" id="reset-email" placeholder="naam@bedrijf.nl">
+            </div>
+            <button class="btn btn-block" onclick="submitReset()">
+              Verstuur herstelmail <span class="arrow">→</span>
+            </button>
+          </div>
+
+          <div id="reset-success" style="display:none;">
+            <div class="success-msg">
+              ✓ Herstelmail verstuurd. Controleer je inbox en spamfolder.
+            </div>
+            <button class="btn btn-outline btn-block" onclick="showScreen('login')">
+              Terug naar inloggen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PORTAL SHELL
+     ═══════════════════════════════════════════════ -->
+<div class="shell" id="portal-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-eyebrow">Partner Portaal</div>
+      <div class="brand-name">The Swedish <em>Glow</em></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">Overzicht</div>
+      <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" data-page="tier" onclick="navigate('tier')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L15 8l6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/></svg>
+        Tier voordelen
+      </a>
+
+      <div class="nav-section">Bestellen</div>
+      <a class="nav-item" data-page="products" onclick="navigate('products')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2l-2 4v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Producten
+      </a>
+      <a class="nav-item" data-page="orders" onclick="navigate('orders')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11H7a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2v-7a2 2 0 00-2-2h-2"/><path d="M9 11V7a3 3 0 016 0v4"/></svg>
+        Bestellingen
+      </a>
+      <a class="nav-item" data-page="invoices" onclick="navigate('invoices')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        Facturen
+      </a>
+
+      <div class="nav-section">Bronnen</div>
+      <a class="nav-item" data-page="marketing" onclick="navigate('marketing')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Marketingmateriaal
+      </a>
+      <a class="nav-item" data-page="contact" onclick="navigate('contact')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.86 19.86 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.86 19.86 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        Contactpersoon
+      </a>
+
+      <div class="nav-section">Account</div>
+      <a class="nav-item" data-page="account" onclick="navigate('account')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Mijn gegevens
+      </a>
+
+      <div class="nav-section admin-only" style="display:none;">Beheer</div>
+      <a class="nav-item admin-only" data-page="admin" onclick="navigate('admin')" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Admin overzicht
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="sidebar-user-row">
+        <div>
+          <div class="name" id="sidebar-name">—</div>
+          <div class="company" id="sidebar-company">—</div>
+          <div class="tier-pill tier-bronze" id="sidebar-tier">Partner</div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()" title="Uitloggen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="welcome">
+        <div class="welcome-flourish">est. 2022 — Den Bosch</div>
+        <div class="welcome-content">
+          <div class="welcome-eyebrow">Jouw partnerstatus</div>
+          <h2 id="welcome-title">Welkom <em>terug</em></h2>
+          <p id="welcome-subtitle">Een overzicht van je partnerschap met The Swedish Glow.</p>
+        </div>
+        <div class="welcome-tier">
+          <div class="label">Huidige tier</div>
+          <div class="value" id="welcome-tier-value">—</div>
+          <span class="value-flourish">— partnership</span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">Omzet dit jaar</div>
+          <div class="stat-value" id="stat-revenue">€0</div>
+          <div class="stat-sub">Lopend kalenderjaar</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Bestellingen</div>
+          <div class="stat-value" id="stat-orders">0</div>
+          <div class="stat-sub">Dit kalenderjaar</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Inkoopkorting</div>
+          <div class="stat-value gold" id="stat-discount">—</div>
+          <div class="stat-sub" id="stat-discount-sub">Tier voordeel</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Tot volgend tier</div>
+          <div class="stat-value" id="stat-tonext">—</div>
+          <div class="stat-sub" id="stat-tonext-sub">—</div>
+        </div>
+      </div>
+
+      <div class="tier-progress">
+        <div class="tier-progress-head">
+          <div>
+            <div class="tier-progress-eyebrow">Het partnership groeit</div>
+            <div class="tier-progress-title">Voortgang naar <em id="next-tier-name">—</em></div>
+            <div class="tier-progress-desc" id="next-tier-desc">Bereik de volgende tier voor extra voordelen.</div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="navigate('tier')">
+            Alle tiers <span class="arrow">→</span>
+          </button>
+        </div>
+
+        <div class="tier-track">
+          <div class="tier-line"></div>
+          <div class="tier-line-fill" id="tier-line-fill"></div>
+          <div class="tier-stops" id="tier-stops">
+            <div class="tier-stop"><div class="tier-stop-dot">I</div><div class="tier-stop-name">Pearl</div></div>
+            <div class="tier-stop"><div class="tier-stop-dot">II</div><div class="tier-stop-name">Rose</div></div>
+            <div class="tier-stop"><div class="tier-stop-dot">III</div><div class="tier-stop-name">Pro</div></div>
+            <div class="tier-stop"><div class="tier-stop-dot">IV</div><div class="tier-stop-name">Elite</div></div>
+            <div class="tier-stop"><div class="tier-stop-dot">∞</div><div class="tier-stop-name">Black</div></div>
+          </div>
+        </div>
+
+        <div class="tier-detail">
+          <div>
+            <div class="tier-detail-label">Huidige jaaromzet</div>
+            <div class="tier-detail-value" id="progress-current">€0</div>
+            <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            <div class="tier-detail-needed" id="progress-needed">—</div>
+          </div>
+          <div>
+            <div class="tier-detail-label">Voordelen volgende tier</div>
+            <ul class="tier-benefits" id="next-benefits">
+              <li>Hogere inkoopkorting</li>
+              <li>Uitgebreider marketingmateriaal</li>
+              <li>Persoonlijke begeleiding</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-eyebrow">Recente activiteit</div>
+          <div class="card-title">Bestellingen</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Bestelling</th><th>Datum</th><th>Status</th><th style="text-align:right;">Bedrag</th></tr></thead>
+              <tbody>
+                <tr class="empty-row"><td colspan="4">Nog geen bestellingen</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:18px;">
+            <a class="btn btn-outline btn-sm" onclick="navigate('orders')">Alle bestellingen <span class="arrow">→</span></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-eyebrow">Jouw voordelen</div>
+          <div class="card-title">Tier <em id="benefits-tier-name">voordelen</em></div>
+          <ul class="tier-benefits" id="current-benefits">
+            <li>Inkoopkorting op het volledige assortiment</li>
+            <li>Toegang tot marketingmateriaal</li>
+            <li>Maandelijkse partner-update</li>
+            <li>Persoonlijk aanspreekpunt</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIER -->
+    <div class="page" id="page-tier">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Het partner programma</div>
+          <h1>Tier <em>voordelen</em></h1>
+        </div>
+      </div>
+
+      <p style="font-size:1.05rem;color:var(--ink-soft);max-width:680px;margin-bottom:32px;line-height:1.7;">
+        Ons tier-systeem groeit mee met je partnership. Hoe meer je investeert in The Swedish Glow, hoe meer wij investeren in jou — met scherpere prijzen, meer materiaal en directere ondersteuning.
+      </p>
+
+      <div class="tiers-display" id="tiers-display">
+        <!-- gevuld door JS -->
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="page" id="page-products">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Het assortiment</div>
+          <h1>Onze <em>essences</em></h1>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline btn-sm">Catalogus PDF <span class="arrow">→</span></button>
+        </div>
+      </div>
+
+      <div class="products-grid" id="products-grid">
+        <!-- gevuld door JS -->
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="page" id="page-orders">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Bestelgeschiedenis</div>
+          <h1>Jouw <em>bestellingen</em></h1>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline btn-sm">Exporteer CSV</button>
+          <button class="btn btn-sm" onclick="navigate('products')">Nieuwe bestelling <span class="arrow">→</span></button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Ordernummer</th>
+              <th>Datum</th>
+              <th>Producten</th>
+              <th>Korting</th>
+              <th>Status</th>
+              <th style="text-align:right;">Bedrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="empty-row"><td colspan="6">Nog geen bestellingen geplaatst</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INVOICES -->
+    <div class="page" id="page-invoices">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Administratie</div>
+          <h1>Fact<em>uren</em></h1>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline btn-sm">Exporteer alle</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Factuurnummer</th>
+              <th>Datum</th>
+              <th>Periode</th>
+              <th>Bedrag (excl. BTW)</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="empty-row"><td colspan="6">Nog geen facturen</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MARKETING -->
+    <div class="page" id="page-marketing">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Voor jouw kanalen</div>
+          <h1>Marketing<em>materiaal</em></h1>
+        </div>
+      </div>
+
+      <p style="font-size:1rem;color:var(--ink-soft);max-width:680px;margin-bottom:28px;line-height:1.7;">
+        Gebruik onderstaand materiaal voor je eigen kanalen. Houd altijd de huisstijl van The Swedish Glow aan. Vragen? Neem contact op met je regiomanager.
+      </p>
+
+      <div class="upload-panel admin-only" id="upload-panel" style="display:none;">
+        <div class="upload-head">
+          <div>
+            <div class="upload-eyebrow">Admin · The Swedish Glow</div>
+            <div class="upload-title">Materiaal <em>uploaden</em></div>
+          </div>
+          <div class="admin-tag">TSG Admin</div>
+        </div>
+        <div class="upload-form">
+          <div>
+            <label class="field-label">Bestandsnaam</label>
+            <input type="text" id="upload-name" placeholder="bijv. Social media kit Q2 2026">
+          </div>
+          <div>
+            <label class="field-label">Minimale tier</label>
+            <select id="upload-tier">
+              <option value="all">Alle tiers</option>
+              <option value="rose">Rose+</option>
+              <option value="pro">Pro+</option>
+              <option value="elite">Elite+</option>
+              <option value="black">Black only</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Bestand</label>
+            <label for="upload-file" class="upload-file-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="upload-file-name">Kies bestand</span>
+            </label>
+            <input id="upload-file" type="file" style="display:none;" onchange="onFileSelect(this)">
+          </div>
+          <button class="btn btn-upload" onclick="addFile()">Toevoegen <span class="arrow">→</span></button>
+        </div>
+        <div id="upload-success" style="display:none;margin-top:14px;font-size:0.85rem;color:var(--gold-soft);position:relative;z-index:1;">✓ Bestand toegevoegd.</div>
+      </div>
+
+      <div id="files-area">
+        <div class="card" style="text-align:center;padding:60px;">
+          <p style="color:var(--stone);font-style:italic;font-family:var(--font-display);font-size:1.1rem;">Nog geen materiaal beschikbaar.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="page" id="page-contact">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Direct contact</div>
+          <h1>Jouw <em>contactpersoon</em></h1>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card-eyebrow">Regiomanager Benelux</div>
+          <div class="contact-card">
+            <div class="contact-person">
+              <div class="contact-avatar">SH</div>
+              <div class="contact-info">
+                <div class="contact-name">Suzanne Hoedemakers</div>
+                <div class="contact-role">Regiomanager Benelux</div>
+                <div class="contact-meta">
+                  <a href="mailto:suzanne@theswedishglow.com">suzanne@theswedishglow.com</a>
+                  <a href="tel:+31627536717">+31 6 27 53 67 17</a>
+                </div>
+              </div>
+            </div>
+            <div class="hours-note">
+              Bereikbaar maandag — vrijdag · 09:00 – 17:30 CET. Reactietijd binnen 24 uur.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card-eyebrow">Directe ondersteuning</div>
+          <div class="support-list">
+            <div class="support-item">
+              <div class="support-title">Klantenservice</div>
+              <div class="support-desc">Voor bestellingen, leveringen en facturen</div>
+              <a href="mailto:partners@theswedishglow.com">partners@theswedishglow.com</a>
+            </div>
+            <div class="support-item">
+              <div class="support-title">Training & educatie</div>
+              <div class="support-desc">Productkennis, workshops en trainingen</div>
+              <a href="mailto:training@theswedishglow.com">training@theswedishglow.com</a>
+            </div>
+            <div class="support-locked" id="support-am">
+              <div class="support-title">Dedicated accountmanager</div>
+              <div class="support-desc">Beschikbaar vanaf <strong>Elite tier</strong>.</div>
+              <a onclick="navigate('tier')" style="color:var(--gold);cursor:pointer;">Bekijk voordelen →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="page" id="page-account">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">Mijn profiel</div>
+          <h1>Mijn <em>gegevens</em></h1>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-sm" onclick="saveAccount()">Opslaan <span class="arrow">→</span></button>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-eyebrow">Profiel</div>
+            <div class="profile-head">
+              <div class="profile-avatar" id="profile-avatar">
+                <span id="profile-initials">—</span>
+                <label for="photo-input" class="photo-camera" title="Foto wijzigen">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </label>
+                <input id="photo-input" type="file" accept="image/*" style="display:none;" onchange="uploadPhoto(this)">
+              </div>
+              <div class="profile-id">
+                <div class="name" id="profile-name">—</div>
+                <div class="company" id="profile-company">—</div>
+                <div class="profile-photo-actions">
+                  <a onclick="document.getElementById('photo-input').click()">Foto wijzigen</a>
+                  <span style="color:var(--stone-light);">·</span>
+                  <a id="photo-remove" style="display:none;" onclick="removePhoto()">Verwijderen</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label class="field-label">Voornaam</label>
+                <input type="text" id="acc-firstname">
+              </div>
+              <div class="field">
+                <label class="field-label">Achternaam</label>
+                <input type="text" id="acc-lastname">
+              </div>
+              <div class="field full">
+                <label class="field-label">E-mailadres</label>
+                <input type="email" id="acc-email">
+              </div>
+              <div class="field full">
+                <label class="field-label">Telefoonnummer</label>
+                <input type="tel" id="acc-phone">
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-eyebrow">Bedrijfsgegevens</div>
+            <div class="form-grid">
+              <div class="field full">
+                <label class="field-label">Bedrijfsnaam</label>
+                <input type="text" id="acc-company">
+              </div>
+              <div class="field">
+                <label class="field-label">KVK-nummer</label>
+                <input type="text" id="acc-kvk">
+              </div>
+              <div class="field">
+                <label class="field-label">BTW-nummer</label>
+                <input type="text" id="acc-btw">
+              </div>
+              <div class="field full">
+                <label class="field-label">Factuuradres</label>
+                <input type="text" id="acc-address">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-eyebrow">Beveiliging</div>
+            <div class="card-title">Wachtwoord <em>wijzigen</em></div>
+            <div class="field">
+              <label class="field-label">Huidig wachtwoord</label>
+              <input type="password" placeholder="••••••••">
+            </div>
+            <div class="field">
+              <label class="field-label">Nieuw wachtwoord</label>
+              <input type="password" placeholder="Minimaal 8 tekens">
+            </div>
+            <div class="field">
+              <label class="field-label">Herhaal nieuw wachtwoord</label>
+              <input type="password" placeholder="Zelfde wachtwoord">
+            </div>
+            <button class="btn btn-outline btn-block">Wachtwoord bijwerken</button>
+          </div>
+
+          <div class="card">
+            <div class="card-eyebrow">Voorkeuren</div>
+            <div class="card-title">Notificaties</div>
+            <div class="notif-row">
+              <div class="notif-info">
+                <div class="notif-title">Orderbevestigingen</div>
+                <div class="notif-desc">Per e-mail bij elke bestelling</div>
+              </div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="notif-row">
+              <div class="notif-info">
+                <div class="notif-title">Tier-upgrade melding</div>
+                <div class="notif-desc">Wanneer je een nieuwe tier bereikt</div>
+              </div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="notif-row">
+              <div class="notif-info">
+                <div class="notif-title">Nieuwe producten</div>
+                <div class="notif-desc">Early access aankondigingen</div>
+              </div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="notif-row">
+              <div class="notif-info">
+                <div class="notif-title">Maandelijkse nieuwsbrief</div>
+                <div class="notif-desc">Partnerupdate uit Den Bosch</div>
+              </div>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+
+          <div id="account-saved" class="success-msg" style="display:none;">
+            ✓ Gegevens succesvol opgeslagen.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="page" id="page-admin">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="eyebrow">The Swedish Glow · Benelux</div>
+          <h1>Admin <em>overzicht</em></h1>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline btn-sm">Export CSV</button>
+        </div>
+      </div>
+
+      <!-- KPI's -->
+      <div class="admin-stats">
+        <div class="stat">
+          <div class="stat-label">Actieve partners</div>
+          <div class="stat-value">0</div>
+          <div class="stat-sub">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Totale omzet YTD</div>
+          <div class="stat-value gold">€0</div>
+          <div class="stat-sub">Lopend jaar</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Gem. orderwaarde</div>
+          <div class="stat-value">€0</div>
+          <div class="stat-sub">Per bestelling</div>
+        </div>
+        <div class="stat" onclick="scrollToApplications()" style="cursor:pointer;">
+          <div class="stat-label">Aanvragen</div>
+          <div class="stat-value gold" id="kpi-applications">0</div>
+          <div class="stat-sub">Wachten op goedkeuring</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Landen</div>
+          <div class="stat-value">0</div>
+          <div class="stat-sub">Actieve markten</div>
+        </div>
+      </div>
+
+      <!-- AANVRAGEN — uitklapbare sectie -->
+      <div class="applications-card" id="applications-section">
+        <div class="applications-head">
+          <div>
+            <div class="card-eyebrow">Goedkeuring vereist</div>
+            <div class="card-title">Nieuwe <em>aanvragen</em></div>
+          </div>
+          <div class="applications-count-pill" id="applications-count-pill" style="display:none;">
+            <span id="applications-count-num">0</span> wachten
+          </div>
+        </div>
+        <div id="applications-list">
+          <div class="applications-empty">Geen openstaande aanvragen.</div>
+        </div>
+      </div>
+
+      <!-- OMZET-GRAFIEK -->
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="card-eyebrow">Omzetontwikkeling</div>
+            <div class="card-title">Omzet over <em>tijd</em></div>
+          </div>
+          <div class="chart-toggle" id="chart-toggle">
+            <button class="active" data-view="month">Per maand</button>
+            <button data-view="quarter">Per kwartaal</button>
+          </div>
+        </div>
+        <svg class="chart-svg" id="revenue-chart" viewBox="0 0 800 240" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#b8924a" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#b8924a" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- gevuld door JS -->
+        </svg>
+        <div class="chart-stats">
+          <div class="chart-stat-mini">
+            <div class="label">Totaal periode</div>
+            <div class="value gold" id="chart-total">€0</div>
+          </div>
+          <div class="chart-stat-mini">
+            <div class="label">Gemiddelde</div>
+            <div class="value" id="chart-avg">€0</div>
+          </div>
+          <div class="chart-stat-mini">
+            <div class="label">Hoogste maand</div>
+            <div class="value" id="chart-peak">€0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- TOP PRODUCTEN -->
+        <div class="card">
+          <div class="card-eyebrow">Best verkocht</div>
+          <div class="card-title">Top <em>producten</em></div>
+          <div class="top-products" id="top-products-list">
+            <!-- gevuld door JS -->
+          </div>
+        </div>
+
+        <!-- PARTNERS PER TIER -->
+        <div class="card">
+          <div class="card-eyebrow">Distributie</div>
+          <div class="card-title">Partners <em>per tier</em></div>
+          <div class="tier-bar-row">
+            <span class="tier-bar-label">Pearl</span>
+            <div class="tier-bar"><div class="tier-bar-fill" style="background:var(--stone);width:0%;"></div></div>
+            <span class="tier-bar-count">0</span>
+          </div>
+          <div class="tier-bar-row">
+            <span class="tier-bar-label">Rose</span>
+            <div class="tier-bar"><div class="tier-bar-fill" style="background:var(--rose);width:0%;"></div></div>
+            <span class="tier-bar-count">0</span>
+          </div>
+          <div class="tier-bar-row">
+            <span class="tier-bar-label">Pro</span>
+            <div class="tier-bar"><div class="tier-bar-fill" style="background:var(--gold);width:0%;"></div></div>
+            <span class="tier-bar-count">0</span>
+          </div>
+          <div class="tier-bar-row">
+            <span class="tier-bar-label">Elite</span>
+            <div class="tier-bar"><div class="tier-bar-fill" style="background:#a8c8d8;width:0%;"></div></div>
+            <span class="tier-bar-count">0</span>
+          </div>
+          <div class="tier-bar-row">
+            <span class="tier-bar-label">Black</span>
+            <div class="tier-bar"><div class="tier-bar-fill" style="background:var(--ink);width:0%;"></div></div>
+            <span class="tier-bar-count">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GEOGRAFISCHE SPREIDING -->
+      <div class="card">
+        <div class="card-eyebrow">Geografische spreiding</div>
+        <div class="card-title">Partners <em>per markt</em></div>
+        <div class="geo-grid">
+          <div>
+            <div style="font-size:0.66rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;font-weight:500;">Per land</div>
+            <div class="geo-list" id="geo-countries">
+              <!-- gevuld door JS -->
+            </div>
+          </div>
+          <div>
+            <div style="font-size:0.66rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;font-weight:500;">Top steden</div>
+            <div class="geo-list" id="geo-cities">
+              <!-- gevuld door JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIER PROGRESSIE TRACKER -->
+      <div class="card">
+        <div class="card-eyebrow">Beweging</div>
+        <div class="card-title">Tier <em>progressie</em></div>
+        <p style="font-size:0.88rem;color:var(--ink-soft);margin-bottom:20px;">Partners die op weg zijn naar een volgende tier.</p>
+        <div class="progression-list" id="progression-list">
+          <!-- gevuld door JS -->
+        </div>
+      </div>
+
+      <!-- ALLE BESTELLINGEN -->
+      <div class="card">
+        <div class="card-eyebrow">Bestellingen</div>
+        <div class="card-title">Alle <em>orders</em></div>
+        <div class="orders-toolbar">
+          <input type="text" class="search-input" placeholder="Zoek op ordernummer of partner..." style="max-width:280px;">
+          <button class="filter-pill active" data-filter="all">Alle</button>
+          <button class="filter-pill" data-filter="processing">In behandeling</button>
+          <button class="filter-pill" data-filter="shipped">Onderweg</button>
+          <button class="filter-pill" data-filter="delivered">Geleverd</button>
+        </div>
+        <div class="table-wrap" style="border:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Datum</th>
+                <th>Partner</th>
+                <th>Tier</th>
+                <th>Producten</th>
+                <th>Status</th>
+                <th style="text-align:right;">Bedrag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="empty-row"><td colspan="7">Nog geen bestellingen geplaatst</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MARKETING DOWNLOADS -->
+      <div class="card">
+        <div class="card-eyebrow">Marketingmateriaal</div>
+        <div class="card-title">Downloads <em>per bestand</em></div>
+        <p style="font-size:0.88rem;color:var(--ink-soft);margin-bottom:20px;">Welk materiaal het meest wordt gebruikt door partners.</p>
+        <div id="downloads-list">
+          <div style="text-align:center;padding:32px 0;color:var(--stone);font-style:italic;font-family:var(--font-display);font-size:1.05rem;">Nog geen downloadstatistieken beschikbaar.</div>
+        </div>
+      </div>
+
+      <!-- ALLE PARTNERS — clickable rows -->
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div class="card-eyebrow" style="margin-bottom:6px;">Beheer</div>
+            <div class="card-title" style="margin-bottom:0;">Alle <em>partners</em></div>
+          </div>
+          <input type="text" class="search-input" placeholder="Zoeken op naam of stad...">
+        </div>
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:14px;font-style:italic;">Klik op een partner voor het volledige profiel.</p>
+        <div class="table-wrap" style="border:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Naam</th><th>Bedrijf</th><th>Stad</th><th>Tier</th>
+                <th>Omzet YTD</th><th>Laatste bestelling</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="partners-tbody">
+              <tr class="empty-row"><td colspan="7">Nog geen partners geregistreerd</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARTNER DETAIL MODAL -->
+    <div class="modal-overlay" id="partner-modal" onclick="closePartnerModal(event)">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closePartnerModal()" aria-label="Sluiten">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="modal-head">
+          <div class="modal-head-content">
+            <div class="eyebrow">Partner profiel</div>
+            <div class="partner-name" id="modal-name">—</div>
+            <div class="partner-meta" id="modal-meta">—</div>
+            <div class="partner-tier" id="modal-tier-pill">—</div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section">
+            <div class="modal-section-eyebrow">Prestaties</div>
+            <div class="modal-stats-grid">
+              <div class="modal-stat">
+                <div class="label">Omzet YTD</div>
+                <div class="value gold" id="modal-revenue">€0</div>
+              </div>
+              <div class="modal-stat">
+                <div class="label">Bestellingen</div>
+                <div class="value" id="modal-orders">0</div>
+              </div>
+              <div class="modal-stat">
+                <div class="label">Korting</div>
+                <div class="value" id="modal-discount">0%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-section">
+            <div class="modal-section-eyebrow">Voortgang</div>
+            <div style="font-size:0.92rem;color:var(--ink-soft);margin-bottom:10px;" id="modal-progress-text">—</div>
+            <div class="progress-bar"><div class="progress-bar-fill" id="modal-progress-fill" style="width:0%;"></div></div>
+          </div>
+
+          <div class="modal-section">
+            <div class="modal-section-eyebrow">Contact</div>
+            <div class="modal-info-grid">
+              <div class="modal-info-row">
+                <div class="label">E-mailadres</div>
+                <div class="value" id="modal-email">—</div>
+              </div>
+              <div class="modal-info-row">
+                <div class="label">Telefoon</div>
+                <div class="value" id="modal-phone">—</div>
+              </div>
+              <div class="modal-info-row">
+                <div class="label">Stad</div>
+                <div class="value" id="modal-city">—</div>
+              </div>
+              <div class="modal-info-row">
+                <div class="label">Land</div>
+                <div class="value" id="modal-country">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-sm">Bekijk bestellingen <span class="arrow">→</span></button>
+            <button class="btn btn-outline btn-sm">Stuur bericht</button>
+            <button class="btn btn-outline btn-sm" style="margin-left:auto;">Bewerk profiel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ============================================================
+// ACCOUNTS
+// ------------------------------------------------------------
+// Voeg hier nieuwe partners toe. Format:
+//
+//   'email@voorbeeld.nl': {
+//     password:  'sterkWachtwoord',
+//     name:      'Voornaam Achternaam',
+//     company:   'Bedrijfsnaam, Stad',
+//     tier:      'silver',   // 'bronze'|'silver'|'gold'|'platinum'|'black'
+//     tierLabel: 'Rose',     // 'Pearl'|'Rose'|'Pro'|'Elite'|'Black'
+//     discount:  43,         // korting in %
+//     revenue:   '0',        // omzet zonder euroteken
+//     toNext:    '5.600',    // bedrag tot volgende tier, of null bij Black
+//     nextTier:  'Pro',      // naam volgende tier, of null bij Black
+//     isAdmin:   false
+//   }
+//
+// LET OP: wachtwoorden staan zichtbaar in de broncode.
+// Voor echte beveiliging is een backend met database nodig.
+// ============================================================
+var ACCOUNTS = {
+  'suzanne@theswedishglow.com': {
+    password: 'TSGadmin2026!',
+    name: 'Suzanne Hoedemakers',
+    company: 'The Swedish Glow',
+    tier: 'admin', tierLabel: 'Admin',
+    discount: 50, revenue: '—', toNext: null, nextTier: null,
+    isAdmin: true
+  },
+  'elin@theswedishglow.com': {
+    password: 'TSGadmin2026!',
+    name: 'Elin',
+    company: 'The Swedish Glow',
+    tier: 'admin', tierLabel: 'Admin',
+    discount: 50, revenue: '—', toNext: null, nextTier: null,
+    isAdmin: true
+  }
+};
+
+// ============================================================
+// TIER DEFINITIONS
+// ============================================================
+var TIERS = [
+  { key:'bronze',   label:'Pearl',  numeral:'I',   min:'€0',       discount:40, perks:['Inkoopkorting 40%','Toegang tot basis-marketingmateriaal','Maandelijkse nieuwsbrief'] },
+  { key:'silver',   label:'Rose',   numeral:'II',  min:'€5.000',   discount:43, perks:['Inkoopkorting 43%','Uitgebreid social media materiaal','Toegang tot productvideo\'s'] },
+  { key:'gold',     label:'Pro',    numeral:'III', min:'€15.000',  discount:46, perks:['Inkoopkorting 46%','Print materiaal en POS','Early access nieuwe producten','Persoonlijke training'] },
+  { key:'platinum', label:'Elite',  numeral:'IV',  min:'€30.000',  discount:48, perks:['Inkoopkorting 48%','Co-branding pakket','Dedicated accountmanager','Same-day levering'] },
+  { key:'black',    label:'Black',  numeral:'∞',   min:'€60.000',  discount:50, perks:['Inkoopkorting 50%','Exclusieve brand kit','VIP-ondersteuning','Toegang tot limited editions','Jaarlijks partner-event in Zweden'] }
+];
+
+// ============================================================
+// PRODUCTS
+// ============================================================
+var PRODUCTS = [
+  { num:'I',   name:'Marine Collageen 13.000', tag:'Het ochtendritueel', desc:'13.000 mg vloeibaar marine collageen voor stralende huid, sterke nagels en gezond haar.', listPrice:59,  image:'https://theswedishglow.com/wp-content/uploads/2024/05/PdP-Marine_collagen_13000-25-day-treatment.jpg' },
+  { num:'II',  name:'Nordsilk',                tag:'Het haarritueel',    desc:'Voedend ritueel voor sterk en glanzend haar, met biotine en zink.', listPrice:47,  image:'https://theswedishglow.com/wp-content/uploads/2024/05/PdP-Nordsilk-treatment-33-days-main.jpg' },
+  { num:'III', name:'Plantique Omega 3',       tag:'Het basisritueel',   desc:'Plantaardige Omega 3 essence met vitamines A, D3, E en K2 — basis voor huid en welzijn.', listPrice:92,  image:'https://theswedishglow.com/wp-content/uploads/2025/02/PDP-PLANTIQUE-OMEGA.png' },
+  { num:'IV',  name:'HÉRMADE',                 tag:'Het maandritueel',   desc:'Gerichte ondersteuning voor vrouwen in elke fase van het leven.', listPrice:39,  image:'https://theswedishglow.com/wp-content/uploads/2025/09/Hermade-PDP.webp' }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+var currentAccount = null;
+var uploadedFiles = []; // Marketing-bestanden — vul via admin upload
+var photoDataUrl = null;
+
+// ============================================================
+// LOGIN SCREENS
+// ============================================================
+function showScreen(name) {
+  ['login','register','reset'].forEach(function(s) {
+    var el = document.getElementById('screen-' + s);
+    if (el) el.classList.toggle('active', s === name);
+  });
+  // Reset success states
+  if (name === 'register') {
+    document.getElementById('register-step1').style.display = 'block';
+    document.getElementById('register-success').style.display = 'none';
+  }
+  if (name === 'reset') {
+    document.getElementById('reset-step1').style.display = 'block';
+    document.getElementById('reset-success').style.display = 'none';
+  }
+}
+
+function submitRegister() {
+  // Lees velden
+  var fn      = (document.getElementById('reg-firstname').value || '').trim();
+  var ln      = (document.getElementById('reg-lastname').value  || '').trim();
+  var company = (document.getElementById('reg-company').value   || '').trim();
+  var email   = (document.getElementById('reg-email').value     || '').trim().toLowerCase();
+  var phone   = (document.getElementById('reg-phone').value     || '').trim();
+  var message = (document.getElementById('reg-message').value   || '').trim();
+
+  // Valideer minimaal
+  if (!fn || !ln || !email) {
+    alert('Vul minstens je naam en e-mailadres in.');
+    return;
+  }
+
+  // Voeg toe aan pending applications
+  var nowDate = new Date();
+  var months = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  var dateStr = nowDate.getDate() + ' ' + months[nowDate.getMonth()] + ' ' + nowDate.getFullYear();
+
+  PENDING_APPLICATIONS.push({
+    id: 'app-' + Date.now(),
+    firstName: fn,
+    lastName: ln,
+    name: fn + ' ' + ln,
+    company: company || '—',
+    email: email,
+    phone: phone || '—',
+    message: message || '—',
+    date: dateStr,
+    isNew: true
+  });
+
+  // Reset velden
+  ['reg-firstname','reg-lastname','reg-company','reg-email','reg-phone','reg-message'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  document.getElementById('register-step1').style.display = 'none';
+  document.getElementById('register-success').style.display = 'block';
+
+  // Update admin als die al gerenderd is
+  if (typeof renderApplications === 'function') renderApplications();
+}
+
+function submitReset() {
+  document.getElementById('reset-step1').style.display = 'none';
+  document.getElementById('reset-success').style.display = 'block';
+}
+
+function doLogin() {
+  var email = document.getElementById('login-email').value.trim().toLowerCase();
+  var pass  = document.getElementById('login-pass').value;
+  var err   = document.getElementById('login-err');
+  var acc   = ACCOUNTS[email];
+  if (!acc || acc.password !== pass) {
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+  currentAccount = acc;
+  enterPortal(acc, email);
+}
+
+function doLogout() {
+  currentAccount = null;
+  document.getElementById('login-overlay').style.display = 'flex';
+  showScreen('login');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value = '';
+  navigate('dashboard');
+}
+
+// ============================================================
+// ENTER PORTAL — fill all data
+// ============================================================
+function enterPortal(acc, email) {
+  // Sidebar user
+  document.getElementById('sidebar-name').textContent = acc.name;
+  document.getElementById('sidebar-company').textContent = acc.company;
+  var pill = document.getElementById('sidebar-tier');
+  pill.textContent = acc.tierLabel + (acc.isAdmin ? '' : ' partner');
+  pill.className = 'tier-pill tier-' + (acc.tier === 'admin' ? 'admin' : acc.tier);
+
+  // Welcome
+  var firstName = (acc.name || '').split(' ')[0];
+  document.getElementById('welcome-title').innerHTML = 'Welkom terug, <em>' + firstName + '</em>';
+  document.getElementById('welcome-subtitle').textContent = acc.isAdmin
+    ? 'Je bent ingelogd als beheerder. Bekijk het admin-overzicht voor partners en omzet.'
+    : (acc.nextTier
+        ? 'Nog €' + acc.toNext + ' tot ' + acc.nextTier + ' — je bent op de goede weg.'
+        : 'Je zit op het hoogste niveau. Welkom in de Black club.');
+  document.getElementById('welcome-tier-value').textContent = acc.tierLabel;
+
+  // Stats
+  document.getElementById('stat-revenue').textContent = (acc.revenue === '—' ? '—' : '€' + acc.revenue);
+  document.getElementById('stat-orders').textContent = '0';
+  document.getElementById('stat-discount').textContent = acc.discount + '%';
+  document.getElementById('stat-discount-sub').textContent = acc.tierLabel + ' tier voordeel';
+  var elTo = document.getElementById('stat-tonext');
+  var elToSub = document.getElementById('stat-tonext-sub');
+  if (acc.toNext) {
+    elTo.textContent = '€' + acc.toNext;
+    elToSub.textContent = 'Nog nodig voor ' + acc.nextTier;
+  } else {
+    elTo.textContent = '—';
+    elToSub.textContent = acc.isAdmin ? 'Geen tier' : 'Hoogste tier bereikt';
+  }
+
+  // Tier progress
+  buildTierProgress(acc);
+
+  // Benefits panel
+  document.getElementById('benefits-tier-name').textContent = acc.tierLabel;
+  var tierDef = TIERS.find(function(t) { return t.label === acc.tierLabel; });
+  var benefitsList = document.getElementById('current-benefits');
+  if (tierDef && benefitsList) {
+    benefitsList.innerHTML = tierDef.perks.map(function(p) { return '<li>' + p + '</li>'; }).join('');
+  }
+  // Next benefits
+  var nextEl = document.getElementById('next-benefits');
+  var nextDef = TIERS.find(function(t) { return t.label === acc.nextTier; });
+  if (nextEl) {
+    if (nextDef) {
+      nextEl.innerHTML = nextDef.perks.map(function(p) { return '<li>' + p + '</li>'; }).join('');
+    } else {
+      nextEl.innerHTML = '<li style="color:var(--stone);font-style:italic;">Hoogste tier bereikt — geniet van alle voordelen.</li>';
+    }
+  }
+
+  // Profile
+  document.getElementById('profile-name').textContent = acc.name;
+  document.getElementById('profile-company').textContent = acc.company;
+  var nameParts = (acc.name || '').split(' ');
+  var initials = (nameParts[0] && nameParts[0][0] ? nameParts[0][0] : '') + (nameParts[1] && nameParts[1][0] ? nameParts[1][0] : '');
+  document.getElementById('profile-initials').textContent = initials.toUpperCase() || '—';
+  document.getElementById('acc-firstname').value = nameParts[0] || '';
+  document.getElementById('acc-lastname').value = nameParts.slice(1).join(' ');
+  document.getElementById('acc-email').value = email;
+  document.getElementById('acc-company').value = acc.company || '';
+
+  // Build tiers display
+  buildTiersDisplay(acc);
+
+  // Build products grid
+  buildProducts(acc);
+
+  // Marketing files
+  renderFiles(acc);
+
+  // Build admin sections (only renders if user is admin)
+  if (acc.isAdmin) buildAdmin();
+
+  // Admin visibility
+  document.querySelectorAll('.admin-only').forEach(function(el) {
+    el.style.display = acc.isAdmin ? '' : 'none';
+  });
+  // Support locked card visibility
+  var supportAm = document.getElementById('support-am');
+  if (supportAm) {
+    var unlocked = (acc.tier === 'platinum' || acc.tier === 'black' || acc.isAdmin);
+    supportAm.style.display = unlocked ? 'none' : '';
+  }
+
+  // Start page based on role
+  navigate(acc.isAdmin ? 'admin' : 'dashboard');
+
+  // Fade out login
+  var overlay = document.getElementById('login-overlay');
+  overlay.style.transition = 'opacity 0.4s ease';
+  overlay.style.opacity = '0';
+  setTimeout(function() {
+    overlay.style.display = 'none';
+    overlay.style.opacity = '1';
+  }, 400);
+}
+
+// ============================================================
+// TIER PROGRESS bar on dashboard
+// ============================================================
+function buildTierProgress(acc) {
+  var stops = document.querySelectorAll('#tier-stops .tier-stop');
+  var idx = TIERS.findIndex(function(t) { return t.label === acc.tierLabel; });
+
+  stops.forEach(function(stop, i) {
+    stop.classList.remove('done', 'current');
+    if (i < idx) stop.classList.add('done');
+    else if (i === idx) stop.classList.add('current');
+  });
+
+  var fillPct = idx <= 0 ? 0 : (idx / (TIERS.length - 1)) * 100;
+  document.getElementById('tier-line-fill').style.width = fillPct + '%';
+
+  document.getElementById('next-tier-name').textContent = acc.nextTier || 'volgende mijlpaal';
+  document.getElementById('next-tier-desc').textContent = acc.nextTier
+    ? 'Bereik de minimumomzet voor ' + acc.nextTier + ' voordelen.'
+    : 'Je hebt het hoogste niveau bereikt.';
+  document.getElementById('progress-current').textContent = (acc.revenue === '—' ? '—' : '€' + acc.revenue);
+
+  if (acc.nextTier && acc.toNext) {
+    var nextDef = TIERS.find(function(t) { return t.label === acc.nextTier; });
+    document.getElementById('progress-needed').textContent = '€' + acc.toNext + ' tot ' + acc.nextTier + ' (' + (nextDef ? nextDef.min : '') + ')';
+    // Fill estimation
+    var revNum = parseFloat((acc.revenue || '0').replace(/[^\d]/g, ''));
+    var nextNum = parseFloat((nextDef && nextDef.min || '0').replace(/[^\d]/g, ''));
+    var pct = nextNum > 0 ? Math.min(100, (revNum / nextNum) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  } else {
+    document.getElementById('progress-needed').textContent = 'Hoogste tier bereikt.';
+    document.getElementById('progress-fill').style.width = '100%';
+  }
+}
+
+// ============================================================
+// TIERS DISPLAY page
+// ============================================================
+function buildTiersDisplay(acc) {
+  var wrap = document.getElementById('tiers-display');
+  if (!wrap) return;
+  wrap.innerHTML = TIERS.map(function(t) {
+    var isCurrent = (t.label === acc.tierLabel);
+    return '<div class="tier-card' + (isCurrent ? ' is-current' : '') + '" data-tier="' + t.label + '">' +
+      (isCurrent ? '<div class="tier-card-current-badge">Jouw tier</div>' : '') +
+      '<div class="tier-card-numeral">' + t.numeral + '</div>' +
+      '<div class="tier-card-eyebrow">Tier ' + t.numeral + '</div>' +
+      '<div class="tier-card-name">' + t.label + '</div>' +
+      '<div class="tier-card-min">Vanaf ' + t.min + ' jaaromzet</div>' +
+      '<div class="tier-card-discount"><span class="tier-card-discount-num">' + t.discount + '%</span><span class="tier-card-discount-label">Korting</span></div>' +
+      '<ul class="tier-perks">' + t.perks.map(function(p) { return '<li>' + p + '</li>'; }).join('') + '</ul>' +
+    '</div>';
+  }).join('');
+}
+
+// ============================================================
+// PRODUCTS
+// ============================================================
+function buildProducts(acc) {
+  var grid = document.getElementById('products-grid');
+  if (!grid) return;
+  grid.innerHTML = PRODUCTS.map(function(p) {
+    var net = (p.listPrice * (1 - acc.discount / 100)).toFixed(2).replace('.', ',');
+    var fallback = '<div class="product-image-fallback"><div class="num">' + p.num + '</div><div class="label">' + p.name + '</div></div>';
+    var imgHtml = p.image
+      ? '<img src="' + p.image + '" alt="' + p.name + '" onerror="this.style.display=\'none\'; var fb=this.nextElementSibling; if(fb) fb.style.display=\'flex\';">' + fallback.replace('class="product-image-fallback"', 'class="product-image-fallback" style="display:none;"')
+      : fallback;
+    return '<div class="product-card">' +
+      '<div class="product-image-wrap">' +
+        '<span class="product-image-num">' + p.num + '</span>' +
+        '<span class="product-image-discount">−' + acc.discount + '%</span>' +
+        imgHtml +
+      '</div>' +
+      '<div class="product-body">' +
+        '<div class="product-tag">' + p.tag + '</div>' +
+        '<div class="product-name">' + p.name + '</div>' +
+        '<div class="product-desc">' + p.desc + '</div>' +
+        '<div class="product-pricing">' +
+          '<span class="product-price-list">€' + p.listPrice + '</span>' +
+          '<span class="product-price-net">€' + net + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ============================================================
+// MARKETING FILES
+// ============================================================
+function canAccess(fileTier, userTier) {
+  if (fileTier === 'all') return true;
+  // map tier key to numeric level
+  var levels = { 'bronze':0, 'silver':1, 'gold':2, 'platinum':3, 'black':4, 'admin':4 };
+  var fileLevels = { 'all':0, 'rose':1, 'pro':2, 'elite':3, 'black':4 };
+  return (levels[userTier] || 0) >= (fileLevels[fileTier] || 0);
+}
+
+function tierLabelFromKey(t) {
+  var m = { 'all':'Alle partners', 'rose':'Rose+', 'pro':'Pro+', 'elite':'Elite+', 'black':'Black only' };
+  return m[t] || t;
+}
+
+function renderFiles(acc) {
+  var area = document.getElementById('files-area');
+  if (!area) return;
+  if (uploadedFiles.length === 0) {
+    area.innerHTML = '<div class="card" style="text-align:center;padding:60px;"><p style="color:var(--stone);font-style:italic;font-family:var(--font-display);font-size:1.1rem;">Nog geen materiaal beschikbaar.</p></div>';
+    return;
+  }
+  var accessible = [], locked = [];
+  uploadedFiles.forEach(function(f, i) {
+    if (canAccess(f.tier, acc.tier)) accessible.push({f:f, i:i});
+    else locked.push({f:f, i:i});
+  });
+
+  var html = '';
+  if (accessible.length > 0) {
+    html += '<div class="section-eyebrow">Beschikbaar voor jou</div>';
+    html += '<div style="border:1px solid var(--line);">';
+    accessible.forEach(function(x) {
+      html += renderFileRow(x.f, x.i, false, acc.isAdmin);
+    });
+    html += '</div>';
+  }
+  if (locked.length > 0) {
+    html += '<div class="section-eyebrow muted">Niet beschikbaar voor jouw tier</div>';
+    html += '<div style="border:1px solid var(--line);">';
+    locked.forEach(function(x) {
+      html += renderFileRow(x.f, x.i, true, false);
+    });
+    html += '</div>';
+  }
+  area.innerHTML = html;
+}
+
+function renderFileRow(f, idx, locked, isAdmin) {
+  var icon = locked
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>'
+    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+
+  var actionHtml = locked
+    ? '<span class="file-tier-tag">Vergrendeld</span>'
+    : '<span class="file-tier-tag">' + tierLabelFromKey(f.tier) + '</span>' +
+      (isAdmin ? '<button class="icon-btn" onclick="deleteFile(' + idx + ')" title="Verwijderen"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>' : '') +
+      '<button class="icon-btn" onclick="downloadDemo(\'' + f.name.replace(/'/g, "\\'") + '\')" title="Download"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>';
+
+  return '<div class="file-row' + (locked ? ' locked' : '') + '">' +
+    '<div class="file-icon">' + icon + '</div>' +
+    '<div class="file-info"><div class="file-name">' + f.name + '</div><div class="file-meta">' + f.type + ' · ' + f.size + ' · ' + f.date + '</div></div>' +
+    '<div></div>' +
+    '<div class="file-action">' + actionHtml + '</div>' +
+  '</div>';
+}
+
+function downloadDemo(name) {
+  alert('Demo: ' + name + ' wordt gedownload.\n\nIn de echte versie wordt het bestand hier opgehaald.');
+}
+
+function onFileSelect(input) {
+  if (input.files && input.files[0]) {
+    var name = input.files[0].name;
+    document.getElementById('upload-file-name').textContent = name.length > 24 ? name.substring(0, 22) + '…' : name;
+    if (!document.getElementById('upload-name').value) {
+      document.getElementById('upload-name').value = name.replace(/\.[^.]+$/, '');
+    }
+  }
+}
+
+function addFile() {
+  var name = document.getElementById('upload-name').value.trim();
+  var tier = document.getElementById('upload-tier').value;
+  if (!name) { alert('Vul een bestandsnaam in.'); return; }
+  var fileInput = document.getElementById('upload-file');
+  var type = 'FILE', size = '—';
+  if (fileInput.files && fileInput.files[0]) {
+    type = (fileInput.files[0].name.split('.').pop() || 'FILE').toUpperCase();
+    var sz = fileInput.files[0].size;
+    size = sz > 1048576 ? (sz/1048576).toFixed(1) + ' MB' : (sz/1024).toFixed(0) + ' KB';
+  }
+  var d = new Date();
+  var months = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  var date = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  uploadedFiles.push({ name:name, type:type, size:size, tier:tier, date:date });
+
+  document.getElementById('upload-name').value = '';
+  document.getElementById('upload-tier').value = 'all';
+  document.getElementById('upload-file').value = '';
+  document.getElementById('upload-file-name').textContent = 'Kies bestand';
+  var s = document.getElementById('upload-success');
+  s.style.display = 'block';
+  setTimeout(function() { s.style.display = 'none'; }, 2500);
+  if (currentAccount) renderFiles(currentAccount);
+}
+
+function deleteFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  if (currentAccount) renderFiles(currentAccount);
+}
+
+// ============================================================
+// ACCOUNT PAGE
+// ============================================================
+function uploadPhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    photoDataUrl = e.target.result;
+    var avatar = document.getElementById('profile-avatar');
+    document.getElementById('profile-initials').style.display = 'none';
+    var existing = avatar.querySelector('img');
+    if (existing) existing.remove();
+    var img = document.createElement('img');
+    img.src = photoDataUrl;
+    avatar.insertBefore(img, avatar.firstChild);
+    document.getElementById('photo-remove').style.display = 'inline';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function removePhoto() {
+  photoDataUrl = null;
+  var avatar = document.getElementById('profile-avatar');
+  var img = avatar.querySelector('img');
+  if (img) img.remove();
+  document.getElementById('profile-initials').style.display = 'inline';
+  document.getElementById('photo-remove').style.display = 'none';
+  document.getElementById('photo-input').value = '';
+}
+
+function saveAccount() {
+  var fn = document.getElementById('acc-firstname').value;
+  var ln = document.getElementById('acc-lastname').value;
+  var fullName = (fn + ' ' + ln).trim();
+  if (currentAccount && fullName) {
+    currentAccount.name = fullName;
+    document.getElementById('profile-name').textContent = fullName;
+    document.getElementById('sidebar-name').textContent = fullName;
+    document.getElementById('profile-initials').textContent = ((fn[0] || '') + (ln[0] || '')).toUpperCase();
+  }
+  var msg = document.getElementById('account-saved');
+  msg.style.display = 'block';
+  setTimeout(function() { msg.style.display = 'none'; }, 2500);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  var pageEl = document.getElementById('page-' + page);
+  var navEl = document.querySelector('.nav-item[data-page="' + page + '"]');
+  if (pageEl) pageEl.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// PENDING APPLICATIONS — partners die zich aanmelden
+// ------------------------------------------------------------
+// Aanvragen die via het registratieformulier binnenkomen worden
+// hier verzameld. Admins kunnen ze goedkeuren (met tier-toewijzing)
+// of afwijzen vanuit het admin overzicht.
+// Een paar demo-aanvragen om de werking te tonen — bij echt gebruik
+// kun je deze leegmaken.
+// ============================================================
+var PENDING_APPLICATIONS = [
+  {
+    id: 'app-demo-1',
+    firstName: 'Iris',
+    lastName: 'van Dam',
+    name: 'Iris van Dam',
+    company: 'Atelier Iris, Amsterdam',
+    email: 'iris@atelieriris.nl',
+    phone: '+31 6 14 28 39 50',
+    message: 'Schoonheidssalon in centrum Amsterdam. Werk al 8 jaar met premium merken. Ben benieuwd naar de mogelijkheden om Marine Collageen en Nordsilk in mijn salon op te nemen.',
+    date: '6 mei 2026',
+    isNew: true
+  },
+  {
+    id: 'app-demo-2',
+    firstName: 'Thomas',
+    lastName: 'Berger',
+    name: 'Thomas Berger',
+    company: 'Wellness Studio Berger, Antwerpen',
+    email: 'thomas@studioberger.be',
+    phone: '+32 4 78 91 22 33',
+    message: 'Wellness studio met focus op anti-aging behandelingen. Wil graag een Nordic supplement-lijn toevoegen aan ons aanbod voor klanten die ook intern aan hun huid willen werken.',
+    date: '5 mei 2026',
+    isNew: true
+  },
+  {
+    id: 'app-demo-3',
+    firstName: 'Saskia',
+    lastName: 'de Wit',
+    name: 'Saskia de Wit',
+    company: 'Glow Beauty Boutique, Utrecht',
+    email: 'saskia@glowbeauty.nl',
+    phone: '+31 6 22 18 47 92',
+    message: 'Kleine boutique met persoonlijke aandacht voor klanten. Geïnteresseerd om uit te breiden naar supplementen.',
+    date: '3 mei 2026',
+    isNew: false
+  }
+];
+
+function renderApplications() {
+  var listEl = document.getElementById('applications-list');
+  var pillEl = document.getElementById('applications-count-pill');
+  var pillNum = document.getElementById('applications-count-num');
+  var kpiEl = document.getElementById('kpi-applications');
+
+  if (kpiEl) kpiEl.textContent = PENDING_APPLICATIONS.length;
+  if (pillEl) pillEl.style.display = PENDING_APPLICATIONS.length > 0 ? 'inline-flex' : 'none';
+  if (pillNum) pillNum.textContent = PENDING_APPLICATIONS.length;
+
+  if (!listEl) return;
+  if (PENDING_APPLICATIONS.length === 0) {
+    listEl.innerHTML = '<div class="applications-empty">Geen openstaande aanvragen.</div>';
+    return;
+  }
+
+  listEl.innerHTML = PENDING_APPLICATIONS.map(function(app) {
+    var newTag = app.isNew ? '<span class="application-tag new">Nieuw</span>' : '<span class="application-tag">In behandeling</span>';
+    return '<div class="application-row" data-id="' + app.id + '">' +
+      '<div class="application-summary" onclick="toggleApplication(\'' + app.id + '\')">' +
+        '<div class="application-info">' +
+          '<div class="application-name">' + esc(app.name) + '</div>' +
+          '<div class="application-meta">' +
+            esc(app.company) +
+            '<span class="application-meta-sep">·</span>' +
+            esc(app.email) +
+          '</div>' +
+        '</div>' +
+        '<div class="application-date">' + esc(app.date) + '</div>' +
+        newTag +
+        '<div class="application-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="6 9 12 15 18 9"/></svg></div>' +
+      '</div>' +
+      '<div class="application-body">' +
+        '<div class="application-detail-grid">' +
+          '<div class="application-field"><div class="label">Voornaam</div><div class="value">' + esc(app.firstName) + '</div></div>' +
+          '<div class="application-field"><div class="label">Achternaam</div><div class="value">' + esc(app.lastName) + '</div></div>' +
+          '<div class="application-field"><div class="label">Bedrijfsnaam</div><div class="value">' + esc(app.company) + '</div></div>' +
+          '<div class="application-field"><div class="label">Aanvraagdatum</div><div class="value">' + esc(app.date) + '</div></div>' +
+          '<div class="application-field"><div class="label">E-mailadres</div><div class="value">' + esc(app.email) + '</div></div>' +
+          '<div class="application-field"><div class="label">Telefoonnummer</div><div class="value">' + esc(app.phone) + '</div></div>' +
+          '<div class="application-field full"><div class="label">Bericht van de aanvrager</div><div class="value">' + esc(app.message) + '</div></div>' +
+        '</div>' +
+        '<div class="application-actions">' +
+          '<div class="application-tier-select">' +
+            '<span class="application-tier-select-label">Toewijzen als</span>' +
+            '<select id="tier-' + app.id + '">' +
+              '<option value="Pearl">Pearl — startend partner (40% korting)</option>' +
+              '<option value="Rose">Rose — actief partner (43%)</option>' +
+              '<option value="Pro">Pro — gevestigd partner (46%)</option>' +
+              '<option value="Elite">Elite — premium partner (48%)</option>' +
+              '<option value="Black">Black — exclusief partner (50%)</option>' +
+            '</select>' +
+          '</div>' +
+          '<div class="application-action-buttons">' +
+            '<button class="btn-mini reject" onclick="rejectApplication(\'' + app.id + '\')">Afwijzen</button>' +
+            '<button class="btn-mini approve" onclick="approveApplication(\'' + app.id + '\')">Goedkeuren →</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function toggleApplication(id) {
+  var row = document.querySelector('.application-row[data-id="' + id + '"]');
+  if (!row) return;
+  // Sluit andere rijen
+  document.querySelectorAll('.application-row.expanded').forEach(function(r) {
+    if (r !== row) r.classList.remove('expanded');
+  });
+  row.classList.toggle('expanded');
+}
+
+function approveApplication(id) {
+  var app = PENDING_APPLICATIONS.find(function(a) { return a.id === id; });
+  if (!app) return;
+  var sel = document.getElementById('tier-' + id);
+  var tier = sel ? sel.value : 'Pearl';
+
+  // Tier-mapping voor nieuwe partner
+  var TIER_MAP = {
+    'Pearl':  { tierClass:'bronze',   discount:40, toNext:'5.000',  nextTier:'Rose' },
+    'Rose':   { tierClass:'silver',   discount:43, toNext:'10.000', nextTier:'Pro' },
+    'Pro':    { tierClass:'gold',     discount:46, toNext:'15.000', nextTier:'Elite' },
+    'Elite':  { tierClass:'platinum', discount:48, toNext:'30.000', nextTier:'Black' },
+    'Black':  { tierClass:'black',    discount:50, toNext:null,     nextTier:null }
+  };
+  var t = TIER_MAP[tier] || TIER_MAP['Pearl'];
+
+  // Voeg toe aan partners-lijst (admin overzicht)
+  ADMIN_DEMO.partners.push({
+    id: 'p-' + Date.now(),
+    name: app.company,
+    contact: app.name,
+    email: app.email,
+    phone: app.phone,
+    city: '—',
+    country: '—',
+    tier: tier,
+    tierClass: t.tierClass,
+    revenue: '0',
+    toNext: t.toNext,
+    nextTier: t.nextTier,
+    orders: 0,
+    discount: t.discount,
+    lastOrder: '—'
+  });
+
+  // Verwijder uit pending
+  var idx = PENDING_APPLICATIONS.findIndex(function(a) { return a.id === id; });
+  if (idx !== -1) PENDING_APPLICATIONS.splice(idx, 1);
+
+  // Re-render
+  renderApplications();
+  buildPartnersTable();
+  buildAdminKPIs();
+  buildPartnersPerTier();
+
+  showToast(app.name + ' goedgekeurd als ' + tier + ' partner');
+}
+
+function rejectApplication(id) {
+  var app = PENDING_APPLICATIONS.find(function(a) { return a.id === id; });
+  if (!app) return;
+  if (!confirm('Aanvraag van ' + app.name + ' afwijzen?')) return;
+
+  var idx = PENDING_APPLICATIONS.findIndex(function(a) { return a.id === id; });
+  if (idx !== -1) PENDING_APPLICATIONS.splice(idx, 1);
+
+  renderApplications();
+  showToast(app.name + ' afgewezen', 'reject');
+}
+
+function showToast(msg, kind) {
+  var t = document.getElementById('app-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.className = 'application-toast' + (kind === 'reject' ? ' reject' : '') + ' show';
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(function() {
+    t.classList.remove('show');
+  }, 3000);
+}
+
+function scrollToApplications() {
+  var section = document.getElementById('applications-section');
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+// ADMIN OVERZICHT
+// ============================================================
+
+// Demo data voor het admin-dashboard. Vervang deze door echte data
+// zodra er een backend onder zit.
+var ADMIN_DEMO = {
+  // 12 maanden omzet (in €)
+  monthlyRevenue: [
+    { label: 'mei',  value: 42500 },
+    { label: 'jun',  value: 48200 },
+    { label: 'jul',  value: 51800 },
+    { label: 'aug',  value: 47600 },
+    { label: 'sep',  value: 58900 },
+    { label: 'okt',  value: 62400 },
+    { label: 'nov',  value: 71200 },
+    { label: 'dec',  value: 89300 },
+    { label: 'jan',  value: 64800 },
+    { label: 'feb',  value: 68500 },
+    { label: 'mrt',  value: 76200 },
+    { label: 'apr',  value: 82400 }
+  ],
+  topProducts: [
+    { rank: 1, name: 'Marine Collageen 13.000', tag: 'Het ochtendritueel', units: 2840 },
+    { rank: 2, name: 'Nordsilk',                tag: 'Het haarritueel',    units: 1620 },
+    { rank: 3, name: 'Plantique Omega 3',       tag: 'Het basisritueel',   units: 980  },
+    { rank: 4, name: 'HÉRMADE',                 tag: 'Het maandritueel',   units: 740  }
+  ],
+  countries: [
+    { flag: '🇳🇱', name: 'Nederland', count: 187 },
+    { flag: '🇧🇪', name: 'België',    count: 78  },
+    { flag: '🇩🇪', name: 'Duitsland', count: 42  },
+    { flag: '🇸🇪', name: 'Zweden',    count: 24  },
+    { flag: '🇨🇭', name: 'Zwitserland', count: 19 }
+  ],
+  cities: [
+    { name: 'Amsterdam', count: 38 },
+    { name: 'Rotterdam', count: 24 },
+    { name: 'Antwerpen', count: 21 },
+    { name: 'Utrecht',   count: 18 },
+    { name: 'Den Haag',  count: 15 }
+  ],
+  progression: [
+    { name: 'Salon Lumière',     city: 'Amsterdam', from: 'Pro',   to: 'Elite', pct: 78 },
+    { name: 'Beauty Studio Nova',city: 'Antwerpen', from: 'Rose',  to: 'Pro',   pct: 64 },
+    { name: 'Wellness Atelier',  city: 'Utrecht',   from: 'Pearl', to: 'Rose',  pct: 52 },
+    { name: 'Glow Concept',      city: 'Rotterdam', from: 'Pro',   to: 'Elite', pct: 41 }
+  ],
+  orders: [
+    { num:'TSG-2847', date:'14 apr', partner:'Salon Lumière',     tier:'Pro',   tierClass:'gold',     products:'Marine Collageen ×4',          status:'delivered',  amount:892 },
+    { num:'TSG-2842', date:'13 apr', partner:'Beauty Studio Nova',tier:'Rose',  tierClass:'silver',   products:'Nordsilk ×3, HÉRMADE ×2',      status:'shipped',    amount:540 },
+    { num:'TSG-2841', date:'13 apr', partner:'Glow Concept',      tier:'Pro',   tierClass:'gold',     products:'Plantique Omega ×6',           status:'shipped',    amount:1240 },
+    { num:'TSG-2836', date:'12 apr', partner:'Wellness Atelier',  tier:'Pearl', tierClass:'bronze',   products:'Nordsilk ×2',                  status:'processing', amount:188 },
+    { num:'TSG-2832', date:'11 apr', partner:'Skin & Soul',       tier:'Elite', tierClass:'platinum', products:'Marine Collageen ×8, HÉRMADE ×4', status:'delivered', amount:2180 }
+  ],
+  downloads: [
+    { name: 'Social media kit Q1 2026', tier: 'Alle partners', count: 184, type: 'ZIP' },
+    { name: 'Productfoto hi-res 2026',  tier: 'Alle partners', count: 142, type: 'ZIP' },
+    { name: 'Productbrochure A4 NL',    tier: 'Pro+',          count:  67, type: 'PDF' },
+    { name: 'POS display materiaal',    tier: 'Pro+',          count:  41, type: 'PDF' },
+    { name: 'Co-branding pakket',       tier: 'Elite+',        count:  18, type: 'ZIP' }
+  ],
+  partners: [
+    { id: 'p1', name:'Salon Lumière',      contact:'Lisa van den Berg',   email:'lisa@salonlumiere.nl',     phone:'+31 6 12 34 56 78', city:'Amsterdam', country:'Nederland', tier:'Pro',   tierClass:'gold',     revenue:'22.580', toNext:'7.420',  nextTier:'Elite', orders:31, discount:46, lastOrder:'14 apr 2026' },
+    { id: 'p2', name:'Beauty Studio Nova', contact:'Sophie Meijer',       email:'sophie@beautynova.be',     phone:'+32 4 78 12 34 56', city:'Antwerpen', country:'België',    tier:'Rose',  tierClass:'silver',   revenue:'9.640',  toNext:'5.360',  nextTier:'Pro',   orders:18, discount:43, lastOrder:'13 apr 2026' },
+    { id: 'p3', name:'Glow Concept',       contact:'Mark de Jong',        email:'mark@glowconcept.nl',      phone:'+31 6 87 65 43 21', city:'Rotterdam', country:'Nederland', tier:'Pro',   tierClass:'gold',     revenue:'18.420', toNext:'11.580', nextTier:'Elite', orders:24, discount:46, lastOrder:'13 apr 2026' },
+    { id: 'p4', name:'Skin & Soul',        contact:'Emma de Vries',       email:'emma@skinandsoul.nl',      phone:'+31 6 22 33 44 55', city:'Den Haag',  country:'Nederland', tier:'Elite', tierClass:'platinum', revenue:'42.180', toNext:'17.820', nextTier:'Black', orders:48, discount:48, lastOrder:'11 apr 2026' },
+    { id: 'p5', name:'Wellness Atelier',   contact:'Anna Bakker',         email:'anna@wellnessatelier.nl',  phone:'+31 6 99 88 77 66', city:'Utrecht',   country:'Nederland', tier:'Pearl', tierClass:'bronze',   revenue:'2.610',  toNext:'2.390',  nextTier:'Rose',  orders:7,  discount:40, lastOrder:'12 apr 2026' },
+    { id: 'p6', name:'Nordic Beauty',      contact:'Sara Lindqvist',      email:'sara@nordicbeauty.se',     phone:'+46 70 123 45 67',  city:'Stockholm', country:'Zweden',    tier:'Black', tierClass:'black',    revenue:'78.900', toNext:null,     nextTier:null,    orders:84, discount:50, lastOrder:'10 apr 2026' }
+  ]
+};
+
+function buildAdmin() {
+  buildAdminKPIs();
+  buildRevenueChart('month');
+  buildTopProducts();
+  buildPartnersPerTier();
+  buildGeoData();
+  buildProgression();
+  buildAllOrders();
+  buildDownloadsList();
+  buildPartnersTable();
+  renderApplications();
+  bindAdminToggles();
+}
+
+function fmt(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function buildAdminKPIs() {
+  var stats = document.querySelectorAll('#page-admin .admin-stats .stat .stat-value');
+  if (!stats.length) return;
+  var totalPartners = ADMIN_DEMO.partners.length;
+  var totalRevenue = ADMIN_DEMO.partners.reduce(function(s, p) {
+    return s + parseInt(p.revenue.replace(/\./g, ''), 10);
+  }, 0);
+  var totalOrders = ADMIN_DEMO.partners.reduce(function(s, p) { return s + p.orders; }, 0);
+  var avgOrder = totalOrders ? Math.round(totalRevenue / totalOrders) : 0;
+  var countries = new Set(ADMIN_DEMO.partners.map(function(p) { return p.country; })).size;
+
+  if (stats[0]) stats[0].textContent = totalPartners;
+  if (stats[1]) stats[1].textContent = '€' + fmt(totalRevenue);
+  if (stats[2]) stats[2].textContent = '€' + fmt(avgOrder);
+  // stats[3] (Aanvragen) wordt apart bijgewerkt door renderApplications via #kpi-applications
+  if (stats[4]) stats[4].textContent = countries;
+  // Update sub-text where useful
+  var subs = document.querySelectorAll('#page-admin .admin-stats .stat .stat-sub');
+  if (subs[0]) subs[0].textContent = 'In ' + countries + ' landen actief';
+  if (subs[1]) subs[1].textContent = '+24% vs vorig jaar';
+}
+
+// ─── REVENUE CHART (SVG) ───
+function buildRevenueChart(view) {
+  var data = ADMIN_DEMO.monthlyRevenue.slice();
+  if (view === 'quarter') {
+    // group per 3 months
+    var quarters = [];
+    for (var i = 0; i < data.length; i += 3) {
+      var sum = 0;
+      var labels = [];
+      for (var j = 0; j < 3 && i+j < data.length; j++) {
+        sum += data[i+j].value;
+        labels.push(data[i+j].label);
+      }
+      quarters.push({
+        label: 'Q' + (quarters.length + 1),
+        value: sum
+      });
+    }
+    data = quarters;
+  }
+
+  var svg = document.getElementById('revenue-chart');
+  if (!svg) return;
+  // Clear existing series (keep defs)
+  var defs = svg.querySelector('defs');
+  svg.innerHTML = '';
+  if (defs) svg.appendChild(defs);
+
+  var W = 800, H = 240;
+  var padL = 60, padR = 30, padT = 20, padB = 36;
+  var plotW = W - padL - padR;
+  var plotH = H - padT - padB;
+
+  var max = Math.max.apply(null, data.map(function(d) { return d.value; }));
+  var niceMax = Math.ceil(max / 20000) * 20000;
+
+  // Grid lines + Y axis labels (4 levels)
+  var ns = 'http://www.w3.org/2000/svg';
+  for (var lvl = 0; lvl <= 4; lvl++) {
+    var y = padT + (plotH * lvl / 4);
+    var line = document.createElementNS(ns, 'line');
+    line.setAttribute('class', 'grid-line');
+    line.setAttribute('x1', padL); line.setAttribute('x2', W - padR);
+    line.setAttribute('y1', y); line.setAttribute('y2', y);
+    svg.appendChild(line);
+    var val = niceMax * (1 - lvl / 4);
+    var lbl = document.createElementNS(ns, 'text');
+    lbl.setAttribute('class', 'axis-label');
+    lbl.setAttribute('x', padL - 10); lbl.setAttribute('y', y + 4);
+    lbl.setAttribute('text-anchor', 'end');
+    lbl.textContent = '€' + (val >= 1000 ? Math.round(val/1000) + 'k' : val);
+    svg.appendChild(lbl);
+  }
+
+  // X axis labels
+  data.forEach(function(d, i) {
+    var x = padL + (plotW * i / Math.max(1, data.length - 1));
+    var lbl = document.createElementNS(ns, 'text');
+    lbl.setAttribute('class', 'axis-label');
+    lbl.setAttribute('x', x);
+    lbl.setAttribute('y', H - padB + 18);
+    lbl.setAttribute('text-anchor', 'middle');
+    lbl.textContent = d.label;
+    svg.appendChild(lbl);
+  });
+
+  // Build path
+  var pts = data.map(function(d, i) {
+    var x = padL + (plotW * i / Math.max(1, data.length - 1));
+    var y = padT + plotH * (1 - d.value / niceMax);
+    return { x: x, y: y };
+  });
+
+  var d = pts.map(function(p, i) {
+    return (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1);
+  }).join(' ');
+
+  var area = document.createElementNS(ns, 'path');
+  area.setAttribute('class', 'area-path');
+  area.setAttribute('d', d + ' L' + pts[pts.length-1].x + ',' + (padT + plotH) + ' L' + pts[0].x + ',' + (padT + plotH) + ' Z');
+  svg.appendChild(area);
+
+  var line = document.createElementNS(ns, 'path');
+  line.setAttribute('class', 'line-path');
+  line.setAttribute('d', d);
+  svg.appendChild(line);
+
+  pts.forEach(function(p) {
+    var c = document.createElementNS(ns, 'circle');
+    c.setAttribute('class', 'data-dot');
+    c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', 4);
+    svg.appendChild(c);
+  });
+
+  // Stats below chart
+  var total = data.reduce(function(s, d) { return s + d.value; }, 0);
+  var avg = Math.round(total / data.length);
+  var peak = data.reduce(function(m, d) { return d.value > m.value ? d : m; }, data[0]);
+
+  var totalEl = document.getElementById('chart-total');
+  var avgEl = document.getElementById('chart-avg');
+  var peakEl = document.getElementById('chart-peak');
+  if (totalEl) totalEl.textContent = '€' + fmt(total);
+  if (avgEl) avgEl.textContent = '€' + fmt(avg);
+  if (peakEl) peakEl.textContent = peak.label + ' · €' + fmt(peak.value);
+}
+
+function bindAdminToggles() {
+  var toggle = document.getElementById('chart-toggle');
+  if (!toggle || toggle.dataset.bound) return;
+  toggle.dataset.bound = '1';
+  toggle.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    toggle.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    buildRevenueChart(btn.dataset.view);
+  });
+
+  // Filter pills (visual only)
+  document.querySelectorAll('#page-admin .filter-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      pill.parentElement.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+    });
+  });
+}
+
+// ─── TOP PRODUCTS ───
+function buildTopProducts() {
+  var wrap = document.getElementById('top-products-list');
+  if (!wrap) return;
+  var maxUnits = Math.max.apply(null, ADMIN_DEMO.topProducts.map(function(p) { return p.units; }));
+  wrap.innerHTML = ADMIN_DEMO.topProducts.map(function(p) {
+    var pct = (p.units / maxUnits) * 100;
+    var medalClass = (p.rank <= 3) ? ' medal' : '';
+    return '<div class="top-product-row">' +
+      '<div class="top-product-rank' + medalClass + '">' + p.rank + '</div>' +
+      '<div class="top-product-info">' +
+        '<div class="top-product-name">' + p.name + '</div>' +
+        '<div class="top-product-tag">' + p.tag + '</div>' +
+      '</div>' +
+      '<div class="top-product-bar-wrap"><div class="top-product-bar" style="width:' + pct + '%;"></div></div>' +
+      '<div class="top-product-units">' + fmt(p.units) + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ─── PARTNERS PER TIER ───
+function buildPartnersPerTier() {
+  var counts = { 'Pearl':0,'Rose':0,'Pro':0,'Elite':0,'Black':0 };
+  ADMIN_DEMO.partners.forEach(function(p) {
+    if (counts[p.tier] !== undefined) counts[p.tier]++;
+  });
+  var max = Math.max.apply(null, Object.values(counts)) || 1;
+  var rows = document.querySelectorAll('#page-admin .tier-bar-row');
+  var keys = ['Pearl','Rose','Pro','Elite','Black'];
+  rows.forEach(function(row, i) {
+    var key = keys[i];
+    var fill = row.querySelector('.tier-bar-fill');
+    var count = row.querySelector('.tier-bar-count');
+    if (fill) fill.style.width = ((counts[key] / max) * 100) + '%';
+    if (count) count.textContent = counts[key];
+  });
+}
+
+// ─── GEO ───
+function buildGeoData() {
+  var countriesEl = document.getElementById('geo-countries');
+  var citiesEl = document.getElementById('geo-cities');
+  if (countriesEl) {
+    var maxC = Math.max.apply(null, ADMIN_DEMO.countries.map(function(x) { return x.count; }));
+    countriesEl.innerHTML = ADMIN_DEMO.countries.map(function(c) {
+      return '<div class="geo-row">' +
+        '<div class="geo-flag">' + c.flag + '</div>' +
+        '<div class="geo-name">' + c.name + '</div>' +
+        '<div class="geo-bar-wrap"><div class="geo-bar" style="width:' + ((c.count / maxC) * 100) + '%;"></div></div>' +
+        '<div class="geo-count">' + c.count + '</div>' +
+      '</div>';
+    }).join('');
+  }
+  if (citiesEl) {
+    var maxCi = Math.max.apply(null, ADMIN_DEMO.cities.map(function(x) { return x.count; }));
+    citiesEl.innerHTML = ADMIN_DEMO.cities.map(function(c) {
+      return '<div class="geo-row">' +
+        '<div class="geo-flag">·</div>' +
+        '<div class="geo-name">' + c.name + '</div>' +
+        '<div class="geo-bar-wrap"><div class="geo-bar" style="width:' + ((c.count / maxCi) * 100) + '%;background:var(--gold);"></div></div>' +
+        '<div class="geo-count">' + c.count + '</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+// ─── TIER PROGRESSION ───
+function buildProgression() {
+  var wrap = document.getElementById('progression-list');
+  if (!wrap) return;
+  wrap.innerHTML = ADMIN_DEMO.progression.map(function(p) {
+    return '<div class="progression-row">' +
+      '<div class="progression-info">' +
+        '<div class="progression-name">' + p.name + '</div>' +
+        '<div class="progression-detail">' + p.city + ' · ' + p.pct + '% naar volgende tier</div>' +
+      '</div>' +
+      '<div class="progression-arrow">' +
+        '<span class="from-tier">' + p.from + '</span>' +
+        '<span class="arrow-glyph">→</span>' +
+        '<span class="to-tier">' + p.to + '</span>' +
+      '</div>' +
+      '<div class="progression-progress"><div class="progression-progress-fill" style="width:' + p.pct + '%;"></div></div>' +
+    '</div>';
+  }).join('');
+}
+
+// ─── ALL ORDERS TABLE ───
+function buildAllOrders() {
+  // Find the orders tbody (the one inside the orders-toolbar card)
+  var tbodies = document.querySelectorAll('#page-admin .table-wrap tbody');
+  // The first table is the all-orders table (after orders-toolbar)
+  var ordersTbody = null;
+  document.querySelectorAll('#page-admin .card').forEach(function(card) {
+    if (card.querySelector('.orders-toolbar')) {
+      ordersTbody = card.querySelector('tbody');
+    }
+  });
+  if (!ordersTbody) return;
+  ordersTbody.innerHTML = ADMIN_DEMO.orders.map(function(o) {
+    var statusLabel = { delivered:'Geleverd', shipped:'Onderweg', processing:'In behandeling' }[o.status] || o.status;
+    return '<tr>' +
+      '<td class="td-strong">#' + o.num + '</td>' +
+      '<td class="td-mid">' + o.date + ' 2026</td>' +
+      '<td>' + o.partner + '</td>' +
+      '<td><span class="badge-status status-' + (o.tierClass === 'gold' ? 'shipped' : o.tierClass === 'platinum' ? 'shipped' : 'delivered') + '" style="font-size:0.6rem;">' + o.tier + '</span></td>' +
+      '<td class="td-mid">' + o.products + '</td>' +
+      '<td><span class="badge-status status-' + o.status + '">' + statusLabel + '</span></td>' +
+      '<td class="td-strong" style="text-align:right;">€' + fmt(o.amount) + '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+// ─── DOWNLOADS LIST ───
+function buildDownloadsList() {
+  var wrap = document.getElementById('downloads-list');
+  if (!wrap) return;
+  var max = Math.max.apply(null, ADMIN_DEMO.downloads.map(function(d) { return d.count; }));
+  wrap.innerHTML = ADMIN_DEMO.downloads.map(function(d) {
+    return '<div class="download-stat-row">' +
+      '<div class="download-stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>' +
+      '<div class="download-stat-info">' +
+        '<div class="download-stat-name">' + d.name + '</div>' +
+        '<div class="download-stat-tier">' + d.tier + ' · ' + d.type + '</div>' +
+      '</div>' +
+      '<div class="download-stat-bar-wrap"><div class="download-stat-bar" style="width:' + ((d.count / max) * 100) + '%;"></div></div>' +
+      '<div class="download-stat-count">' + fmt(d.count) + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ─── ALL PARTNERS TABLE (clickable) ───
+function buildPartnersTable() {
+  var tbody = document.getElementById('partners-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = ADMIN_DEMO.partners.map(function(p) {
+    return '<tr class="partner-row" onclick="openPartnerModal(\'' + p.id + '\')">' +
+      '<td class="td-strong">' + p.contact + '</td>' +
+      '<td>' + p.name + '</td>' +
+      '<td class="td-mid">' + p.city + '</td>' +
+      '<td><span class="tier-pill tier-' + p.tierClass + '" style="margin:0;font-size:0.58rem;padding:3px 8px;">' + p.tier + '</span></td>' +
+      '<td class="td-strong">€' + p.revenue + '</td>' +
+      '<td class="td-mid">' + p.lastOrder + '</td>' +
+      '<td><span class="badge-status status-delivered">Actief</span></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// ─── PARTNER DETAIL MODAL ───
+function openPartnerModal(id) {
+  var p = ADMIN_DEMO.partners.find(function(x) { return x.id === id; });
+  if (!p) return;
+  document.getElementById('modal-name').innerHTML = p.contact;
+  document.getElementById('modal-meta').textContent = p.name + ' · ' + p.city + ', ' + p.country;
+  var pill = document.getElementById('modal-tier-pill');
+  pill.textContent = p.tier + ' partner';
+  document.getElementById('modal-revenue').textContent = '€' + p.revenue;
+  document.getElementById('modal-orders').textContent = p.orders;
+  document.getElementById('modal-discount').textContent = p.discount + '%';
+  document.getElementById('modal-email').textContent = p.email;
+  document.getElementById('modal-phone').textContent = p.phone;
+  document.getElementById('modal-city').textContent = p.city;
+  document.getElementById('modal-country').textContent = p.country;
+  if (p.nextTier && p.toNext) {
+    document.getElementById('modal-progress-text').textContent = 'Nog €' + p.toNext + ' tot ' + p.nextTier;
+    var revNum = parseInt(p.revenue.replace(/\./g, ''), 10);
+    var nextNums = { 'Rose': 5000, 'Pro': 15000, 'Elite': 30000, 'Black': 60000 };
+    var nextNum = nextNums[p.nextTier] || 1;
+    var pct = Math.min(100, (revNum / nextNum) * 100);
+    document.getElementById('modal-progress-fill').style.width = pct + '%';
+  } else {
+    document.getElementById('modal-progress-text').textContent = 'Hoogste tier bereikt.';
+    document.getElementById('modal-progress-fill').style.width = '100%';
+  }
+  document.getElementById('partner-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePartnerModal(e) {
+  if (e && e.target.id !== 'partner-modal' && !e.target.closest('.modal-close')) return;
+  document.getElementById('partner-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  var passEl = document.getElementById('login-pass');
+  var emailEl = document.getElementById('login-email');
+  if (passEl) passEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+  if (emailEl) emailEl.addEventListener('keydown', function(e) { if (e.key === 'Enter' && passEl) passEl.focus(); });
+
+  // Build placeholder tiers display (in case admin opens before login completes — defensive)
+  buildTiersDisplay({ tierLabel: '' });
+
+  // Login photo carousel
+  var photos = document.querySelectorAll('#login-photos .login-aside-photo');
+  var dots = document.querySelectorAll('#login-dots .login-photo-dot');
+  if (photos.length > 1) {
+    var idx = 0;
+    setInterval(function() {
+      photos[idx].classList.remove('active');
+      dots[idx] && dots[idx].classList.remove('active');
+      idx = (idx + 1) % photos.length;
+      photos[idx].classList.add('active');
+      dots[idx] && dots[idx].classList.add('active');
+    }, 5500);
+  }
+
+  // ESC sluit partner modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var modal = document.getElementById('partner-modal');
+      if (modal && modal.classList.contains('show')) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+
+  // Veiligheid: zorg dat body-overflow nooit per ongeluk vergrendeld blijft.
+  // Als de modal niet open is, moet body altijd kunnen scrollen.
+  document.body.style.overflow = '';
+});
+</script>
+
+<!-- Toast voor aanvraag-acties -->
+<div class="application-toast" id="app-toast"></div>
+
+</body>
+</html>
