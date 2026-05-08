@@ -1,5 +1,6 @@
 import uuid
 import enum
+from datetime import datetime
 from sqlalchemy import String, Enum, Numeric, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB
@@ -29,10 +30,10 @@ class Quotation(Base):
         Enum(QuotationStatusEnum), default=QuotationStatusEnum.draft
     )
     total_eur: Mapped[float | None] = mapped_column(Numeric(10, 2))
-    line_items: Mapped[dict] = mapped_column(JSONB, default=list)
-    created_at: Mapped[str] = mapped_column(
+    line_items: Mapped[list] = mapped_column(JSONB, default=list)
+    created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now()
     )
-    updated_at: Mapped[str] = mapped_column(
+    updated_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now()
     )

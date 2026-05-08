@@ -1,5 +1,6 @@
 import uuid
 import enum
+from datetime import datetime
 from sqlalchemy import String, Enum, Integer, BigInteger, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
@@ -7,7 +8,7 @@ from app.models.base import Base
 
 
 class FileTierEnum(str, enum.Enum):
-    all = "all"
+    all = "all"  # accessible to all tiers including pearl
     rose = "rose"
     pro = "pro"
     elite = "elite"
@@ -30,7 +31,7 @@ class MarketingFile(Base):
         UUID(as_uuid=True), ForeignKey("resellers.id")
     )
     download_count: Mapped[int] = mapped_column(Integer, default=0)
-    created_at: Mapped[str] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now()
     )
 
@@ -47,6 +48,6 @@ class FileDownload(Base):
     reseller_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("resellers.id"), nullable=False
     )
-    downloaded_at: Mapped[str] = mapped_column(
+    downloaded_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now()
     )

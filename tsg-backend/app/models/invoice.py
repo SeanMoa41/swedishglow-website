@@ -1,5 +1,6 @@
 import uuid
 import enum
+from datetime import datetime, date
 from sqlalchemy import String, Enum, Numeric, Date, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
@@ -28,8 +29,8 @@ class Invoice(Base):
         Enum(InvoiceStatusEnum), default=InvoiceStatusEnum.outstanding
     )
     total_eur: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
-    invoice_date: Mapped[str | None] = mapped_column(Date)
-    due_date: Mapped[str | None] = mapped_column(Date)
-    synced_at: Mapped[str] = mapped_column(
+    invoice_date: Mapped[date | None] = mapped_column(Date)
+    due_date: Mapped[date | None] = mapped_column(Date)
+    synced_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now()
     )

@@ -1,5 +1,6 @@
 import uuid
 import enum
+from datetime import datetime
 from sqlalchemy import String, Boolean, Enum, func, Numeric
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB
@@ -23,7 +24,7 @@ class ResellerStatusEnum(str, enum.Enum):
 class Reseller(Base):
     __tablename__ = "resellers"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)  # supplied by Supabase on account creation
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     first_name: Mapped[str | None] = mapped_column(String)
     last_name: Mapped[str | None] = mapped_column(String)
@@ -37,10 +38,10 @@ class Reseller(Base):
     tier_override: Mapped[bool] = mapped_column(Boolean, default=False)
     teamleader_id: Mapped[str | None] = mapped_column(String)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[str] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now()
     )
-    updated_at: Mapped[str] = mapped_column(
+    updated_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
