@@ -6,32 +6,6 @@ export const metadata = {
 export default function HermadePage() {
   return (
     <main>
-      {/* Mobile menu overlay */}
-      <div className="mobile-menu" id="mobile-menu" aria-hidden="true">
-        <div className="mobile-menu-header">
-          <span className="mobile-menu-title">Menu</span>
-          <button className="mobile-menu-close" aria-label="Menu sluiten">&times;</button>
-        </div>
-        <nav className="mobile-menu-nav" aria-label="Mobile navigation">
-          <a href="/shop">Shop</a>
-          <a href="/supplementen">Supplementen</a>
-          <div className="mobile-menu-sublist">
-            <a href="/marine-collageen">— Marine Collageen 13.000</a>
-            <a href="/nordsilk">— Nordsilk</a>
-            <a href="/freja">— FREJA</a>
-            <a href="/hermade">— HÉRMADE</a>
-            <a href="/#100-dagen-kuur">— 100-dagen kuur</a>
-          </div>
-          <a href="/stories">Stories</a>
-          <a href="/over-ons">Ons verhaal</a>
-          <a href="/reseller-programma">Reseller programma</a>
-          <div className="mobile-menu-divider"></div>
-          <a href="/mijn-account">Mijn account</a>
-          <a href="/winkelwagen">Winkelwagen</a>
-          <a href="/reseller/login">Login resellers</a>
-        </nav>
-      </div>
-
       {/* BREADCRUMB */}
       <div className="breadcrumb">
         <a href="/">Home</a>

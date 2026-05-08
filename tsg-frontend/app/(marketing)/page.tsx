@@ -7,32 +7,6 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
-      {/* Mobile menu overlay */}
-      <div className="mobile-menu" id="mobile-menu" aria-hidden="true">
-        <div className="mobile-menu-header">
-          <span className="mobile-menu-title">Menu</span>
-          <button className="mobile-menu-close" aria-label="Menu sluiten">&times;</button>
-        </div>
-        <nav className="mobile-menu-nav" aria-label="Mobile navigation">
-          <a href="/shop">Shop</a>
-          <a href="/supplementen">Supplementen</a>
-          <div className="mobile-menu-sublist">
-            <a href="/marine-collageen">— Marine Collageen 13.000</a>
-            <a href="/nordsilk">— Nordsilk</a>
-            <a href="/freja">— FREJA</a>
-            <a href="/hermade">— HÉRMADE</a>
-            <a href="/#100-dagen-kuur">— 100-dagen kuur</a>
-          </div>
-          <a href="/stories">Stories</a>
-          <a href="/over-ons">Ons verhaal</a>
-          <a href="/reseller-programma">Reseller programma</a>
-          <div className="mobile-menu-divider"></div>
-          <a href="/mijn-account">Mijn account</a>
-          <a href="/winkelwagen">Winkelwagen</a>
-          <a href="/reseller/login">Login resellers</a>
-        </nav>
-      </div>
-
       {/* HERO */}
       <section className="hero" aria-labelledby="hero-heading">
         <div className="hero-text">
@@ -66,7 +40,7 @@ export default function HomePage() {
         </div>
         <div className="hero-image-wrap">
           <img
-            src="images/hermade-hands.jpg"
+            src="/images/hermade-hands.jpg"
             alt="HÉRMADE — Natural Beauty van The Swedish Glow, vastgehouden door zachte handen"
           />
           <div className="hero-badge">
@@ -82,7 +56,7 @@ export default function HomePage() {
       <section className="magazine-split" aria-label="Categorieën">
         <div className="split-pane">
           <img
-            src="images/het-verhaal-achter-hermade.jpg"
+            src="/images/het-verhaal-achter-hermade.jpg"
             alt="HÉRMADE ritueel — The Swedish Glow exclusive supplement"
           />
           <div className="label-overlay">
@@ -93,7 +67,7 @@ export default function HomePage() {
         </div>
         <div className="split-pane">
           <img
-            src="images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg"
+            src="/images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg"
             alt="Marine Collageen 13.000, het ochtendritueel van The Swedish Glow"
           />
           <div className="label-overlay">
@@ -146,7 +120,7 @@ export default function HomePage() {
       <section className="intro" aria-labelledby="intro-heading">
         <div className="intro-image">
           <img
-            src="images/elin-hellqvist-moayedi-oprichtster-van-the-swedish.jpg"
+            src="/images/elin-hellqvist-moayedi-oprichtster-van-the-swedish.jpg"
             alt="Elin Hellqvist-Moayedi, oprichtster van The Swedish Glow met Nordsilk supplement"
           />
           <div className="caption">Elin Hellqvist-Moayedi</div>
@@ -186,7 +160,7 @@ export default function HomePage() {
           <article className="product-card">
             <div className="image-wrap" data-overlay="Nieuw · Het basisritueel">
               <img
-                src="images/freja.jpg"
+                src="/images/freja.jpg"
                 alt="FREJA vloeibare Omega 3 visolie, het basisritueel van The Swedish Glow"
               />
             </div>
@@ -205,7 +179,7 @@ export default function HomePage() {
           <article className="product-card">
             <div className="image-wrap" data-overlay="Bestseller · Het ochtendritueel">
               <img
-                src="images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg"
+                src="/images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg"
                 alt="Marine Collageen 13.000, het ochtendritueel van The Swedish Glow"
               />
             </div>
@@ -224,7 +198,7 @@ export default function HomePage() {
           <article className="product-card">
             <div className="image-wrap" data-overlay="Voor haar · Het haarritueel">
               <img
-                src="images/nordsilk.jpg"
+                src="/images/nordsilk.jpg"
                 alt="Nordsilk vloeibaar supplement — het haarritueel voor sterk haar en gezonde hoofdhuid"
               />
             </div>
@@ -243,7 +217,7 @@ export default function HomePage() {
           <article className="product-card">
             <div className="image-wrap" data-overlay="Limited · Het maandritueel">
               <img
-                src="images/hermade-product.jpg"
+                src="/images/hermade-product.jpg"
                 alt="HÉRMADE supplement, het maandritueel van The Swedish Glow voor vrouwen in de overgang"
               />
             </div>
@@ -602,7 +576,7 @@ export default function HomePage() {
         <div className="concerns-grid">
           <a href="/shop" className="concern-card">
             <img
-              src="images/marine-collagen-13000-ritueel-voor-stralende-huid-.jpg"
+              src="/images/marine-collagen-13000-ritueel-voor-stralende-huid-.jpg"
               alt="Marine Collagen 13.000 ritueel — voor stralende huid en gladdere teint"
             />
             <div className="concern-content">
@@ -613,7 +587,7 @@ export default function HomePage() {
           </a>
           <a href="/shop" className="concern-card">
             <img
-              src="images/nordsilk-supplementen-voor-sterk-en-vol-haar-the-s.jpg"
+              src="/images/nordsilk-supplementen-voor-sterk-en-vol-haar-the-s.jpg"
               alt="Nordsilk supplementen voor sterk en vol haar — The Swedish Glow"
             />
             <div className="concern-content">
@@ -624,7 +598,7 @@ export default function HomePage() {
           </a>
           <a href="/shop" className="concern-card">
             <img
-              src="images/freja.jpg"
+              src="/images/freja.jpg"
               alt="FREJA Omega 3 voor algemeen welzijn van The Swedish Glow"
             />
             <div className="concern-content">
@@ -635,7 +609,7 @@ export default function HomePage() {
           </a>
           <a href="/shop" className="concern-card">
             <img
-              src="images/het-verhaal-achter-hermade.jpg"
+              src="/images/het-verhaal-achter-hermade.jpg"
               alt="HÉRMADE supplement — voor balans en welzijn tijdens de overgang"
             />
             <div className="concern-content">
@@ -652,7 +626,7 @@ export default function HomePage() {
         <div className="science-grid">
           <div className="science-image">
             <img
-              src="images/the-swedish-glow-productcollectie-met-marine-colla.jpg"
+              src="/images/the-swedish-glow-productcollectie-met-marine-colla.jpg"
               alt="The Swedish Glow productcollectie met Marine Collagen 13.000, FREJA Omega 3, Nordsilk en HÉRMADE supplementen"
             />
           </div>
@@ -712,7 +686,7 @@ export default function HomePage() {
         <div className="feature-grid">
           <div className="feature-image">
             <img
-              src="images/hermade-2.jpg"
+              src="/images/hermade-2.jpg"
               alt="HÉRMADE supplement van The Swedish Glow in luxe verpakking"
             />
             <div className="feature-image-overlay">
@@ -912,7 +886,7 @@ export default function HomePage() {
           <div className="founders-images">
             <div className="founders-landscape">
               <img
-                src="images/waarom-we-kozen-voor-branno.jpg"
+                src="/images/waarom-we-kozen-voor-branno.jpg"
                 alt="Het noorderlicht boven Zweden — de inspiratie achter The Swedish Glow"
               />
               <div className="landscape-caption">
@@ -1122,7 +1096,7 @@ export default function HomePage() {
       <section className="magazine" aria-labelledby="magazine-heading">
         <div className="magazine-grid">
           <div className="magazine-image">
-            <img src="images/freja.jpg" alt="FREJA Omega 3 — The Swedish Glow nieuwste lancering" />
+            <img src="/images/freja.jpg" alt="FREJA Omega 3 — The Swedish Glow nieuwste lancering" />
           </div>
           <div className="magazine-content">
             <div className="issue">Issue No. 01 — Het Nordic ritueel</div>
@@ -1168,28 +1142,28 @@ export default function HomePage() {
         </div>
         <div className="lookbook-grid">
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/marine-collageen-13000-lifestyle.jpg" alt="Marine Collagen 13.000 lifestyle The Swedish Glow" />
+            <img src="/images/marine-collageen-13000-lifestyle.jpg" alt="Marine Collagen 13.000 lifestyle The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/nordsilk.jpg" alt="Nordsilk lifestyle The Swedish Glow" />
+            <img src="/images/nordsilk.jpg" alt="Nordsilk lifestyle The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/hermade-2.jpg" alt="HÉRMADE verpakking The Swedish Glow" />
+            <img src="/images/hermade-2.jpg" alt="HÉRMADE verpakking The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/het-verhaal-achter-hermade.jpg" alt="Vrouw met HÉRMADE sachets van The Swedish Glow" />
+            <img src="/images/het-verhaal-achter-hermade.jpg" alt="Vrouw met HÉRMADE sachets van The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/nordsilk-het-haarritueel-van-the-swedish-glow.jpg" alt="Nordsilk portrait The Swedish Glow" />
+            <img src="/images/nordsilk-het-haarritueel-van-the-swedish-glow.jpg" alt="Nordsilk portrait The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg" alt="Marine Collageen still life The Swedish Glow" />
+            <img src="/images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg" alt="Marine Collageen still life The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/hermade-product.jpg" alt="HÉRMADE styling The Swedish Glow" />
+            <img src="/images/hermade-product.jpg" alt="HÉRMADE styling The Swedish Glow" />
           </a>
           <a href="https://www.instagram.com/theswedishglow/" className="lookbook-tile">
-            <img src="images/marine-collagen-13000-ritueel-voor-stralende-huid-.jpg" alt="Marine Collageen ritueel The Swedish Glow" />
+            <img src="/images/marine-collagen-13000-ritueel-voor-stralende-huid-.jpg" alt="Marine Collageen ritueel The Swedish Glow" />
           </a>
         </div>
       </section>
