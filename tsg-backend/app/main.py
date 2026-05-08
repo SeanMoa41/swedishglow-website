@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, resellers
+from app.routers import auth, resellers, products
 
 app = FastAPI(title="TSG Backend", version="1.0.0")
 
@@ -14,6 +14,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(resellers.router)
+app.include_router(products.router)
 
 
 @app.get("/health")
