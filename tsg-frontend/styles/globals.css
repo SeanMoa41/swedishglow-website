@@ -4305,6 +4305,7 @@ header {
 .stage:hover h4 {
   color: var(--gold-soft);
 }
+.stage h4 em {
   text-align: center;
   font-style: italic;
 }
