@@ -1,0 +1,7 @@
+import os
+
+WC_URL = os.environ["WC_URL"]
+WC_CONSUMER_KEY = os.environ["WC_CONSUMER_KEY"]
+WC_CONSUMER_SECRET = os.environ["WC_CONSUMER_SECRET"]
+DATABASE_URL_SYNC = os.environ["DATABASE_URL_SYNC"]
+TEAMLEADER_ACCESS_TOKEN = os.environ.get("TEAMLEADER_ACCESS_TOKEN", "")
