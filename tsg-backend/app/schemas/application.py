@@ -24,5 +24,4 @@ class ApplicationOut(BaseModel):
     status: ApplicationStatusEnum
     assigned_tier: TierEnum
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
