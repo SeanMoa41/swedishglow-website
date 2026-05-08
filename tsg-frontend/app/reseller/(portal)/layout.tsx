@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { createServerSideClient } from '@/lib/supabase'
+import { createServerSideClient } from '@/lib/supabase-server'
 import type { Reseller } from '@/lib/types'
 import Sidebar from '@/components/reseller/Sidebar'
 
