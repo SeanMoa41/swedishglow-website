@@ -28,3 +28,6 @@ Thumbs.db
 local.settings.json
 bin/
 obj/
+
+# Git worktrees
+.worktrees/
