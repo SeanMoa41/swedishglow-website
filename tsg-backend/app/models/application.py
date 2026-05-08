@@ -27,10 +27,10 @@ class PartnerApplication(Base):
     phone: Mapped[str | None] = mapped_column(String)
     message: Mapped[str | None] = mapped_column(String)
     status: Mapped[ApplicationStatusEnum] = mapped_column(
-        Enum(ApplicationStatusEnum), default=ApplicationStatusEnum.pending
+        Enum(ApplicationStatusEnum, name="applicationstatus"), default=ApplicationStatusEnum.pending
     )
     assigned_tier: Mapped[TierEnum] = mapped_column(
-        Enum(TierEnum), default=TierEnum.pearl
+        Enum(TierEnum, name="tier"), default=TierEnum.pearl
     )
     reviewed_by: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("resellers.id")

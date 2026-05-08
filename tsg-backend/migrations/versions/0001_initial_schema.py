@@ -16,14 +16,6 @@ depends_on = None
 
 
 def upgrade() -> None:
-    # Enums
-    op.execute("CREATE TYPE resellerstatus AS ENUM ('pending', 'active', 'inactive')")
-    op.execute("CREATE TYPE tier AS ENUM ('pearl', 'rose', 'pro', 'elite', 'black')")
-    op.execute("CREATE TYPE applicationstatus AS ENUM ('pending', 'approved', 'rejected')")
-    op.execute("CREATE TYPE quotationstatus AS ENUM ('draft', 'sent', 'accepted', 'rejected', 'expired')")
-    op.execute("CREATE TYPE invoicestatus AS ENUM ('draft', 'outstanding', 'paid', 'overdue')")
-    op.execute("CREATE TYPE filetier AS ENUM ('all', 'rose', 'pro', 'elite', 'black')")
-
     op.create_table('resellers',
         sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('email', sa.String(), nullable=False),
