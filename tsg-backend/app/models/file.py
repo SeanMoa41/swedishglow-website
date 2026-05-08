@@ -24,7 +24,7 @@ class MarketingFile(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     blob_url: Mapped[str] = mapped_column(String, nullable=False)
     min_tier: Mapped[FileTierEnum] = mapped_column(
-        Enum(FileTierEnum), default=FileTierEnum.all
+        Enum(FileTierEnum, name="filetier"), default=FileTierEnum.all
     )
     file_size_bytes: Mapped[int | None] = mapped_column(BigInteger)
     uploaded_by: Mapped[uuid.UUID | None] = mapped_column(

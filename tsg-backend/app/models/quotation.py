@@ -27,7 +27,7 @@ class Quotation(Base):
     tl_quotation_id: Mapped[str | None] = mapped_column(String)
     tl_deal_id: Mapped[str | None] = mapped_column(String)
     status: Mapped[QuotationStatusEnum] = mapped_column(
-        Enum(QuotationStatusEnum), default=QuotationStatusEnum.draft
+        Enum(QuotationStatusEnum, name="quotationstatus"), default=QuotationStatusEnum.draft
     )
     total_eur: Mapped[float | None] = mapped_column(Numeric(10, 2))
     line_items: Mapped[list] = mapped_column(JSONB, default=list)

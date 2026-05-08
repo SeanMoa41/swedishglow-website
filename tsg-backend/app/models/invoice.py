@@ -26,7 +26,7 @@ class Invoice(Base):
     tl_invoice_id: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     invoice_number: Mapped[str | None] = mapped_column(String)
     status: Mapped[InvoiceStatusEnum] = mapped_column(
-        Enum(InvoiceStatusEnum), default=InvoiceStatusEnum.outstanding
+        Enum(InvoiceStatusEnum, name="invoicestatus"), default=InvoiceStatusEnum.outstanding
     )
     total_eur: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     invoice_date: Mapped[date | None] = mapped_column(Date)

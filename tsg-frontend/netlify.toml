@@ -1,0 +1,72 @@
+[build]
+  base    = "tsg-frontend"
+  command = "next build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from   = "/shop.html"
+  to     = "/shop"
+  status = 301
+
+[[redirects]]
+  from   = "/nordsilk.html"
+  to     = "/nordsilk"
+  status = 301
+
+[[redirects]]
+  from   = "/freja.html"
+  to     = "/freja"
+  status = 301
+
+[[redirects]]
+  from   = "/hermade.html"
+  to     = "/hermade"
+  status = 301
+
+[[redirects]]
+  from   = "/marine-collageen-13000-kuur.html"
+  to     = "/marine-collageen"
+  status = 301
+
+[[redirects]]
+  from   = "/over-ons.html"
+  to     = "/over-ons"
+  status = 301
+
+[[redirects]]
+  from   = "/stories.html"
+  to     = "/stories"
+  status = 301
+
+[[redirects]]
+  from   = "/contact.html"
+  to     = "/contact"
+  status = 301
+
+[[redirects]]
+  from   = "/reseller-programma.html"
+  to     = "/reseller-programma"
+  status = 301
+
+[[redirects]]
+  from   = "/reseller-login.html"
+  to     = "/reseller/login"
+  status = 301
+
+[[redirects]]
+  from   = "/privacy.html"
+  to     = "/privacy"
+  status = 301
+
+[[redirects]]
+  from   = "/voorwaarden.html"
+  to     = "/voorwaarden"
+  status = 301
+
+[[redirects]]
+  from   = "/cookies.html"
+  to     = "/cookies"
+  status = 301

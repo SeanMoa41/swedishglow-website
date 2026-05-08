@@ -32,9 +32,9 @@ class Reseller(Base):
     phone: Mapped[str | None] = mapped_column(String)
     country: Mapped[str | None] = mapped_column(String)
     status: Mapped[ResellerStatusEnum] = mapped_column(
-        Enum(ResellerStatusEnum), default=ResellerStatusEnum.pending
+        Enum(ResellerStatusEnum, name="resellerstatus"), default=ResellerStatusEnum.pending
     )
-    tier: Mapped[TierEnum] = mapped_column(Enum(TierEnum), default=TierEnum.pearl)
+    tier: Mapped[TierEnum] = mapped_column(Enum(TierEnum, name="tier"), default=TierEnum.pearl)
     tier_override: Mapped[bool] = mapped_column(Boolean, default=False)
     teamleader_id: Mapped[str | None] = mapped_column(String)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -49,7 +49,7 @@ class Reseller(Base):
 class TierThreshold(Base):
     __tablename__ = "tier_thresholds"
 
-    tier: Mapped[TierEnum] = mapped_column(Enum(TierEnum), primary_key=True)
+    tier: Mapped[TierEnum] = mapped_column(Enum(TierEnum, name="tier"), primary_key=True)
     min_revenue_eur: Mapped[float] = mapped_column(Numeric(10, 2), default=0)
     discount_pct: Mapped[float] = mapped_column(Numeric(5, 2), default=0)
     benefits: Mapped[list] = mapped_column(JSONB, default=list)

@@ -31,3 +31,4 @@ obj/
 
 # Git worktrees
 .worktrees/
+.superpowers/
