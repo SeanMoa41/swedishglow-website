@@ -41,6 +41,7 @@ async def _fetch_tl_invoice(tl_id: str) -> Optional[dict]:
             headers={"Authorization": f"Bearer {settings.teamleader_access_token}"},
         )
     if not resp.is_success:
+        logging.warning("TL invoices.info failed for %s: HTTP %s", tl_id, resp.status_code)
         return None
     return resp.json().get("data")
 
@@ -53,6 +54,7 @@ async def _fetch_tl_quotation(tl_id: str) -> Optional[dict]:
             headers={"Authorization": f"Bearer {settings.teamleader_access_token}"},
         )
     if not resp.is_success:
+        logging.warning("TL quotations.info failed for %s: HTTP %s", tl_id, resp.status_code)
         return None
     return resp.json().get("data")
 
@@ -174,6 +176,7 @@ async def _handle_tl_invoice(db: AsyncSession, tl_id: str) -> None:
             "due_date": data.get("due_on"),
         },
     )
+    # Commit invoice first, then tier recalc does its own commit
     await db.commit()
 
     if status == "paid":
