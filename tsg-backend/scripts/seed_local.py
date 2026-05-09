@@ -36,7 +36,7 @@ async def seed():
         for tier, min_rev, disc, benefits in tiers:
             await db.execute(text("""
                 INSERT INTO tier_thresholds (tier, min_revenue_eur, discount_pct, benefits)
-                VALUES (:tier, :min_rev, :disc, :benefits::jsonb)
+                VALUES (:tier, :min_rev, :disc, CAST(:benefits AS jsonb))
                 ON CONFLICT (tier) DO NOTHING
             """), {"tier": tier, "min_rev": min_rev, "disc": disc, "benefits": json.dumps(benefits)})
         print("✓ Tier thresholds")
@@ -116,7 +116,7 @@ async def seed():
         for tl_q_id, tl_d_id, status in quotations:
             await db.execute(text("""
                 INSERT INTO quotations (id, tl_quotation_id, tl_deal_id, reseller_id, status, line_items)
-                VALUES (:id, :tl_q_id, :tl_d_id, :reseller_id, :status, :items::jsonb)
+                VALUES (:id, :tl_q_id, :tl_d_id, :reseller_id, :status, CAST(:items AS jsonb))
                 ON CONFLICT (tl_quotation_id) DO NOTHING
             """), {
                 "id": str(uuid.uuid4()),
