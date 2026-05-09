@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.routers import auth, resellers, products, orders, files, admin, webhooks
 
 app = FastAPI(title="TSG Backend", version="1.0.0")
@@ -19,6 +20,8 @@ app.include_router(orders.router)
 app.include_router(files.router)
 app.include_router(admin.router)
 app.include_router(webhooks.router)
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 @app.get("/health")

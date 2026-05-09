@@ -1,7 +1,8 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.auth import get_current_reseller
 from app import config
+from app.auth import get_current_reseller
+from app.integrations.blob import generate_download_url
 
 
 @pytest.mark.asyncio
@@ -54,3 +55,9 @@ async def test_list_invoices_returns_empty(monkeypatch):
     monkeypatch.setattr(config.settings, "local_dev", True)
     result = await list_invoices()
     assert result == []
+
+
+def test_generate_download_url_returns_localhost(monkeypatch):
+    monkeypatch.setattr(config.settings, "local_dev", True)
+    url = generate_download_url("some-file.pdf")
+    assert url == "http://localhost:8000/static/mock-file.pdf"
