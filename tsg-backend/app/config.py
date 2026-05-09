@@ -16,7 +16,9 @@ class Settings(BaseSettings):
     wc_consumer_secret: str = ""
     azure_storage_connection_string: str = ""
     azure_blob_container: str = "marketing-files"
-    webhook_secret: str = "change-me"
+    webhook_secret: str
+    local_dev: bool = False
+    local_dev_reseller_email: str = "dev@theswedishglow.com"
 
     class Config:
         env_file = ".env"
