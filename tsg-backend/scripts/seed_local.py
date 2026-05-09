@@ -74,11 +74,12 @@ async def seed():
             (10, "Vitamine D3 + K2",            "vitamine-d",   18.00),
         ]
         for wc_id, name, tag, price in products:
+            stable_id = uuid.UUID(f"a0000000-0000-0000-0000-{wc_id:012d}")
             await db.execute(text("""
                 INSERT INTO products (id, wc_product_id, name, tag, list_price_eur, active, sort_order)
                 VALUES (:id, :wc_id, :name, :tag, :price, true, :sort)
-                ON CONFLICT (wc_product_id) DO NOTHING
-            """), {"id": str(uuid.uuid4()), "wc_id": wc_id, "name": name, "tag": tag, "price": price, "sort": wc_id})
+                ON CONFLICT (id) DO NOTHING
+            """), {"id": stable_id, "wc_id": wc_id, "name": name, "tag": tag, "price": price, "sort": wc_id})
         print("✓ 10 products")
 
         # 4. Invoices (5) — 3 paid, 2 outstanding → YTD paid = €4,150
@@ -113,13 +114,14 @@ async def seed():
             ("QUO-2026-003", "DEAL-2026-003", "accepted"),
         ]
         line_items = json.dumps([{"product": "Marine Collageen Poeder", "qty": 10, "unit_price": 45.00}])
-        for tl_q_id, tl_d_id, status in quotations:
+        for i, (tl_q_id, tl_d_id, status) in enumerate(quotations, start=1):
+            stable_id = uuid.UUID(f"b0000000-0000-0000-0000-{i:012d}")
             await db.execute(text("""
                 INSERT INTO quotations (id, tl_quotation_id, tl_deal_id, reseller_id, status, line_items)
                 VALUES (:id, :tl_q_id, :tl_d_id, :reseller_id, :status, CAST(:items AS jsonb))
-                ON CONFLICT (tl_quotation_id) DO NOTHING
+                ON CONFLICT (id) DO NOTHING
             """), {
-                "id": str(uuid.uuid4()),
+                "id": stable_id,
                 "tl_q_id": tl_q_id,
                 "tl_d_id": tl_d_id,
                 "reseller_id": reseller_id,
