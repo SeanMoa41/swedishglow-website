@@ -1,5 +1,9 @@
 """
 Seed local development database with dummy data.
+
+Prerequisites:
+  - Docker Compose running: docker-compose up -d
+  - Migrations applied: alembic upgrade head
 Run from tsg-backend directory: python scripts/seed_local.py
 """
 import asyncio
@@ -129,7 +133,7 @@ async def seed():
             INSERT INTO marketing_files (id, name, blob_url, min_tier, download_count, uploaded_by)
             VALUES (:id, 'TSG Productcatalogus 2026', 'mock-file.pdf', 'all', 0, :uploaded_by)
             ON CONFLICT (id) DO NOTHING
-        """), {"id": "f0000000-0000-0000-0000-000000000001", "uploaded_by": reseller_id})
+        """), {"id": uuid.UUID("f0000000-0000-0000-0000-000000000001"), "uploaded_by": reseller_id})
         print("✓ 1 marketing file")
 
         await db.commit()
