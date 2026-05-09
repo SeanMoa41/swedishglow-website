@@ -35,6 +35,7 @@ def _verify_secret(secret: Optional[str]) -> None:
 
 async def _fetch_tl_invoice(tl_id: str) -> Optional[dict]:
     async with httpx.AsyncClient() as client:
+        # TODO: teamleader_access_token expires (OAuth2, ~1h). Add token refresh before production.
         resp = await client.post(
             f"{TL_BASE}/invoices.info",
             json={"id": tl_id},
@@ -48,6 +49,7 @@ async def _fetch_tl_invoice(tl_id: str) -> Optional[dict]:
 
 async def _fetch_tl_quotation(tl_id: str) -> Optional[dict]:
     async with httpx.AsyncClient() as client:
+        # TODO: teamleader_access_token expires (OAuth2, ~1h). Add token refresh before production.
         resp = await client.post(
             f"{TL_BASE}/quotations.info",
             json={"id": tl_id},
