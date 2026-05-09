@@ -9,19 +9,28 @@ export class ApiError extends Error {
 }
 
 export async function apiFetch(path: string, options?: RequestInit): Promise<Response> {
-  const supabase = createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const isLocalDev = process.env.NEXT_PUBLIC_DEV_BYPASS === 'true'
+
+  let authHeader: Record<string, string> = {}
+  if (!isLocalDev) {
+    const supabase = createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session) {
+      authHeader = { Authorization: `Bearer ${session.access_token}` }
+    }
+  }
 
   const res = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      ...authHeader,
       ...options?.headers,
     },
   })
 
-  if (res.status === 401) {
+  if (!isLocalDev && res.status === 401) {
+    const supabase = createClient()
     await supabase.auth.signOut()
     if (typeof window !== 'undefined') {
       window.location.href = '/reseller/login'
