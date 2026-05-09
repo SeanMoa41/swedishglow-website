@@ -145,3 +145,47 @@ async def test_teamleader_webhook_unknown_reseller_returns_200(client):
             app.dependency_overrides.clear()
 
     assert response.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_woocommerce_webhook_upserts_full_order(client):
+    """WC webhook with full order payload upserts into wc_orders."""
+    async def override_db():
+        yield AsyncMock()
+
+    app.dependency_overrides[get_db] = override_db
+    try:
+        response = await client.post(
+            "/webhooks/woocommerce",
+            json={
+                "id": 1001,
+                "status": "completed",
+                "billing": {"email": "customer@example.com"},
+                "payment_method": "ideal",
+                "total": "149.95",
+                "line_items": [{"product_id": 5, "quantity": 1, "name": "NordSilk"}],
+                "date_created": "2026-05-09T12:00:00",
+            },
+            headers={"X-Webhook-Secret": settings.webhook_secret},
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_woocommerce_webhook_missing_id_is_ignored(client):
+    """Payload without order id returns 200 and does nothing."""
+    async def override_db():
+        yield AsyncMock()
+
+    app.dependency_overrides[get_db] = override_db
+    try:
+        response = await client.post(
+            "/webhooks/woocommerce",
+            json={"status": "completed"},
+            headers={"X-Webhook-Secret": settings.webhook_secret},
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 200
