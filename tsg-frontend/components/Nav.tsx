@@ -7,6 +7,9 @@ export default function Nav() {
 
   return (
     <>
+      <div className="utility-bar">
+        Gratis verzending vanaf <span>€60</span> · Vandaag besteld, morgen in huis · Familiemerk uit Zweden
+      </div>
       <header>
         <nav className="nav-wrap">
           <div className="nav-left">
