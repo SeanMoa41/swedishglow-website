@@ -1,7 +1,10 @@
+import uuid
+import logging
 import httpx
 from app.config import settings
 
 BASE_URL = "https://api.focus.teamleader.eu"
+logger = logging.getLogger("tsg.teamleader")
 
 
 async def create_quotation(
@@ -9,6 +12,11 @@ async def create_quotation(
     line_items: list[dict],
     discount_pct: float,
 ) -> dict:
+    if settings.local_dev:
+        mock_id = f"tl-mock-{uuid.uuid4()}"
+        logger.warning("[LOCAL_DEV] mocked create_quotation → %s", mock_id)
+        return {"id": mock_id}
+
     grouped_lines = [
         {
             "line_items": [
@@ -42,6 +50,10 @@ async def create_quotation(
 
 
 async def list_invoices(updated_since: str | None = None, customer_id: str | None = None) -> list[dict]:
+    if settings.local_dev:
+        logger.warning("[LOCAL_DEV] mocked list_invoices → []")
+        return []
+
     payload: dict = {"page": {"size": 100, "number": 1}}
     invoice_filter: dict = {}
     if updated_since:

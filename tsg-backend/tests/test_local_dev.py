@@ -37,3 +37,20 @@ async def test_local_dev_auth_raises_500_if_no_reseller(monkeypatch):
     with pytest.raises(HTTPException) as exc:
         await get_current_reseller(credentials=None, db=mock_db)
     assert exc.value.status_code == 500
+
+
+from app.integrations.teamleader import create_quotation, list_invoices
+
+
+@pytest.mark.asyncio
+async def test_create_quotation_returns_mock_id(monkeypatch):
+    monkeypatch.setattr(config.settings, "local_dev", True)
+    result = await create_quotation(deal_id="x", line_items=[], discount_pct=10.0)
+    assert result["id"].startswith("tl-mock-")
+
+
+@pytest.mark.asyncio
+async def test_list_invoices_returns_empty(monkeypatch):
+    monkeypatch.setattr(config.settings, "local_dev", True)
+    result = await list_invoices()
+    assert result == []
