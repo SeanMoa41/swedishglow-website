@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
@@ -25,7 +25,7 @@ async def recalculate_reseller_tier(db: AsyncSession, reseller_id: str) -> None:
         return
 
     current_tier = reseller.tier
-    current_year = datetime.utcnow().year
+    current_year = datetime.now(timezone.utc).year
 
     thresholds_rows = await db.execute(
         text("SELECT tier, min_revenue_eur FROM tier_thresholds ORDER BY min_revenue_eur")

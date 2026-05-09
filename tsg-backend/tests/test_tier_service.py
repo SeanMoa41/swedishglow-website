@@ -65,6 +65,9 @@ async def test_recalculate_upgrades_tier():
     await recalculate_reseller_tier(mock_db, "uuid-1")
 
     mock_db.commit.assert_called_once()
+    # Verify the correct new tier was written
+    update_call = mock_db.execute.call_args_list[3]
+    assert update_call[0][1]["tier"] == "rose"
 
 
 @pytest.mark.asyncio
