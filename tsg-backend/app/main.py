@@ -33,9 +33,13 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+_origins = ["https://theswedishglow.com", "http://localhost:3000"]
+if settings.local_dev:
+    _origins += [f"http://localhost:{p}" for p in range(3001, 3010)]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://theswedishglow.com", "http://localhost:3000"],
+    allow_origins=_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
