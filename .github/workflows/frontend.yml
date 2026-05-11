@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  typecheck:
+  ci:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -37,24 +37,6 @@ jobs:
 
       - name: TypeScript type check
         run: npx tsc --noEmit
-
-  test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: tsg-frontend
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: tsg-frontend/package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
 
       - name: Run Jest tests
         run: npm test -- --ci --coverage

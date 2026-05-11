@@ -86,7 +86,7 @@ jobs:
           az containerapp update \
             --name ${{ secrets.CONTAINER_APP_NAME }} \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:staging
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:${{ github.sha }}-staging
 
       - name: Smoke test
         run: |
@@ -116,13 +116,13 @@ jobs:
 
       - name: Promote image to prod
         run: |
-          az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
-          IMAGE=${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend
-          docker pull $IMAGE:${{ github.sha }}-staging
-          docker tag $IMAGE:${{ github.sha }}-staging $IMAGE:latest
-          docker tag $IMAGE:${{ github.sha }}-staging $IMAGE:${{ github.sha }}
-          docker push $IMAGE:latest
-          docker push $IMAGE:${{ github.sha }}
+          ACR_NAME=$(echo "${{ secrets.ACR_LOGIN_SERVER }}" | cut -d. -f1)
+          az acr import \
+            --name "$ACR_NAME" \
+            --source "${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:${{ github.sha }}-staging" \
+            --image "tsg-backend:latest" \
+            --image "tsg-backend:${{ github.sha }}" \
+            --force
 
       - name: Deploy to prod Container App
         run: |

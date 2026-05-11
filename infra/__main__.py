@@ -218,6 +218,17 @@ fn_app = azure_native.web.WebApp(
                 name="TEAMLEADER_REFRESH_TOKEN",
                 value=config.require_secret("tl_refresh_token"),
             ),
+            azure_native.web.NameValuePairArgs(
+                name="WC_URL", value="https://theswedishglow.com",
+            ),
+            azure_native.web.NameValuePairArgs(
+                name="WC_CONSUMER_KEY",
+                value=config.require_secret("wc_consumer_key"),
+            ),
+            azure_native.web.NameValuePairArgs(
+                name="WC_CONSUMER_SECRET",
+                value=config.require_secret("wc_consumer_secret"),
+            ),
         ],
     ),
 )
