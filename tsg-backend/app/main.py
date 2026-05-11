@@ -33,7 +33,11 @@ async def log_requests(request: Request, call_next):
     return response
 
 
-_origins = ["https://theswedishglow.com", "http://localhost:3000"]
+_origins = [
+    "https://theswedishglow.com",
+    "http://localhost:3000",
+    *settings.cors_origins,
+]
 if settings.local_dev:
     _origins += [f"http://localhost:{p}" for p in range(3001, 3010)]
 

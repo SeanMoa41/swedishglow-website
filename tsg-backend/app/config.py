@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     webhook_secret: str
     local_dev: bool = False
     local_dev_reseller_email: str = "dev@theswedishglow.com"
+    cors_origins: list[str] = []
 
     class Config:
         env_file = ".env"
