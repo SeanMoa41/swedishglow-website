@@ -5,6 +5,16 @@ import type { Product } from '@/lib/types'
 
 const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
 
+const TAG_IMAGES: Record<string, string> = {
+  'collageen':   '/images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg',
+  'omega-3':     '/images/freja.jpg',
+  'biotine':     '/images/nordsilk.jpg',
+  'serum':       '/images/hermade-product.jpg',
+  'q10':         '/images/marine-collageen-13000-lifestyle.jpg',
+  'probiotica':  '/images/nordsilk-het-haarritueel-van-the-swedish-glow.jpg',
+  'vitamine-d':  '/images/hermade-2.jpg',
+}
+
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [search, setSearch] = useState('')
@@ -46,14 +56,18 @@ export default function ProductsPage() {
       <div className="products-grid">
         {filtered.map((p, i) => {
           const numeral = NUMERALS[i] ?? String(i + 1)
+          const imgSrc = p.tag ? TAG_IMAGES[p.tag] : undefined
           return (
             <div key={p.id} className="product-card">
               <div className="product-image-wrap">
                 <span className="product-image-num">{numeral}</span>
-                <div className="product-image-fallback">
-                  <span className="num">{numeral}</span>
-                  <span className="label">Product</span>
-                </div>
+                {imgSrc
+                  ? <img src={imgSrc} alt={p.name} />
+                  : <div className="product-image-fallback">
+                      <span className="num">{numeral}</span>
+                      <span className="label">Product</span>
+                    </div>
+                }
               </div>
               <div className="product-body">
                 {p.tag && <div className="product-tag">{p.tag}</div>}
