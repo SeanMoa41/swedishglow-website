@@ -55,6 +55,9 @@ jobs:
     needs: test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     environment: staging
 
     steps:
@@ -97,6 +100,9 @@ jobs:
     needs: deploy-staging
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     environment: production
 
     steps:
