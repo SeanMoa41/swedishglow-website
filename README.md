@@ -483,3 +483,16 @@ TSG Website/
 - **Email:** info@theswedishglow.com
 - **WhatsApp:** +31 6 30 53 74 52
 - **Founder:** Elin Hellqvist-Moayedi
+
+## Deployment
+
+The project uses GitHub Actions for CI/CD and Pulumi for infrastructure provisioning.
+
+| Environment | Backend | Trigger |
+|---|---|---|
+| Staging | Azure Container App (`tsg-backend-staging`) | Auto on push to `main` |
+| Production | Azure Container App (`tsg-backend-prod`) | Manual approval after staging |
+
+Frontend is deployed automatically by Netlify on push to `main`.
+
+See `CLAUDE.md` → "CI/CD & Deployment" for full setup instructions including OIDC configuration and Pulumi secret provisioning.

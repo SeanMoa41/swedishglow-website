@@ -274,3 +274,66 @@ alembic upgrade head       # run migrations
 - TeamLeader deal_id mapping — each reseller needs a TL deal linked before first quotation
 - Email notifications on tier upgrade — Phase 1 or 2?
 - Fulfillment system — deferred to later stage
+
+---
+
+## CI/CD & Deployment
+
+### Workflow Overview
+
+| Workflow | Trigger path | What it does |
+|---|---|---|
+| `.github/workflows/backend.yml` | `tsg-backend/**` (excl. etl/) | pytest → docker build/push → staging Container App → prod Container App |
+| `.github/workflows/etl.yml` | `tsg-backend/etl/**` | pytest → Azure Functions staging → prod |
+| `.github/workflows/frontend.yml` | `tsg-frontend/**` | tsc + jest only (Netlify deploys) |
+| `.github/workflows/infra.yml` | `infra/**` | pulumi preview (PR) / pulumi up (push) |
+
+All deploy jobs require push to `main`. PRs run tests only.
+Prod deploys require manual approval via the `production` GitHub Environment.
+
+### Environments
+
+| Environment | Protection | Secrets |
+|---|---|---|
+| `staging` | None (auto) | `PULUMI_ACCESS_TOKEN`, `RESOURCE_GROUP`, `CONTAINER_APP_NAME`, `FUNCTIONS_APP_NAME` |
+| `production` | Required reviewer | Same keys, prod values |
+
+### Repository Secrets (Settings → Secrets → Actions)
+- `AZURE_CLIENT_ID` — OIDC app client ID
+- `AZURE_TENANT_ID` — Azure AD tenant
+- `AZURE_SUBSCRIPTION_ID` — Azure subscription
+- `ACR_LOGIN_SERVER` — e.g. `tsgprodacr.azurecr.io`
+
+### First-time OIDC setup
+See `docs/superpowers/specs/2026-05-11-cicd-iac-design.md` for the full `az` commands.
+Replace `<OWNER>/<REPO>` with the actual GitHub repository path.
+
+### Pulumi IaC (`infra/`)
+Python Pulumi project with two stacks: `staging` and `prod`.
+State backend: Pulumi Cloud.
+Provisions: ACR, Container App environment, Container App, Functions app, ETL storage account.
+Does NOT provision: PostgreSQL, Blob Storage (pre-existing, passed as config secrets).
+
+Run locally to initialise a stack:
+```bash
+cd infra
+pip install -r requirements.txt
+pulumi login
+pulumi stack init staging
+pulumi config set azure-native:location westeurope
+pulumi config set --secret database_url "postgresql+asyncpg://..."
+pulumi config set --secret database_url_sync "postgresql+psycopg2://..."
+pulumi config set --secret supabase_url "https://..."
+pulumi config set --secret supabase_service_role_key "..."
+pulumi config set --secret supabase_jwt_secret "..."
+pulumi config set --secret webhook_secret "..."
+pulumi config set --secret tl_client_id "..."
+pulumi config set --secret tl_client_secret "..."
+pulumi config set --secret tl_access_token "..."
+pulumi config set --secret tl_refresh_token "..."
+pulumi config set --secret wc_consumer_key "..."
+pulumi config set --secret wc_consumer_secret "..."
+pulumi config set --secret azure_storage_connection_string "..."
+pulumi config set cors_origins "https://your-netlify-url.netlify.app"
+pulumi up
+```

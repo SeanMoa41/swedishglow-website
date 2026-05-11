@@ -32,3 +32,9 @@ obj/
 # Git worktrees
 .worktrees/
 .superpowers/
+
+# Pulumi local cache
+.pulumi/
+
+# Defensive: node at repo root
+node_modules/
