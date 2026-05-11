@@ -308,11 +308,15 @@ Prod deploys require manual approval via the `production` GitHub Environment.
 See `docs/superpowers/specs/2026-05-11-cicd-iac-design.md` for the full `az` commands.
 Replace `<OWNER>/<REPO>` with the actual GitHub repository path.
 
+Note: `<SUBSCRIPTION_ID>` must be the subscription where `tsg-staging-rg` and `tsg-prod-rg` will be created by Pulumi.
+
 ### Pulumi IaC (`infra/`)
 Python Pulumi project with two stacks: `staging` and `prod`.
 State backend: Pulumi Cloud.
 Provisions: ACR, Container App environment, Container App, Functions app, ETL storage account.
 Does NOT provision: PostgreSQL, Blob Storage (pre-existing, passed as config secrets).
+
+Note: GitHub Actions authenticates to Pulumi Cloud via the `PULUMI_ACCESS_TOKEN` environment secret automatically. For local development, run `pulumi login` once manually before the commands below.
 
 Run locally to initialise a stack:
 ```bash
@@ -336,4 +340,11 @@ pulumi config set --secret wc_consumer_secret "..."
 pulumi config set --secret azure_storage_connection_string "..."
 pulumi config set cors_origins "https://your-netlify-url.netlify.app"
 pulumi up
+```
+
+After `pulumi up` completes, retrieve resource values for GitHub Secrets:
+```bash
+pulumi stack output acr_login_server    # → ACR_LOGIN_SERVER GitHub secret
+pulumi stack output container_app_fqdn  # → backend URL for frontend env var
+pulumi stack output functions_app_name  # → FUNCTIONS_APP_NAME GitHub secret
 ```
