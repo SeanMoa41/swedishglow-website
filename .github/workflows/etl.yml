@@ -1,0 +1,104 @@
+name: ETL
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tsg-backend/etl/**'
+      - 'tsg-backend/requirements.txt'
+      - '.github/workflows/etl.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tsg-backend/etl/**'
+      - 'tsg-backend/requirements.txt'
+      - '.github/workflows/etl.yml'
+
+concurrency:
+  group: etl-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tsg-backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tsg-backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create test .env
+        run: |
+          cat > .env << 'EOF'
+          DATABASE_URL=postgresql+asyncpg://tsg:tsg@localhost:5432/tsg
+          DATABASE_URL_SYNC=postgresql+psycopg2://tsg:tsg@localhost:5432/tsg
+          SUPABASE_URL=https://placeholder.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY=placeholder
+          SUPABASE_JWT_SECRET=placeholder-secret-at-least-32-chars-long
+          WEBHOOK_SECRET=placeholder-webhook-secret
+          EOF
+
+      - name: Run ETL tests
+        run: pytest tests/test_etl_*.py tests/test_tier_service.py -v --tb=short
+
+  deploy-staging:
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Azure Functions Core Tools
+        run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: Deploy ETL to staging
+        working-directory: tsg-backend
+        run: func azure functionapp publish ${{ secrets.FUNCTIONS_APP_NAME }} --python
+
+  deploy-prod:
+    needs: deploy-staging
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Azure Functions Core Tools
+        run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: Deploy ETL to prod
+        working-directory: tsg-backend
+        run: func azure functionapp publish ${{ secrets.FUNCTIONS_APP_NAME }} --python
