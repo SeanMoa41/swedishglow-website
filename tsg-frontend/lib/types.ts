@@ -13,18 +13,19 @@ export interface Reseller {
 
 export interface ResellerStats {
   revenue_ytd_eur: number
-  order_count: number
+  orders_ytd: number
   discount_pct: number
   next_tier_gap_eur: number | null
   next_tier: string | null
 }
 
 export interface TierInfo {
-  tier: string
-  tier_label: string
+  current_tier: string
   discount_pct: number
-  min_revenue_eur: number
   benefits: string[]
+  next_tier: string | null
+  next_tier_min_eur: number | null
+  revenue_ytd_eur: number
   progress_pct: number
 }
 
@@ -37,20 +38,25 @@ export interface TierThreshold {
 
 export interface Product {
   id: string
+  wc_product_id: number | null
   name: string
   tag: string | null
-  description: string | null
   list_price_eur: number
   net_price_eur: number
-  image_url: string | null
+  active: boolean
+  sort_order: number
 }
 
 export interface Quotation {
   id: string
+  tl_quotation_id: string | null
+  tl_deal_id: string | null
+  reseller_id: string
   status: 'draft' | 'sent' | 'accepted' | 'rejected' | 'expired'
   total_eur: number | null
   created_at: string
-  line_items: { product_id: string; quantity: number; unit_price: number }[]
+  updated_at: string
+  line_items: { product_id: string; quantity: number; unit_price?: number }[]
 }
 
 export interface Invoice {
@@ -66,11 +72,10 @@ export interface Invoice {
 export interface MarketingFile {
   id: string
   name: string
-  file_size_bytes: number | null
+  blob_url: string
   min_tier: 'all' | 'rose' | 'pro' | 'elite' | 'black'
   download_count: number
-  created_at: string
-  accessible: boolean
+  uploaded_by: string | null
 }
 
 export interface Application {

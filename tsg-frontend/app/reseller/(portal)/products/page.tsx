@@ -3,35 +3,70 @@ import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { Product } from '@/lib/types'
 
+const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
+
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
-    apiJson<Product[]>('/products').then(setProducts)
+    apiJson<Product[]>('/products')
+      .then(setProducts)
+      .catch((e) => console.error('products:', e.message))
   }, [])
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(n)
 
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
+    (p.tag ?? '').toLowerCase().includes(search.toLowerCase())
+  )
+
   return (
-    <div className="panel" id="panel-products">
-      <h1>Producten</h1>
+    <div className="panel-body">
+      <div className="page-head">
+        <div className="page-head-left">
+          <div className="page-eyebrow">Assortiment</div>
+          <h1 className="page-title">Producten</h1>
+        </div>
+      </div>
+
+      <div className="toolbar">
+        <input
+          className="search-input"
+          placeholder="Zoeken..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+
       {products.length === 0 && <div className="loading">Laden...</div>}
-      <div className="product-grid">
-        {products.map(p => (
-          <div key={p.id} className="product-card">
-            {p.image_url && <img src={p.image_url} alt={p.name} className="product-img" />}
-            <div className="product-info">
-              <div className="product-name">{p.name}</div>
-              {p.tag && <div className="product-tag">{p.tag}</div>}
-              {p.description && <div className="product-desc">{p.description}</div>}
-              <div className="product-prices">
-                <span className="list-price">Advies: {fmt(p.list_price_eur)}</span>
-                <span className="net-price">Uw prijs: {fmt(p.net_price_eur)}</span>
+
+      <div className="products-grid">
+        {filtered.map((p, i) => {
+          const numeral = NUMERALS[i] ?? String(i + 1)
+          return (
+            <div key={p.id} className="product-card">
+              <div className="product-image-wrap">
+                <span className="product-image-num">{numeral}</span>
+                <div className="product-image-fallback">
+                  <span className="num">{numeral}</span>
+                  <span className="label">Product</span>
+                </div>
+              </div>
+              <div className="product-body">
+                {p.tag && <div className="product-tag">{p.tag}</div>}
+                <div className="product-name">{p.name}</div>
+                <div className="product-pricing">
+                  <span className="product-price-list">{fmt(p.list_price_eur)}</span>
+                  <span className="product-price-net">{fmt(p.net_price_eur)}</span>
+                </div>
+                <button className="btn btn-primary">Toevoegen aan offerte →</button>
               </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

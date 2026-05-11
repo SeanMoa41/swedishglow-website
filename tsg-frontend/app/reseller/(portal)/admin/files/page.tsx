@@ -62,7 +62,7 @@ export default function AdminFilesPage() {
           {files.map(f => (
             <tr key={f.id}>
               <td>{f.name}</td>
-              <td>{fmtBytes(f.file_size_bytes)}</td>
+              <td>—</td>
               <td>{f.min_tier}</td>
               <td>{f.download_count}</td>
               <td><button onClick={() => deleteFile(f.id)} className="delete-btn">Verwijder</button></td>

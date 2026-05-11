@@ -9,18 +9,19 @@ const mockApiJson = apiJson as jest.MockedFunction<typeof apiJson>
 
 const mockStats: ResellerStats = {
   revenue_ytd_eur: 4500,
-  order_count: 12,
+  orders_ytd: 12,
   discount_pct: 40,
   next_tier_gap_eur: 500,
   next_tier: 'Rose',
 }
 
 const mockTier: TierInfo = {
-  tier: 'pearl',
-  tier_label: 'Pearl',
+  current_tier: 'pearl',
   discount_pct: 40,
-  min_revenue_eur: 0,
   benefits: ['Inkoopkorting 40%'],
+  next_tier: 'rose',
+  next_tier_min_eur: 5000,
+  revenue_ytd_eur: 4500,
   progress_pct: 90,
 }
 

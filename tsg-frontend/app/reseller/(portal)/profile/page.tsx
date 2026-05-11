@@ -16,62 +16,92 @@ export default function ProfilePage() {
       setFirstName(r.first_name ?? '')
       setLastName(r.last_name ?? '')
       setPhone(r.phone ?? '')
-    })
+    }).catch((e) => console.error('me:', e.message))
   }, [])
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
-    await apiFetch('/resellers/me/profile', {
-      method: 'PUT',
-      body: JSON.stringify({ first_name: firstName, last_name: lastName, phone }),
-    })
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    try {
+      await apiFetch('/resellers/me/profile', {
+        method: 'PUT',
+        body: JSON.stringify({ first_name: firstName, last_name: lastName, phone }),
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+    } catch (e) {
+      console.error('save profile:', e)
+    }
   }
 
   if (!reseller) return <div className="loading">Laden...</div>
 
+  const initials = [reseller.first_name, reseller.last_name]
+    .filter(Boolean)
+    .map(n => n![0].toUpperCase())
+    .join('') || reseller.email[0].toUpperCase()
+
   return (
-    <div className="panel" id="panel-profile">
-      <h1>Profiel</h1>
-      <form onSubmit={handleSave} className="profile-form">
-        <div className="field-group">
-          <label htmlFor="firstName">Voornaam</label>
-          <input
-            id="firstName"
-            type="text"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-          />
+    <div className="panel-body">
+      <div className="page-head">
+        <div className="page-head-left">
+          <div className="page-eyebrow">Account</div>
+          <h1 className="page-title">Mijn gegevens</h1>
         </div>
-        <div className="field-group">
-          <label htmlFor="lastName">Achternaam</label>
-          <input
-            id="lastName"
-            type="text"
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-          />
+      </div>
+
+      <div className="profile-head">
+        <div className="profile-avatar">{initials}</div>
+        <div className="profile-id">
+          <div className="name">
+            {[reseller.first_name, reseller.last_name].filter(Boolean).join(' ') || reseller.email}
+          </div>
+          <div className="company">{reseller.company ?? '—'}</div>
         </div>
-        <div className="field-group">
-          <label htmlFor="phone">Telefoonnummer</label>
-          <input
-            id="phone"
-            type="tel"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-          />
+      </div>
+
+      <form onSubmit={handleSave}>
+        <div className="form-grid">
+          <div>
+            <label className="field-label">Voornaam</label>
+            <input
+              className="field-input"
+              type="text"
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="field-label">Achternaam</label>
+            <input
+              className="field-input"
+              type="text"
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="field-label">Telefoonnummer</label>
+            <input
+              className="field-input"
+              type="tel"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+            />
+          </div>
+          <div>
+            <div className="field-label">E-mailadres</div>
+            <div style={{ paddingTop: '10px' }}>{reseller.email}</div>
+          </div>
+          <div>
+            <div className="field-label">Bedrijf</div>
+            <div style={{ paddingTop: '10px' }}>{reseller.company ?? '—'}</div>
+          </div>
+          <div className="full">
+            <button type="submit" className="btn btn-primary">Opslaan</button>
+          </div>
         </div>
-        <div className="field-group readonly">
-          <label>E-mailadres</label>
-          <div className="readonly-value">{reseller.email}</div>
-        </div>
-        <div className="field-group readonly">
-          <label>Bedrijf</label>
-          <div className="readonly-value">{reseller.company}</div>
-        </div>
-        <button type="submit" className="save-btn">Opslaan</button>
       </form>
+
       {saved && <div className="toast show">Profiel opgeslagen</div>}
     </div>
   )

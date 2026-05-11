@@ -1,46 +1,105 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { apiFetch, apiJson } from '@/lib/api'
-import type { MarketingFile } from '@/lib/types'
+import type { MarketingFile, Reseller } from '@/lib/types'
+
+const TIER_ORDER = ['all', 'pearl', 'rose', 'pro', 'elite', 'black']
+
+function isAccessible(fileTier: string, resellerTier: string): boolean {
+  if (fileTier === 'all') return true
+  return TIER_ORDER.indexOf(resellerTier) >= TIER_ORDER.indexOf(fileTier)
+}
+
+function tierLabel(tier: string): string {
+  if (tier === 'all') return 'Alle tiers'
+  return tier.charAt(0).toUpperCase() + tier.slice(1) + ' en hoger'
+}
+
+const FileIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+  </svg>
+)
+
+const LockIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <rect x="3" y="11" width="18" height="11" rx="2"/>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+)
 
 export default function FilesPage() {
   const [files, setFiles] = useState<MarketingFile[]>([])
+  const [reseller, setReseller] = useState<Reseller | null>(null)
 
   useEffect(() => {
-    apiJson<MarketingFile[]>('/files').then(setFiles)
+    apiJson<MarketingFile[]>('/files')
+      .then(setFiles)
+      .catch((e) => console.error('files:', e.message))
+    apiJson<Reseller>('/auth/me')
+      .then(setReseller)
+      .catch((e) => console.error('me:', e.message))
   }, [])
 
   async function download(fileId: string, name: string) {
-    const res = await apiFetch(`/files/${fileId}/download`)
-    const { url } = await res.json()
-    const a = document.createElement('a')
-    a.href = url
-    a.download = name
-    a.click()
+    try {
+      const res = await apiFetch(`/files/${fileId}/download`)
+      const { download_url } = await res.json()
+      const a = document.createElement('a')
+      a.href = download_url
+      a.download = name
+      a.click()
+    } catch (e) {
+      console.error('download:', e)
+    }
   }
 
-  const fmtBytes = (n: number | null) =>
-    n ? `${(n / 1024 / 1024).toFixed(1)} MB` : '—'
+  const resellerTier = reseller?.tier ?? 'pearl'
 
   return (
-    <div className="panel" id="panel-files">
-      <h1>Bestanden</h1>
+    <div className="panel-body">
+      <div className="page-head">
+        <div className="page-head-left">
+          <div className="page-eyebrow">Downloads</div>
+          <h1 className="page-title">Marketingmateriaal</h1>
+        </div>
+      </div>
+
+      <div className="section-eyebrow">Beschikbare bestanden</div>
+
       {files.length === 0 && <div className="loading">Laden...</div>}
-      <div className="files-grid">
-        {files.map(f => (
-          <div key={f.id} className={`file-card${f.accessible ? '' : ' locked'}`}>
-            <div className="file-name">{f.name}</div>
-            <div className="file-size">{fmtBytes(f.file_size_bytes)}</div>
-            <div className="file-downloads">{f.download_count}× gedownload</div>
-            {f.accessible ? (
-              <button onClick={() => download(f.id, f.name)} className="download-btn">
-                Downloaden
-              </button>
-            ) : (
-              <div className="lock-msg">Vereist {f.min_tier} tier of hoger</div>
-            )}
-          </div>
-        ))}
+
+      <div className="table-wrap">
+        {files.map(f => {
+          const accessible = isAccessible(f.min_tier, resellerTier)
+          return (
+            <div key={f.id} className={`file-row${accessible ? '' : ' locked'}`}>
+              <div className="file-icon">
+                {accessible ? <FileIcon /> : <LockIcon />}
+              </div>
+              <div className="file-info">
+                <div className="file-name">{f.name}</div>
+                <div className="file-meta">{f.download_count} downloads</div>
+              </div>
+              <div className="file-tier-tag">{tierLabel(f.min_tier)}</div>
+              <div className="file-action">
+                {accessible
+                  ? (
+                    <button className="icon-btn" onClick={() => download(f.id, f.name)}>
+                      ↓
+                    </button>
+                  )
+                  : (
+                    <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>
+                      Vereist {f.min_tier !== 'all' ? f.min_tier.charAt(0).toUpperCase() + f.min_tier.slice(1) : ''} tier
+                    </span>
+                  )
+                }
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

@@ -3,11 +3,27 @@ import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { Invoice } from '@/lib/types'
 
+const STATUS_LABELS: Record<Invoice['status'], string> = {
+  draft: 'Concept',
+  outstanding: 'Openstaand',
+  paid: 'Betaald',
+  overdue: 'Te laat',
+}
+
+const STATUS_CSS: Record<Invoice['status'], string> = {
+  draft: 'status-draft',
+  outstanding: 'status-pending',
+  paid: 'status-delivered',
+  overdue: 'status-processing',
+}
+
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
 
   useEffect(() => {
-    apiJson<Invoice[]>('/resellers/me/invoices').then(setInvoices)
+    apiJson<Invoice[]>('/resellers/me/invoices')
+      .then(setInvoices)
+      .catch((e) => console.error('invoices:', e.message))
   }, [])
 
   const fmt = (n: number) =>
@@ -16,36 +32,45 @@ export default function InvoicesPage() {
   const fmtDate = (d: string | null) =>
     d ? new Intl.DateTimeFormat('nl-NL').format(new Date(d)) : '—'
 
-  const STATUS_LABELS: Record<Invoice['status'], string> = {
-    draft: 'Concept', outstanding: 'Openstaand', paid: 'Betaald', overdue: 'Achterstallig',
-  }
-
   return (
-    <div className="panel" id="panel-invoices">
-      <h1>Facturen</h1>
+    <div className="panel-body">
+      <div className="page-head">
+        <div className="page-head-left">
+          <div className="page-eyebrow">Financieel</div>
+          <h1 className="page-title">Facturen</h1>
+        </div>
+      </div>
+
       {invoices.length === 0 && <div className="loading">Laden...</div>}
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Factuurnummer</th>
-            <th>Datum</th>
-            <th>Vervaldatum</th>
-            <th>Totaal</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoices.map(inv => (
-            <tr key={inv.id}>
-              <td>{inv.invoice_number ?? '—'}</td>
-              <td>{fmtDate(inv.invoice_date)}</td>
-              <td>{fmtDate(inv.due_date)}</td>
-              <td>{fmt(inv.total_eur)}</td>
-              <td><span className={`status-badge status-${inv.status}`}>{STATUS_LABELS[inv.status]}</span></td>
+
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>FACTUURNR</th>
+              <th>DATUM</th>
+              <th>VERVALDATUM</th>
+              <th>TOTAAL</th>
+              <th>STATUS</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {invoices.map(inv => (
+              <tr key={inv.id}>
+                <td>{inv.invoice_number ?? '—'}</td>
+                <td>{fmtDate(inv.invoice_date)}</td>
+                <td>{fmtDate(inv.due_date)}</td>
+                <td className="td-num">{fmt(inv.total_eur)}</td>
+                <td>
+                  <span className={`badge-status ${STATUS_CSS[inv.status]}`}>
+                    {STATUS_LABELS[inv.status]}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
