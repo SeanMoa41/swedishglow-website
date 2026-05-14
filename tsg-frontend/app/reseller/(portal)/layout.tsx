@@ -4,6 +4,8 @@ import { createServerSideClient } from '@/lib/supabase-server'
 import type { Reseller } from '@/lib/types'
 import Sidebar from '@/components/reseller/Sidebar'
 import { ResellerProvider } from '@/lib/reseller-context'
+import { CartProvider } from '@/lib/cart-context'
+import CartBadge from '@/components/reseller/CartBadge'
 
 const DEV_RESELLER: Reseller = {
   id: 'dev-bypass',
@@ -33,9 +35,12 @@ export default async function PortalLayout({ children }: { children: React.React
       <div className="shell" id="portal-shell">
         <Sidebar reseller={DEV_RESELLER} />
         <main className="main-content">
-          <ResellerProvider reseller={DEV_RESELLER}>
-            {children}
-          </ResellerProvider>
+          <CartProvider>
+            <ResellerProvider reseller={DEV_RESELLER}>
+              <CartBadge />
+              {children}
+            </ResellerProvider>
+          </CartProvider>
         </main>
       </div>
     )
@@ -57,9 +62,12 @@ export default async function PortalLayout({ children }: { children: React.React
     <div className="shell" id="portal-shell">
       <Sidebar reseller={reseller} />
       <main className="main-content">
-        <ResellerProvider reseller={reseller}>
-          {children}
-        </ResellerProvider>
+        <CartProvider>
+          <ResellerProvider reseller={reseller}>
+            <CartBadge />
+            {children}
+          </ResellerProvider>
+        </CartProvider>
       </main>
     </div>
   )

@@ -785,6 +785,40 @@ em { font-style: italic; }
   line-height: 1;
 }
 
+/* CART BADGE */
+.cart-badge {
+  position: fixed;
+  top: 20px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--moss-deep);
+  color: var(--bone);
+  padding: 8px 16px;
+  border: 1px solid rgba(212, 180, 120, 0.25);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  z-index: 100;
+  transition: background 0.2s ease;
+}
+.cart-badge:hover { background: var(--moss); }
+.cart-badge-count {
+  background: var(--gold);
+  color: var(--moss-deep);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.cart-badge-label { font-weight: 400; }
+
 /* DASHBOARD */
 .welcome {
   position: relative;
