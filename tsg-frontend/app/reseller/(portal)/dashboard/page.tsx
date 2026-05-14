@@ -28,7 +28,14 @@ export default function DashboardPage() {
     new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(n)
 
   const currentIdx = tier ? tierIndex(tier.current_tier) : -1
-  const fillPct = tier ? tier.progress_pct : 0
+  const TIER_LINE_POS = [0, 25, 50, 75, 100]
+  const fillPct = tier
+    ? (() => {
+        const cur = TIER_LINE_POS[currentIdx] ?? 0
+        const next = TIER_LINE_POS[currentIdx + 1] ?? 100
+        return cur + (tier.progress_pct / 100) * (next - cur)
+      })()
+    : 0
 
   return (
     <div className="panel-body">

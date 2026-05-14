@@ -65,7 +65,12 @@ export default function TierPage() {
   if (!tier) return <div className="loading">Laden...</div>
 
   const currentIdx = tierIndex(tier.current_tier)
-  const fillPct = tier.progress_pct
+  const TIER_LINE_POS = [0, 25, 50, 75, 100]
+  const fillPct = (() => {
+    const cur = TIER_LINE_POS[currentIdx] ?? 0
+    const next = TIER_LINE_POS[currentIdx + 1] ?? 100
+    return cur + (tier.progress_pct / 100) * (next - cur)
+  })()
 
   return (
     <div className="panel-body">
