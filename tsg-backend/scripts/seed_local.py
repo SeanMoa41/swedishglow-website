@@ -109,16 +109,16 @@ async def seed():
 
         # 5. Quotations (3)
         quotations = [
-            ("QUO-2026-001", "DEAL-2026-001", "draft"),
-            ("QUO-2026-002", "DEAL-2026-002", "sent"),
-            ("QUO-2026-003", "DEAL-2026-003", "accepted"),
+            ("QUO-2026-001", "DEAL-2026-001", "draft",     450.00),
+            ("QUO-2026-002", "DEAL-2026-002", "sent",      675.00),
+            ("QUO-2026-003", "DEAL-2026-003", "accepted", 1125.00),
         ]
         line_items = json.dumps([{"product": "Marine Collageen Poeder", "qty": 10, "unit_price": 45.00}])
-        for i, (tl_q_id, tl_d_id, status) in enumerate(quotations, start=1):
+        for i, (tl_q_id, tl_d_id, status, total) in enumerate(quotations, start=1):
             stable_id = uuid.UUID(f"b0000000-0000-0000-0000-{i:012d}")
             await db.execute(text("""
-                INSERT INTO quotations (id, tl_quotation_id, tl_deal_id, reseller_id, status, line_items)
-                VALUES (:id, :tl_q_id, :tl_d_id, :reseller_id, :status, CAST(:items AS jsonb))
+                INSERT INTO quotations (id, tl_quotation_id, tl_deal_id, reseller_id, status, line_items, total_eur)
+                VALUES (:id, :tl_q_id, :tl_d_id, :reseller_id, :status, CAST(:items AS jsonb), :total)
                 ON CONFLICT (id) DO NOTHING
             """), {
                 "id": stable_id,
@@ -127,16 +127,24 @@ async def seed():
                 "reseller_id": reseller_id,
                 "status": status,
                 "items": line_items,
+                "total": total,
             })
         print("✓ 3 quotations")
 
-        # 6. Marketing file (1) — stable UUID so re-runs are idempotent
-        await db.execute(text("""
-            INSERT INTO marketing_files (id, name, blob_url, min_tier, download_count, uploaded_by)
-            VALUES (:id, 'TSG Productcatalogus 2026', 'mock-file.pdf', 'all', 0, :uploaded_by)
-            ON CONFLICT (id) DO NOTHING
-        """), {"id": uuid.UUID("f0000000-0000-0000-0000-000000000001"), "uploaded_by": reseller_id})
-        print("✓ 1 marketing file")
+        # 6. Marketing files (4) — stable UUIDs so re-runs are idempotent
+        marketing_files = [
+            (uuid.UUID("f0000000-0000-0000-0000-000000000001"), "TSG Productcatalogus 2026",     "mock-file.pdf", "all"),
+            (uuid.UUID("f0000000-0000-0000-0000-000000000002"), "Brand Kit 2026",                "mock-file.pdf", "rose"),
+            (uuid.UUID("f0000000-0000-0000-0000-000000000003"), "Productpresentatie Video",      "mock-file.pdf", "pro"),
+            (uuid.UUID("f0000000-0000-0000-0000-000000000004"), "Prijslijst Groothandel",        "mock-file.pdf", "all"),
+        ]
+        for fid, fname, fblob, ftier in marketing_files:
+            await db.execute(text("""
+                INSERT INTO marketing_files (id, name, blob_url, min_tier, download_count, uploaded_by)
+                VALUES (:id, :name, :blob_url, :min_tier, 0, :uploaded_by)
+                ON CONFLICT (id) DO NOTHING
+            """), {"id": fid, "name": fname, "blob_url": fblob, "min_tier": ftier, "uploaded_by": reseller_id})
+        print("✓ 4 marketing files")
 
         await db.commit()
         print("\n✓ Seed complete. Navigate to http://localhost:3000/reseller/dashboard")
