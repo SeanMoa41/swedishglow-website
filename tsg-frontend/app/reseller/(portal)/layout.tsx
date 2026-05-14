@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createServerSideClient } from '@/lib/supabase-server'
 import type { Reseller } from '@/lib/types'
 import Sidebar from '@/components/reseller/Sidebar'
+import { ResellerProvider } from '@/lib/reseller-context'
 
 const DEV_RESELLER: Reseller = {
   id: 'dev-bypass',
@@ -32,7 +33,9 @@ export default async function PortalLayout({ children }: { children: React.React
       <div className="shell" id="portal-shell">
         <Sidebar reseller={DEV_RESELLER} />
         <main className="main-content">
-          {children}
+          <ResellerProvider reseller={DEV_RESELLER}>
+            {children}
+          </ResellerProvider>
         </main>
       </div>
     )
@@ -54,8 +57,11 @@ export default async function PortalLayout({ children }: { children: React.React
     <div className="shell" id="portal-shell">
       <Sidebar reseller={reseller} />
       <main className="main-content">
-        {children}
+        <ResellerProvider reseller={reseller}>
+          {children}
+        </ResellerProvider>
       </main>
     </div>
   )
 }
+
