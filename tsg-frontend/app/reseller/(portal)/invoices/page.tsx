@@ -53,7 +53,7 @@ export default function InvoicesPage() {
           <tbody>
             {invoices.map(inv => (
               <tr key={inv.id}>
-                <td>{inv.invoice_number ?? '—'}</td>
+                <td>{inv.invoice_number ?? inv.tl_invoice_id}</td>
                 <td>{fmtDate(inv.invoice_date)}</td>
                 <td>{fmtDate(inv.due_date)}</td>
                 <td className="td-num">{fmt(inv.total_eur)}</td>
