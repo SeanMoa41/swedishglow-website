@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [phone, setPhone] = useState('')
-  const [saved, setSaved] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'saved' | 'error'>('idle')
 
   useEffect(() => {
     apiJson<Reseller>('/auth/me').then(r => {
@@ -27,78 +27,85 @@ export default function ProfilePage() {
         method: 'PUT',
         body: JSON.stringify({ first_name: firstName, last_name: lastName, phone }),
       })
-      setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
-    } catch (e) {
-      console.error('save profile:', e)
+      setStatus('saved')
+      setTimeout(() => setStatus('idle'), 3000)
+    } catch {
+      setStatus('error')
     }
   }
 
   if (!reseller) return <div className="loading">Laden...</div>
 
   const initials = [reseller.first_name, reseller.last_name]
-    .filter(Boolean)
-    .map(n => n![0].toUpperCase())
-    .join('') || reseller.email[0].toUpperCase()
+    .filter(Boolean).map(n => n![0].toUpperCase()).join('') || reseller.email[0].toUpperCase()
+
+  const tierLabel = reseller.tier
+    ? reseller.tier.charAt(0).toUpperCase() + reseller.tier.slice(1)
+    : '—'
 
   return (
     <div className="panel-body">
       <PageHeader eyebrow="Account" title="Mijn gegevens" />
 
-      <div className="profile-head">
-        <div className="profile-avatar">{initials}</div>
-        <div className="profile-id">
-          <div className="name">
-            {[reseller.first_name, reseller.last_name].filter(Boolean).join(' ') || reseller.email}
+      <div className="profile-card">
+        <div className="profile-card-head">
+          <div className="profile-avatar-lg">{initials}</div>
+          <div className="profile-card-id">
+            <div className="profile-card-name">
+              {[reseller.first_name, reseller.last_name].filter(Boolean).join(' ') || reseller.email}
+            </div>
+            <div className="profile-card-company">{reseller.company ?? '—'}</div>
+            <span className="tier-badge">{tierLabel}</span>
           </div>
-          <div className="company">{reseller.company ?? '—'}</div>
         </div>
-      </div>
 
-      <form onSubmit={handleSave}>
-        <div className="form-grid">
-          <div>
-            <label className="field-label">Voornaam</label>
-            <input
-              className="field-input"
-              type="text"
-              value={firstName}
-              onChange={e => setFirstName(e.target.value)}
-            />
+        <div className="profile-card-divider" />
+
+        <form onSubmit={handleSave}>
+          <div className="profile-form-grid">
+            <div className="profile-section">
+              <div className="profile-section-label">Persoonsgegevens</div>
+              <div className="form-grid">
+                <div>
+                  <label className="field-label">Voornaam</label>
+                  <input className="field-input" type="text" value={firstName}
+                    onChange={e => setFirstName(e.target.value)} />
+                </div>
+                <div>
+                  <label className="field-label">Achternaam</label>
+                  <input className="field-input" type="text" value={lastName}
+                    onChange={e => setLastName(e.target.value)} />
+                </div>
+                <div className="full">
+                  <label className="field-label">Telefoonnummer</label>
+                  <input className="field-input" type="tel" value={phone}
+                    onChange={e => setPhone(e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="profile-section">
+              <div className="profile-section-label">Accountgegevens</div>
+              <div className="form-grid">
+                <div className="full">
+                  <div className="field-label">E-mailadres</div>
+                  <div className="field-readonly">{reseller.email}</div>
+                </div>
+                <div className="full">
+                  <div className="field-label">Bedrijf</div>
+                  <div className="field-readonly">{reseller.company ?? '—'}</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="field-label">Achternaam</label>
-            <input
-              className="field-input"
-              type="text"
-              value={lastName}
-              onChange={e => setLastName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="field-label">Telefoonnummer</label>
-            <input
-              className="field-input"
-              type="tel"
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
-            />
-          </div>
-          <div>
-            <div className="field-label">E-mailadres</div>
-            <div style={{ paddingTop: '10px' }}>{reseller.email}</div>
-          </div>
-          <div>
-            <div className="field-label">Bedrijf</div>
-            <div style={{ paddingTop: '10px' }}>{reseller.company ?? '—'}</div>
-          </div>
-          <div className="full">
+
+          <div className="profile-save-row">
+            {status === 'saved' && <span className="profile-status-ok">Wijzigingen opgeslagen</span>}
+            {status === 'error' && <span className="profile-status-err">Er is iets misgegaan</span>}
             <button type="submit" className="btn btn-primary">Opslaan</button>
           </div>
-        </div>
-      </form>
-
-      {saved && <div className="toast show">Profiel opgeslagen</div>}
+        </form>
+      </div>
     </div>
   )
 }
