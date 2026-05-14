@@ -6,6 +6,7 @@ from app.database import get_db
 from app.auth import get_current_reseller
 from app.models import Reseller, Invoice, TierThreshold, TierEnum, Quotation
 from app.schemas.reseller import ResellerOut, StatsOut, TierOut, ProfileUpdateIn
+from app.integrations import teamleader
 
 router = APIRouter(prefix="/resellers", tags=["resellers"])
 
@@ -100,6 +101,32 @@ async def get_invoices(
     reseller: Reseller = Depends(get_current_reseller),
     db: AsyncSession = Depends(get_db),
 ):
+    # Fetch live from TeamLeader and upsert into DB
+    tl_invoices = await teamleader.list_invoices(customer_id=reseller.teamleader_id)
+    for tl_inv in tl_invoices:
+        tl_id = tl_inv.get("id")
+        if not tl_id:
+            continue
+        existing = await db.execute(
+            select(Invoice).where(Invoice.tl_invoice_id == tl_id)
+        )
+        inv = existing.scalar_one_or_none()
+        if inv is None:
+            inv = Invoice(
+                tl_invoice_id=tl_id,
+                reseller_id=reseller.id,
+                status=tl_inv.get("status", "outstanding"),
+                total_eur=float(tl_inv.get("total", {}).get("tax_exclusive", 0) or 0),
+                invoice_date=tl_inv.get("date"),
+                due_date=tl_inv.get("due_on"),
+            )
+            db.add(inv)
+        else:
+            inv.status = tl_inv.get("status", inv.status)
+            inv.total_eur = float(tl_inv.get("total", {}).get("tax_exclusive", inv.total_eur) or inv.total_eur)
+    if tl_invoices:
+        await db.commit()
+
     result = await db.execute(
         select(Invoice)
         .where(Invoice.reseller_id == reseller.id)
