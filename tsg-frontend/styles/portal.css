@@ -819,6 +819,18 @@ em { font-style: italic; }
 }
 .cart-badge-label { font-weight: 400; }
 
+/* SUCCESS BANNER */
+.success-banner {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  color: var(--bone);
+  padding: 14px 24px;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 24px;
+  border-left: 3px solid var(--gold-soft);
+}
+.section-actions { margin-bottom: 8px; }
+
 /* CART PAGE */
 .cart-layout {
   display: grid;
