@@ -1050,14 +1050,14 @@ em { font-style: italic; }
 .tier-line {
   position: absolute;
   top: 14px;
-  left: 0;
-  right: 0;
+  left: 10%;
+  right: 10%;
   height: 1px;
   background: var(--line-strong);
 }
 .tier-line-fill {
   position: absolute;
-  top: 13px;
+  top: -1px;
   left: 0;
   height: 3px;
   background: linear-gradient(90deg,
