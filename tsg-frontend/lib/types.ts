@@ -78,6 +78,11 @@ export interface MarketingFile {
   uploaded_by: string | null
 }
 
+export interface FileListOut {
+  accessible: MarketingFile[]
+  locked: MarketingFile[]
+}
+
 export interface Application {
   id: string
   first_name: string
