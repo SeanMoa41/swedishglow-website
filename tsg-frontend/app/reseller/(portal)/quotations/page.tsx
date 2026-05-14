@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { Quotation, Product } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 
 interface LineItem { product_id: string; quantity: number }
 
@@ -81,12 +82,7 @@ export default function QuotationsPage() {
 
   return (
     <div className="panel-body">
-      <div className="page-head">
-        <div className="page-head-left">
-          <div className="page-eyebrow">Bestellen</div>
-          <h1 className="page-title">Offerte aanvragen</h1>
-        </div>
-      </div>
+      <PageHeader eyebrow="Bestellen" title="Bestellingen" />
 
       {/* Product selection */}
       <div className="section-eyebrow">Producten toevoegen</div>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { TierInfo } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 
 const TIER_KEYS = ['pearl', 'rose', 'pro', 'elite', 'black']
 const TIER_NAMES = ['Pearl', 'Rose', 'Pro', 'Elite', 'Black']
@@ -74,12 +75,7 @@ export default function TierPage() {
 
   return (
     <div className="panel-body">
-      <div className="page-head">
-        <div className="page-head-left">
-          <div className="page-eyebrow">Partner programma</div>
-          <h1 className="page-title">Tier voordelen</h1>
-        </div>
-      </div>
+      <PageHeader eyebrow="Partner programma" title="Tier voordelen" />
 
       {/* Tier progress track */}
       <div className="tier-progress">

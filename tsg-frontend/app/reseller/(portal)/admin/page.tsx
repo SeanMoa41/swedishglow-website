@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { AdminReseller, Application } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 import Link from 'next/link'
 
 export default function AdminPage() {
@@ -17,7 +18,7 @@ export default function AdminPage() {
 
   return (
     <div className="panel" id="panel-admin">
-      <h1>Beheer</h1>
+      <PageHeader eyebrow="Beheer" title="Admin overzicht" />
       <div className="admin-stats">
         <div className="stat-card">
           <div className="stat-label">Partners</div>

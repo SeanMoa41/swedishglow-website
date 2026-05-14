@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { Invoice } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 
 const STATUS_LABELS: Record<Invoice['status'], string> = {
   draft: 'Concept',
@@ -34,12 +35,7 @@ export default function InvoicesPage() {
 
   return (
     <div className="panel-body">
-      <div className="page-head">
-        <div className="page-head-left">
-          <div className="page-eyebrow">Financieel</div>
-          <h1 className="page-title">Facturen</h1>
-        </div>
-      </div>
+      <PageHeader eyebrow="Financieel" title="Facturen" />
 
       {invoices.length === 0 && <div className="loading">Laden...</div>}
 

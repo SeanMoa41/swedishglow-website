@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiJson, apiFetch } from '@/lib/api'
 import type { Reseller } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 
 export default function ProfilePage() {
   const [reseller, setReseller] = useState<Reseller | null>(null)
@@ -42,12 +43,7 @@ export default function ProfilePage() {
 
   return (
     <div className="panel-body">
-      <div className="page-head">
-        <div className="page-head-left">
-          <div className="page-eyebrow">Account</div>
-          <h1 className="page-title">Mijn gegevens</h1>
-        </div>
-      </div>
+      <PageHeader eyebrow="Account" title="Mijn gegevens" />
 
       <div className="profile-head">
         <div className="profile-avatar">{initials}</div>

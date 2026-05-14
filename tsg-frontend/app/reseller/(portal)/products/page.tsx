@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
 import type { Product } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 
 const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
 
@@ -35,12 +36,7 @@ export default function ProductsPage() {
 
   return (
     <div className="panel-body">
-      <div className="page-head">
-        <div className="page-head-left">
-          <div className="page-eyebrow">Assortiment</div>
-          <h1 className="page-title">Producten</h1>
-        </div>
-      </div>
+      <PageHeader eyebrow="Assortiment" title="Producten" />
 
       <div className="toolbar">
         <input

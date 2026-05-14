@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { apiFetch, apiJson } from '@/lib/api'
 import type { MarketingFile, Reseller } from '@/lib/types'
+import PageHeader from '@/components/reseller/PageHeader'
 
 const TIER_ORDER = ['all', 'pearl', 'rose', 'pro', 'elite', 'black']
 
@@ -59,12 +60,7 @@ export default function FilesPage() {
 
   return (
     <div className="panel-body">
-      <div className="page-head">
-        <div className="page-head-left">
-          <div className="page-eyebrow">Downloads</div>
-          <h1 className="page-title">Marketingmateriaal</h1>
-        </div>
-      </div>
+      <PageHeader eyebrow="Downloads" title="Marketingmateriaal" />
 
       <div className="section-eyebrow">Beschikbare bestanden</div>
 
