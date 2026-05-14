@@ -6,7 +6,15 @@
       "mcp__plugin_claude-mem_mcp-search__smart_outline",
       "mcp__context7__resolve-library-id",
       "mcp__context7__query-docs",
-      "mcp__plugin_claude-mem_mcp-search__get_observations"
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "PowerShell(cd \"C:\\\\Users\\\\ittai\\\\Coding\\\\TSG Website\\\\tsg-backend\"; $env:PYTHONIOENCODING='utf-8'; python scripts/seed_local.py 2>&1)",
+      "Skill(superpowers:brainstorming)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:subagent-driven-development)",
+      "mcp__plugin_claude-mem_mcp-search__smart_search",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\ittai\\\\Coding\\\\TSG Website\\\\tsg-frontend\\\\app\\\\reseller\\\\\\(portal\\)\\\\dashboard\\\\page.tsx\" | Measure-Object -Line\\).Lines)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\ittai\\\\Coding\\\\TSG Website\\\\tsg-frontend\" -Recurse -Filter \"page.tsx\" | Where-Object { $_.FullName -match \"\\(tier|products|quotations|invoices|files|profile|admin\\)\" } | Select-Object FullName)",
+      "PowerShell(Get-Content *)"
     ]
   }
 }
