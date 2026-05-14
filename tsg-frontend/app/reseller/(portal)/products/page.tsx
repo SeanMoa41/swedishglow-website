@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { apiJson } from '@/lib/api'
+import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/types'
 import PageHeader from '@/components/reseller/PageHeader'
 
@@ -19,12 +20,20 @@ const TAG_IMAGES: Record<string, string> = {
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [search, setSearch] = useState('')
+  const { addItem } = useCart()
+  const [added, setAdded] = useState<string | null>(null)
 
   useEffect(() => {
     apiJson<Product[]>('/products')
       .then(setProducts)
       .catch((e) => console.error('products:', e.message))
   }, [])
+
+  function handleAdd(p: Product) {
+    addItem({ product_id: p.id, name: p.name, unit_price: p.net_price_eur })
+    setAdded(p.id)
+    setTimeout(() => setAdded(null), 600)
+  }
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(n)
@@ -72,7 +81,12 @@ export default function ProductsPage() {
                   <span className="product-price-list">{fmt(p.list_price_eur)}</span>
                   <span className="product-price-net">{fmt(p.net_price_eur)}</span>
                 </div>
-                <button className="btn btn-primary">Toevoegen aan offerte →</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleAdd(p)}
+                >
+                  {added === p.id ? '✓ Toegevoegd' : 'Toevoegen aan offerte →'}
+                </button>
               </div>
             </div>
           )
