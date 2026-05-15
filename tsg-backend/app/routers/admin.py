@@ -1,5 +1,5 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, extract, text
 from app.database import get_db
@@ -14,6 +14,7 @@ from app.schemas.admin import (
 )
 from app.schemas.application import ApplicationOut
 from app.integrations import supabase_admin
+from app.integrations.email import send_email
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -35,6 +36,7 @@ async def list_applications(
 async def approve_application(
     application_id: uuid.UUID,
     body: ApplicationApproveIn,
+    background_tasks: BackgroundTasks,
     admin: Reseller = Depends(get_current_admin),
     db: AsyncSession = Depends(get_db),
 ):
@@ -63,6 +65,17 @@ async def approve_application(
     application.reviewed_by = admin.id
     await db.commit()
     await db.refresh(application)
+    background_tasks.add_task(
+        send_email,
+        to=application.email,
+        subject="Je aanmelding is goedgekeurd — The Swedish Glow",
+        template="account_approved",
+        context={
+            "name": application.first_name,
+            "company": application.company,
+            "tier": body.assigned_tier,
+        },
+    )
     return application
 
 
