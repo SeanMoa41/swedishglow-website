@@ -1,7 +1,10 @@
+import asyncio
 import logging
 from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+
+from app.database import AsyncSessionLocal
 
 TIER_ORDER = ["pearl", "rose", "pro", "elite", "black"]
 
@@ -61,15 +64,14 @@ async def recalculate_reseller_tier(db: AsyncSession, reseller_id: str) -> str |
 
 
 async def recalculate_all_tiers() -> None:
-    from app.database import AsyncSessionLocal
     from app.integrations.email import send_email
-    import asyncio
     logger = logging.getLogger("tsg.tier")
     logger.info("Starting nightly tier recalculation")
     async with AsyncSessionLocal() as db:
         result = await db.execute(
             text("SELECT id, email, first_name FROM resellers WHERE status = 'active'")
         )
+        # result.all() materialises rows as plain Row objects — safe to access after session closes
         resellers = result.all()
 
     upgraded = 0
