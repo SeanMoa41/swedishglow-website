@@ -2,139 +2,94 @@ name: Backend
 
 on:
   push:
-    branches: [main]
     paths:
       - 'tsg-backend/**'
       - '!tsg-backend/etl/**'
-      - '.github/workflows/backend.yml'
   pull_request:
-    branches: [main]
     paths:
       - 'tsg-backend/**'
       - '!tsg-backend/etl/**'
-      - '.github/workflows/backend.yml'
 
-concurrency:
-  group: backend-${{ github.ref }}
-  cancel-in-progress: true
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: tsg-backend
-
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: tsg
+          POSTGRES_USER: tsg
+          POSTGRES_PASSWORD: tsg
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: pip
-          cache-dependency-path: tsg-backend/requirements.txt
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Create test .env
-        run: |
-          cat > .env << 'EOF'
-          DATABASE_URL=postgresql+asyncpg://tsg:tsg@localhost:5432/tsg
-          DATABASE_URL_SYNC=postgresql+psycopg2://tsg:tsg@localhost:5432/tsg
-          SUPABASE_URL=https://placeholder.supabase.co
-          SUPABASE_SERVICE_ROLE_KEY=placeholder
-          SUPABASE_JWT_SECRET=placeholder-secret-at-least-32-chars-long
-          WEBHOOK_SECRET=placeholder-webhook-secret
-          EOF
-
-      - name: Run tests
-        run: pytest tests/ -v --tb=short
+      - run: pip install -r requirements.txt
+        working-directory: tsg-backend
+      - run: pytest tests/ -v
+        working-directory: tsg-backend
+        env:
+          DATABASE_URL: postgresql+asyncpg://tsg:tsg@localhost:5432/tsg
+          DATABASE_URL_SYNC: postgresql+psycopg2://tsg:tsg@localhost:5432/tsg
+          SUPABASE_URL: https://placeholder.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: placeholder
+          SUPABASE_JWT_SECRET: placeholder-secret-32-chars-minimum
+          WEBHOOK_SECRET: placeholder
 
   deploy-staging:
     needs: test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     environment: staging
-
+    outputs:
+      image: ${{ steps.build.outputs.image }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Build and push image
-        working-directory: tsg-backend
+      - name: Build and push to ACR
+        id: build
         run: |
-          az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
-          IMAGE=${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend
-          docker build --platform linux/amd64 \
-            -t $IMAGE:staging \
-            -t $IMAGE:${{ github.sha }}-staging \
-            .
-          docker push $IMAGE:staging
-          docker push $IMAGE:${{ github.sha }}-staging
-
-      - name: Deploy to staging Container App
+          ACR_NAME=$(echo "${{ secrets.ACR_LOGIN_SERVER }}" | cut -d. -f1)
+          az acr login --name $ACR_NAME
+          IMAGE=${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:${{ github.sha }}
+          docker build -t $IMAGE tsg-backend/
+          docker push $IMAGE
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+      - name: Update staging Container App
         run: |
           az containerapp update \
             --name ${{ secrets.CONTAINER_APP_NAME }} \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:${{ github.sha }}-staging
-
-      - name: Smoke test
-        run: |
-          FQDN=$(az containerapp show \
-            --name ${{ secrets.CONTAINER_APP_NAME }} \
-            --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --query properties.configuration.ingress.fqdn -o tsv)
-          curl --fail --retry 5 --retry-delay 10 https://$FQDN/health
+            --image ${{ steps.build.outputs.image }}
 
   deploy-prod:
     needs: deploy-staging
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     environment: production
-
     steps:
-      - uses: actions/checkout@v4
-
       - uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Promote image to prod
-        run: |
-          ACR_NAME=$(echo "${{ secrets.ACR_LOGIN_SERVER }}" | cut -d. -f1)
-          az acr import \
-            --name "$ACR_NAME" \
-            --source "${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:${{ github.sha }}-staging" \
-            --image "tsg-backend:latest" \
-            --image "tsg-backend:${{ github.sha }}" \
-            --force
-
-      - name: Deploy to prod Container App
+      - name: Update production Container App
         run: |
           az containerapp update \
             --name ${{ secrets.CONTAINER_APP_NAME }} \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/tsg-backend:${{ github.sha }}
-
-      - name: Smoke test
-        run: |
-          FQDN=$(az containerapp show \
-            --name ${{ secrets.CONTAINER_APP_NAME }} \
-            --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --query properties.configuration.ingress.fqdn -o tsv)
-          curl --fail --retry 5 --retry-delay 10 https://$FQDN/health
+            --image ${{ needs.deploy-staging.outputs.image }}

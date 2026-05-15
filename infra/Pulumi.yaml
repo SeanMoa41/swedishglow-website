@@ -1,3 +1,3 @@
 name: tsg-infra
 runtime: python
-description: TSG Website Azure infrastructure (compute layer)
+description: TSG Website — Azure infrastructure (Container App + Functions + ACR)
