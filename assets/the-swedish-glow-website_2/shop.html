@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop | The Swedish Glow</title>
+<meta name="description" content="Onze collectie premium vloeibare supplementen. Marine Collageen, Nordsilk, FREJA en HÉRMADE.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bone: #f6f1e8;
+  --bone-warm: #ede5d3;
+  --cream: #f0e9da;
+  --ink: #1c1c1a;
+  --ink-soft: #5a5a55;
+  --moss: #2d3e2f;
+  --moss-deep: #1a2820;
+  --gold: #b8924a;
+  --gold-soft: #d4b478;
+  --gold-deep: #a07a3b;
+  --rust: #8b5e3c;
+  --stone: #8a8478;
+  --stone-light: #c8bfae;
+  --line: #e0d8c5;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Inter Tight', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-body);
+  background: var(--bone);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.serif { font-family: var(--font-display); }
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* Header */
+header {
+  position: sticky; top: 0;
+  background: var(--bone);
+  z-index: 100;
+  border-bottom: 1px solid var(--line);
+}
+.nav-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 22px 40px;
+  gap: 40px;
+}
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-size: 0.85rem;
+}
+.nav-right { justify-content: flex-end; }
+.nav-left a, .nav-right a {
+  color: var(--ink);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 3px;
+}
+.nav-left a.current { color: var(--gold-deep); }
+.nav-left a::after, .nav-right a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--ink);
+  transition: width 0.3s ease;
+}
+.nav-left a:hover::after, .nav-right a:hover::after { width: 100%; }
+/* Nav dropdown */
+.nav-dropdown { position: relative; display: inline-block; }
+.nav-dropdown-trigger { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.nav-dropdown-trigger .nav-arrow { font-size: 0.65rem; opacity: 0.6; transition: transform 0.3s ease; }
+.nav-dropdown:hover .nav-dropdown-trigger .nav-arrow { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  position: absolute; top: calc(100% + 16px); left: -20px;
+  min-width: 320px; background: var(--bone); border: 1px solid var(--line);
+  box-shadow: 0 24px 48px -16px rgba(28, 28, 26, 0.18);
+  padding: 12px; opacity: 0; visibility: hidden; transform: translateY(-8px);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 100;
+}
+.nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.nav-dropdown::before {
+  content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 16px;
+}
+.nav-dropdown-menu a {
+  display: flex; align-items: center; gap: 16px; padding: 14px 16px;
+  text-decoration: none; border: none !important; transition: background 0.3s ease;
+}
+.nav-dropdown-menu a::after { display: none; }
+.nav-dropdown-menu a:hover { background: rgba(184, 146, 74, 0.08); }
+.nav-product-num {
+  font-family: var(--font-display); font-style: italic; font-size: 1.4rem;
+  color: var(--gold); line-height: 1; width: 28px; text-align: center; flex-shrink: 0;
+}
+.nav-product-info { display: flex; flex-direction: column; gap: 2px; }
+.nav-product-name { font-family: var(--font-display); font-size: 1rem; color: var(--ink); font-weight: 500; }
+.nav-product-tag { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+.nav-dropdown-divider { height: 1px; background: var(--line); margin: 8px 16px; }
+.nav-dropdown-menu a.nav-dropdown-cta {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%); margin-top: 4px;
+}
+.nav-dropdown-menu a.nav-dropdown-cta .nav-product-num { color: var(--gold-soft); }
+.nav-dropdown-menu a.nav-dropdown-cta .nav-product-name { color: var(--bone); }
+.nav-dropdown-menu a.nav-dropdown-cta .nav-product-tag { color: var(--gold-soft); }
+
+.logo {
+  display: inline-flex; align-items: center; gap: 12px;
+  text-decoration: none; white-space: nowrap;
+}
+.logo-mark { width: 32px; height: auto; }
+.logo-text { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; }
+.logo-text em { font-style: italic; color: var(--gold); }
+.lang-switch { display: flex; gap: 12px; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; }
+.reseller-login {
+  border: 1px solid var(--gold); color: var(--gold-deep);
+  padding: 10px 22px !important;
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+}
+.reseller-login::after { display: none !important; }
+.reseller-login:hover { background: var(--gold); color: var(--bone) !important; }
+
+/* Breadcrumb */
+.breadcrumb {
+  padding: 24px 40px;
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft);
+}
+.breadcrumb a { color: var(--ink-soft); text-decoration: none; }
+.breadcrumb a:hover { color: var(--gold-deep); }
+.breadcrumb .sep { margin: 0 12px; opacity: 0.5; }
+.breadcrumb .current { color: var(--gold-deep); }
+
+/* Page hero */
+.page-hero {
+  padding: 100px 40px 80px;
+  text-align: center;
+  background: var(--bone);
+  border-bottom: 1px solid var(--line);
+}
+.page-hero-eyebrow {
+  font-size: 0.75rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-deep); font-weight: 500; margin-bottom: 24px;
+}
+.page-hero-eyebrow::before, .page-hero-eyebrow::after {
+  content: ''; display: inline-block; width: 32px; height: 1px;
+  background: var(--gold); vertical-align: middle; margin: 0 16px;
+}
+.page-hero h1 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 1.05;
+  letter-spacing: -0.01em; margin-bottom: 20px;
+}
+.page-hero h1 em { font-style: italic; color: var(--moss); }
+.page-hero p {
+  max-width: 640px; margin: 0 auto;
+  font-size: 1.1rem; color: var(--ink-soft); line-height: 1.7;
+}
+
+/* Footer */
+footer {
+  background: var(--ink); color: var(--bone);
+  padding: 80px 40px 40px;
+}
+.footer-wrap { max-width: 1240px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 60px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(246, 241, 232, 0.12);
+}
+.footer-brand .logo-text { color: var(--bone); }
+.footer-brand .logo-text em { color: var(--gold-soft); }
+.footer-brand p {
+  margin-top: 20px;
+  color: var(--stone-light);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+  color: var(--gold-soft);
+  font-weight: 500;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col a {
+  color: var(--stone-light);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.3s ease;
+}
+.footer-col a:hover { color: var(--gold-soft); }
+.footer-bottom {
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: 16px; font-size: 0.78rem; color: var(--stone-light);
+  padding-top: 32px;
+}
+.footer-bottom .legal a { color: var(--stone-light); margin-left: 24px; text-decoration: none; }
+.footer-bottom .legal a:hover { color: var(--gold-soft); }
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 18px 32px;
+  background: var(--moss); color: var(--bone); border: 1px solid var(--moss);
+  font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+  cursor: pointer; transition: all 0.3s ease; font-family: var(--font-body);
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--moss-deep); border-color: var(--gold);
+}
+.btn-primary .arrow { transition: transform 0.3s ease; }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 18px 32px;
+  background: transparent; color: var(--ink); border: 1px solid var(--ink);
+  font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+  cursor: pointer; transition: all 0.3s ease; font-family: var(--font-body);
+  text-decoration: none;
+}
+.btn-secondary:hover { background: var(--ink); color: var(--bone); }
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .nav-left, .nav-right { gap: 20px; }
+}
+@media (max-width: 640px) {
+  .nav-wrap { padding: 18px 20px; gap: 16px; }
+  .nav-left, .nav-right { display: none; }
+  .logo-mark { width: 26px; }
+  .logo-text { font-size: 1.2rem; }
+  .breadcrumb { padding: 16px 24px; }
+  .page-hero { padding: 70px 24px 56px; }
+  .page-hero-eyebrow::before, .page-hero-eyebrow::after { width: 16px; margin: 0 8px; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .footer-bottom .legal a { margin: 0 12px; }
+  footer { padding: 60px 24px 32px; }
+}
+
+
+.shop-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 100px 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+.shop-card {
+  position: relative;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+.shop-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 16px 32px -12px rgba(28, 28, 26, 0.12);
+}
+.shop-card-image {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+  background: var(--bone-warm);
+}
+.shop-card-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.shop-card:hover .shop-card-image img { transform: scale(1.04); }
+.shop-card-roman {
+  position: absolute;
+  top: 24px; left: 24px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2.4rem;
+  color: var(--gold);
+  z-index: 2;
+  opacity: 0.9;
+}
+.shop-card-badge {
+  position: absolute;
+  top: 24px; right: 24px;
+  background: var(--gold);
+  color: var(--bone);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 6px 14px;
+  z-index: 2;
+}
+.shop-card-info { padding: 32px; flex: 1; display: flex; flex-direction: column; }
+.shop-card-tag {
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 10px; font-weight: 500;
+}
+.shop-card-info h3 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: 1.8rem; line-height: 1.15; margin-bottom: 12px;
+}
+.shop-card-info p {
+  font-size: 0.95rem; color: var(--ink-soft);
+  line-height: 1.65; margin-bottom: 24px; flex-grow: 1;
+}
+.shop-card-footer {
+  display: flex; justify-content: space-between;
+  align-items: center; padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.shop-card-price {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 1.4rem; color: var(--gold-deep); font-weight: 500;
+}
+.shop-card-cta {
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink); font-weight: 600; display: flex; align-items: center; gap: 8px;
+}
+.shop-card-cta span { transition: transform 0.3s ease; }
+.shop-card:hover .shop-card-cta span { transform: translateX(4px); }
+
+@media (max-width: 1024px) {
+  .shop-grid { grid-template-columns: 1fr; padding: 60px 24px; }
+}
+
+
+/* ═══ MOBIELE NAVIGATIE — hamburger + overlay ═══ */
+.nav-hamburger {
+  display: none;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  z-index: 1001;
+}
+.nav-hamburger span {
+  display: block;
+  position: absolute;
+  left: 4px;
+  width: 24px;
+  height: 1px;
+  background: var(--ink, #1c1c1a);
+  transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1), opacity 0.3s ease, top 0.4s cubic-bezier(0.2,0.8,0.2,1);
+}
+.nav-hamburger span:nth-child(1) { top: 10px; }
+.nav-hamburger span:nth-child(2) { top: 16px; }
+.nav-hamburger span:nth-child(3) { top: 22px; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { top: 16px; transform: rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { top: 16px; transform: rotate(-45deg); }
+
+.mobile-menu {
+  position: fixed;
+  top: 0; right: 0;
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  background: var(--bone, #f5f0e8);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.2,0.8,0.2,1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  box-shadow: -20px 0 60px rgba(0,0,0,0.15);
+}
+.mobile-menu.open {
+  transform: translateX(0);
+  visibility: visible;
+}
+.mobile-menu-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--line, #e0d8ca);
+}
+.mobile-menu-title {
+  font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold-deep, #a88838); font-weight: 500;
+}
+.mobile-menu-close {
+  background: transparent; border: none;
+  font-size: 2rem; line-height: 1;
+  color: var(--ink, #1c1c1a); cursor: pointer;
+  padding: 0; width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.mobile-menu-nav {
+  display: flex; flex-direction: column;
+  padding: 28px 28px 60px;
+  gap: 0;
+}
+.mobile-menu-nav > a {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.4rem; font-weight: 400;
+  color: var(--ink, #1c1c1a);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(212, 180, 120, 0.18);
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+.mobile-menu-nav > a:hover, .mobile-menu-nav > a:focus {
+  color: var(--moss, #586b4d);
+  padding-left: 8px;
+}
+.mobile-menu-sublist {
+  display: flex; flex-direction: column;
+  padding: 8px 0 8px 16px;
+  border-bottom: 1px solid rgba(212, 180, 120, 0.18);
+}
+.mobile-menu-sublist a {
+  font-size: 0.92rem; color: var(--ink-soft, #6b6358);
+  text-decoration: none;
+  padding: 8px 0;
+  font-weight: 300;
+}
+.mobile-menu-divider {
+  height: 1px; background: var(--gold, #c9a557); opacity: 0.3;
+  margin: 20px 0;
+}
+body.menu-open { overflow: hidden; }
+
+@media (max-width: 1024px) {
+  .nav-hamburger { display: block; }
+  .nav-left { display: none !important; }
+  .nav-right { display: none !important; }
+  .nav-wrap { grid-template-columns: auto 1fr auto !important; align-items: center; }
+  .nav-wrap .logo { justify-self: center; }
+}
+
+/* ═══ Mobile-only finetuning voor nieuwe secties ═══ */
+@media (max-width: 768px) {
+  /* Hero HÉRMADE-foto fade aanpassen voor mobiel */
+  .hero-image-wrap::before {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--bone, #f5f0e8) 0%, transparent 100%);
+    left: 0; top: 0; bottom: auto;
+  }
+  .hero-badge {
+    bottom: 20px; right: 20px;
+    padding: 14px 18px;
+    max-width: 170px;
+  }
+  .hero-badge .name { font-size: 1.4rem; }
+
+  /* Reseller stats: 2x2 → maar kleiner padding */
+  .reseller-stats { padding: 56px 20px; }
+  .reseller-stat .num { font-size: 2rem; }
+
+  /* Hoe-het-werkt cirkels iets kleiner */
+  .how-step-num { width: 90px; height: 90px; font-size: 1.8rem; margin-bottom: 20px; }
+  .how-it-works { padding: 80px 24px; }
+
+  /* Partner-quote */
+  .partner-quote { padding: 80px 24px; }
+  .partner-quote::before { font-size: 8rem; top: 20px; }
+
+  /* FAQ */
+  .reseller-faq { padding: 80px 24px; }
+  .faq-item summary { font-size: 1.05rem; padding: 22px 8px 22px 0; }
+
+  /* Filosofie blokken on over-ons */
+  .philosophy { padding: 80px 24px; }
+  .founder-closing { padding: 80px 24px; }
+
+  /* Stories cards op mobiel */
+  .stories-list { padding: 60px 20px 80px; gap: 20px; }
+
+  /* Reseller partner-types */
+  .partner-types { padding: 80px 20px; }
+
+  /* Benefits */
+  .benefits { padding: 80px 24px; }
+}
+
+/* ═══ HORIZONTALE SCROLL voor producten/stories op mobiel ═══ */
+@media (max-width: 768px) {
+  /* Maak product-grid horizontaal scrolbaar */
+  .product-grid {
+    display: flex !important;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 20px 20px;
+    margin: 0 -20px;
+    scrollbar-width: thin;
+  }
+  .product-grid > * {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+    min-width: 280px;
+  }
+  .product-grid::-webkit-scrollbar { height: 4px; }
+  .product-grid::-webkit-scrollbar-track { background: rgba(212, 180, 120, 0.1); }
+  .product-grid::-webkit-scrollbar-thumb { background: var(--gold, #c9a557); border-radius: 2px; }
+
+  /* Stories list horizontaal */
+  .stories-list {
+    display: flex !important;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 40px 20px 60px !important;
+    margin: 0;
+  }
+  .stories-list > * {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+    min-width: 280px;
+  }
+
+  /* Rituals grid horizontaal */
+  .rituals-grid {
+    display: flex !important;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 20px 20px;
+    margin: 0 -20px;
+  }
+  .rituals-grid > * {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+    min-width: 260px;
+  }
+
+  /* Hint dat je kan scrollen */
+  .product-grid + .scroll-hint,
+  .stories-list + .scroll-hint,
+  .rituals-grid + .scroll-hint {
+    display: block;
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-deep, #a88838);
+    margin-top: 16px;
+    opacity: 0.7;
+  }
+}
+
+
+
+/* ═══ GLOBALE MOBILE-FIX (laatste media queries — overrulen alles) ═══ */
+@media (max-width: 768px) {
+  /* Comfortabele basis font-size */
+  html { font-size: 15px; }
+  body { line-height: 1.55; }
+
+  /* Algemene sectie-padding compacter */
+  section { padding-left: 20px !important; padding-right: 20px !important; }
+
+  /* Alle sectie-paddings boven/onder begrenzen voor mobiel — geen 140px meer */
+  .hero, .signature-ritual, .ritual-section, .ritual,
+  .stories-section, .stories-list, .testimonials, .testimonial-section,
+  .magazine, .editorial, .promise, .science, .lookbook,
+  .faq-section, .feature-strip, .intro,
+  .page-hero, .product-hero, .reseller-stats,
+  .how-it-works, .partner-types, .partner-quote, .reseller-faq,
+  .application, .cta-block, .benefits,
+  .philosophy, .founder-closing, .interview, .values,
+  .story-chapters, .connect, .founder-opening,
+  .product-description, .ingredients-section, .usage-section,
+  .product-timeline, .product-reviews, .product-faq, .cross-sell-section,
+  .usps-band, .reseller-intro, .contact-cta, .faq-page {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
+  /* Headings begrenzen: nooit groter dan leesbaar */
+  h1 { font-size: clamp(1.9rem, 8vw, 2.4rem) !important; line-height: 1.1 !important; }
+  h2 { font-size: clamp(1.6rem, 6vw, 2rem) !important; line-height: 1.15 !important; }
+  h3 { font-size: clamp(1.25rem, 4.5vw, 1.5rem) !important; line-height: 1.2 !important; }
+  h4 { font-size: clamp(1.05rem, 3.6vw, 1.2rem) !important; }
+
+  /* Body-tekst comfortabel groter dan op desktop */
+  p { font-size: 0.95rem; line-height: 1.65; }
+
+  /* Knoppen groter — tap targets minimaal 44px hoog (Apple HIG / WCAG) */
+  a.btn, button.btn, .btn-primary, .btn-secondary, .btn-gold,
+  .signature-button, .cs-form button {
+    padding: 14px 24px !important;
+    font-size: 0.78rem !important;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Tekst-blokken niet te breed — comfortabele leesbreedte */
+  p, li { max-width: 100%; }
+
+  /* Forceer alles netjes binnen viewport */
+  body, html { overflow-x: hidden; max-width: 100%; }
+  img, svg, video { max-width: 100%; height: auto; }
+
+  /* Gaps niet meer dan 32px op mobiel */
+  .product-grid, .stories-list, .rituals-grid,
+  .reviews-grid, .partner-grid, .benefits-grid,
+  .usps-grid, .footer-cols {
+    gap: 20px !important;
+  }
+
+  /* Magazine-split echt klein */
+  .magazine-split { min-height: auto !important; padding: 16px !important; gap: 12px !important; }
+  .split-pane { min-height: 180px; }
+  .split-pane .label-overlay { bottom: 16px !important; left: 16px !important; right: 16px !important; }
+  .split-pane .label-overlay h3 { font-size: 1.4rem !important; }
+
+  /* Hero compacter */
+  .hero { min-height: auto !important; }
+  .hero-text, .hero-content { padding: 50px 24px 40px !important; }
+  .hero h1, .hero-content h1 { font-size: 2rem !important; }
+  .hero-image, .hero-image-wrap { min-height: 280px !important; max-height: 380px; }
+  .hero-badge { bottom: 16px !important; right: 16px !important; padding: 12px 16px !important; }
+
+  /* FAQ items: meer tap area */
+  .faq-question { padding: 20px 0 !important; min-height: 56px; }
+
+  /* Product hero (productpagina's) */
+  .product-hero { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .product-hero-image { min-height: 320px !important; max-height: 400px; }
+  .product-hero-content { padding: 40px 24px !important; }
+  .product-hero-content h1 { font-size: 2.2rem !important; }
+
+  /* Footer compacter */
+  footer { padding: 50px 20px 30px !important; }
+
+  /* Nav iets compacter */
+  .nav-wrap { padding: 14px 20px !important; gap: 12px !important; }
+  .logo-text { font-size: 1.15rem !important; }
+  .logo-mark { width: 24px !important; }
+
+  /* Mobile menu tekst iets groter voor leesbaarheid */
+  .mobile-menu-nav > a { font-size: 1.25rem !important; padding: 12px 0 !important; }
+
+  /* Ritual-cards op mobiel: geen horizontale scroll meer (was te krap) */
+  .rituals-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+  .rituals-grid > * {
+    flex: none !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  .ritual-card { padding: 28px 24px !important; }
+  .ritual-card-num { font-size: 1.6rem !important; margin-bottom: 12px !important; }
+
+  /* Stats cards compacter */
+  .reseller-stats-wrap { gap: 28px 16px !important; }
+  .reseller-stat .num { font-size: 1.7rem !important; }
+
+  /* Kleinere padding rond CTAs */
+  .cta-block, .application { padding: 60px 20px !important; }
+
+  /* Voorkom dat horizontale scroll-grids op mobiel "kleven" */
+  .product-grid, .stories-list {
+    padding-bottom: 24px !important;
+  }
+}
+
+/* Heel klein scherm — extra compact */
+@media (max-width: 380px) {
+  html { font-size: 14px; }
+  section { padding-left: 16px !important; padding-right: 16px !important; }
+  h1 { font-size: 1.75rem !important; }
+  .hero h1, .hero-content h1, .product-hero-content h1 { font-size: 1.75rem !important; }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-wrap">
+    <div class="nav-left">
+      <a href="shop.html" class="current">Shop</a>
+      <div class="nav-dropdown">
+        <a href="supplementen.html" class="nav-dropdown-trigger">Supplementen <span class="nav-arrow">▾</span></a>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="marine-collageen-13000-kuur.html" role="menuitem">
+            <span class="nav-product-num">I</span>
+            <span class="nav-product-info">
+              <span class="nav-product-name">Marine Collageen 13.000</span>
+              <span class="nav-product-tag">Het ochtendritueel</span>
+            </span>
+          </a>
+          <a href="nordsilk.html" role="menuitem">
+            <span class="nav-product-num">II</span>
+            <span class="nav-product-info">
+              <span class="nav-product-name">Nordsilk</span>
+              <span class="nav-product-tag">Het haarritueel</span>
+            </span>
+          </a>
+          <a href="freja.html" role="menuitem">
+            <span class="nav-product-num">III</span>
+            <span class="nav-product-info">
+              <span class="nav-product-name">FREJA</span>
+              <span class="nav-product-tag">Het basisritueel</span>
+            </span>
+          </a>
+          <a href="hermade.html" role="menuitem">
+            <span class="nav-product-num">IV</span>
+            <span class="nav-product-info">
+              <span class="nav-product-name">HÉRMADE</span>
+              <span class="nav-product-tag">Het maandritueel</span>
+            </span>
+          </a>
+          <div class="nav-dropdown-divider"></div>
+          <a href="index.html#100-dagen-kuur" role="menuitem" class="nav-dropdown-cta">
+            <span class="nav-product-num">∞</span>
+            <span class="nav-product-info">
+              <span class="nav-product-name">100-dagen kuur</span>
+              <span class="nav-product-tag">Het signature ritueel</span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <a href="stories.html">Stories</a>
+      <a href="over-ons.html">Ons verhaal</a>
+      <a href="faq.html">FAQ</a>
+      <a href="reseller-programma.html">Reseller</a>
+    </div>
+    <a href="index.html" class="logo">
+      <img src="images/the-swedish-glow-logo.png" class="logo-mark" alt="">
+      <span class="logo-text">The Swedish <em>Glow</em></span>
+    </a>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <a href="index.html" class="active">NL</a>
+        <a href="index.html">EN</a>
+      </div>
+      <a href="mijn-account.html">Account</a>
+      <a href="winkelwagen.html">Cart (0)</a>
+      <a href="reseller-login.html" class="reseller-login">Login Resellers</a>
+    </div>
+      <button class="nav-hamburger" aria-label="Menu openen" aria-controls="mobile-menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <span class="mobile-menu-title">Menu</span>
+    <button class="mobile-menu-close" aria-label="Menu sluiten">&times;</button>
+  </div>
+  <nav class="mobile-menu-nav" aria-label="Mobile navigation">
+    <a href="shop.html">Shop</a>
+    <a href="supplementen.html">Supplementen</a>
+    <div class="mobile-menu-sublist">
+      <a href="marine-collageen-13000-kuur.html">— Marine Collageen 13.000</a>
+      <a href="nordsilk.html">— Nordsilk</a>
+      <a href="freja.html">— FREJA</a>
+      <a href="hermade.html">— HÉRMADE</a>
+      <a href="index.html#100-dagen-kuur">— 100-dagen kuur</a>
+    </div>
+    <a href="stories.html">Stories</a>
+    <a href="over-ons.html">Ons verhaal</a>
+    <a href="faq.html">Veelgestelde vragen</a>
+    <a href="reseller-programma.html">Reseller programma</a>
+    <div class="mobile-menu-divider"></div>
+    <a href="mijn-account.html">Mijn account</a>
+    <a href="winkelwagen.html">Winkelwagen</a>
+    <a href="reseller-login.html">Login resellers</a>
+  </nav>
+</div>
+
+
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <span class="current">Supplementen</span>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-eyebrow">De collectie</div>
+  <h1>Onze <em>supplementen</em>.</h1>
+  <p>Vier rituelen, één toewijding. Premium vloeibare supplementen, ontwikkeld in Zweden, voor élke vrouw die haar lichaam serieus neemt.</p>
+</section>
+
+<section class="shop-grid">
+  <a href="marine-collageen-13000-kuur.html" class="shop-card">
+      <div class="shop-card-image">
+        <span class="shop-card-roman">I</span>
+        <div class="shop-card-badge">Bestseller</div>
+        <img src="images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg" alt="Marine Collageen 13.000">
+      </div>
+      <div class="shop-card-info">
+        <div class="shop-card-tag">Het ochtendritueel</div>
+        <h3>Marine Collageen 13.000</h3>
+        <p>Vloeibare premium viscollageen — 13.000 mg per shot. Voor stevigheid, hydratatie en glow van binnenuit.</p>
+        <div class="shop-card-footer">
+          <div class="shop-card-price">Vanaf €59</div>
+          <div class="shop-card-cta">Ontdek <span>→</span></div>
+        </div>
+      </div>
+    </a><a href="nordsilk.html" class="shop-card">
+      <div class="shop-card-image">
+        <span class="shop-card-roman">II</span>
+        <div class="shop-card-badge">Vegan</div>
+        <img src="images/nordsilk.jpg" alt="Nordsilk">
+      </div>
+      <div class="shop-card-info">
+        <div class="shop-card-tag">Het haarritueel</div>
+        <h3>Nordsilk</h3>
+        <p>Voor wie merkt dat haar dunner wordt. Voedt haar, hoofdhuid en nagels van binnenuit.</p>
+        <div class="shop-card-footer">
+          <div class="shop-card-price">Vanaf €47</div>
+          <div class="shop-card-cta">Ontdek <span>→</span></div>
+        </div>
+      </div>
+    </a><a href="freja.html" class="shop-card">
+      <div class="shop-card-image">
+        <span class="shop-card-roman">III</span>
+        <div class="shop-card-badge">Coming soon</div>
+        <img src="images/freja.jpg" alt="FREJA">
+      </div>
+      <div class="shop-card-info">
+        <div class="shop-card-tag">Het basisritueel</div>
+        <h3>FREJA</h3>
+        <p>Premium vloeibare Omega 3 uit de Noordzee. Het fundament onder elk ritueel.</p>
+        <div class="shop-card-footer">
+          <div class="shop-card-price">Coming soon</div>
+          <div class="shop-card-cta">Ontdek <span>→</span></div>
+        </div>
+      </div>
+    </a><a href="hermade.html" class="shop-card">
+      <div class="shop-card-image">
+        <span class="shop-card-roman">IV</span>
+        
+        <img src="images/hermade-2.jpg" alt="HÉRMADE">
+      </div>
+      <div class="shop-card-info">
+        <div class="shop-card-tag">Het maandritueel</div>
+        <h3>HÉRMADE</h3>
+        <p>30 sticks voor energie, balans en innerlijke rust tijdens de overgang.</p>
+        <div class="shop-card-footer">
+          <div class="shop-card-price">€39</div>
+          <div class="shop-card-cta">Ontdek <span>→</span></div>
+        </div>
+      </div>
+    </a>
+</section>
+
+
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-text">The Swedish <em>Glow</em></span>
+        <p>Premium Zweedse vloeibare supplementen voor stralende huid, sterk haar en innerlijke balans. Een Nordic beauty-ritueel, voor élke vrouw.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Supplementen</h4>
+        <ul>
+          <li><a href="marine-collageen-13000-kuur.html">Marine Collageen 13.000</a></li>
+          <li><a href="nordsilk.html">Nordsilk</a></li>
+          <li><a href="freja.html">FREJA</a></li>
+          <li><a href="hermade.html">HÉRMADE</a></li>
+          <li><a href="shop.html">Alle producten</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Het merk</h4>
+        <ul>
+          <li><a href="over-ons.html">Ons verhaal</a></li>
+          <li><a href="stories.html">Stories</a></li>
+          <li><a href="reseller-programma.html">Reseller worden</a></li>
+          <li><a href="reseller-login.html">Reseller portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Klantenservice</h4>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="levering.html">Levering &amp; retour</a></li>
+          <li><a href="mijn-account.html">Mijn account</a></li>
+          <li><a href="nieuwsbrief.html">Nieuwsbrief</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 The Swedish Glow — Een Nederlands familiemerk met Zweedse roots</div>
+      <div class="legal">
+        <a href="voorwaarden.html">Voorwaarden</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+// Mobile menu toggle
+(function() {
+  var btn = document.querySelector('.nav-hamburger');
+  var menu = document.getElementById('mobile-menu');
+  var closeBtn = document.querySelector('.mobile-menu-close');
+  if (!btn || !menu) return;
+
+  function openMenu() {
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+  }
+  btn.addEventListener('click', function() {
+    btn.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu();
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+  // Sluit menu als links worden geklikt
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', closeMenu);
+  });
+  // Sluit met Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
+  });
+})();
+</script>
+
+</body>
+</html>

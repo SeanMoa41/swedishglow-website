@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veelgestelde vragen | The Swedish Glow</title>
+<meta name="description" content="Antwoorden op veelgestelde vragen over The Swedish Glow supplementen, het 100-dagen ritueel, marine collageen, omega 3 en Nordic beauty.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bone: #f6f1e8;
+  --bone-warm: #ede5d3;
+  --cream: #f0e9da;
+  --ink: #1c1c1a;
+  --ink-soft: #5a5a55;
+  --moss: #2d3e2f;
+  --moss-deep: #1a2820;
+  --gold: #b8924a;
+  --gold-soft: #d4b478;
+  --gold-deep: #a07a3b;
+  --stone: #8a8478;
+  --stone-light: #c8bfae;
+  --line: #e0d8c5;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Inter Tight', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-body); background: var(--bone); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-deep); font-weight: 500; margin-bottom: 16px; }
+
+/* HEADER */
+header { position: sticky; top: 0; background: var(--bone); z-index: 100; border-bottom: 1px solid var(--line); }
+.nav-wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 22px 40px; gap: 40px; }
+.nav-left, .nav-right { display: flex; align-items: center; gap: 32px; font-size: 0.85rem; }
+.nav-right { justify-content: flex-end; }
+.nav-left a, .nav-right a { color: var(--ink); text-decoration: none; position: relative; padding-bottom: 3px; }
+.nav-left a::after, .nav-right a::after { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 1px; background: var(--ink); transition: width 0.3s ease; }
+.nav-left a:hover::after, .nav-right a:hover::after { width: 100%; }
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; white-space: nowrap; }
+.logo-mark { width: 32px; height: auto; }
+.logo-text { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; }
+.logo-text em { font-style: italic; color: var(--gold); }
+.lang-switch { display: flex; gap: 12px; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; }
+.reseller-login { border: 1px solid var(--gold); color: var(--gold-deep); padding: 10px 22px !important; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; }
+.reseller-login::after { display: none; }
+.reseller-login:hover { background: var(--gold); color: var(--bone) !important; }
+
+/* PAGE HERO */
+.page-hero { padding: 100px 40px 80px; text-align: center; max-width: 800px; margin: 0 auto; }
+.page-hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-deep); display: inline-flex; align-items: center; margin-bottom: 24px; font-weight: 500; }
+.page-hero-eyebrow::before, .page-hero-eyebrow::after { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); margin: 0 14px; }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 3.8rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 24px; }
+.page-hero h1 em { font-style: italic; color: var(--moss); }
+.page-hero p { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.75; max-width: 620px; margin: 0 auto; }
+
+/* FAQ SECTION */
+.faq-page { padding: 40px 40px 120px; max-width: 880px; margin: 0 auto; }
+.faq-categories { display: flex; gap: 8px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap; }
+.faq-cat-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 10px 22px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.faq-cat-btn:hover { border-color: var(--gold); color: var(--ink); }
+.faq-cat-btn.active { border-color: var(--gold); background: var(--gold); color: var(--bone); }
+
+.faq-group { margin-bottom: 48px; }
+.faq-group-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--moss);
+  font-style: italic;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item:first-of-type { border-top: 1px solid var(--line); }
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 24px 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+.faq-question:hover { color: var(--moss); }
+.faq-question .icon {
+  font-size: 1.6rem;
+  color: var(--gold);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-weight: 300;
+  flex-shrink: 0;
+  margin-left: 24px;
+}
+.faq-item.open .faq-question .icon { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.5s ease;
+}
+.faq-item.open .faq-answer {
+  max-height: 600px;
+  padding-bottom: 28px;
+}
+.faq-answer p {
+  color: var(--ink-soft);
+  line-height: 1.75;
+  font-size: 0.98rem;
+  font-weight: 300;
+  padding-right: 40px;
+}
+
+/* CONTACT CTA */
+.contact-cta {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-deep) 100%);
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--bone);
+}
+.contact-cta-wrap { max-width: 600px; margin: 0 auto; }
+.contact-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.contact-cta h2 em { font-style: italic; color: var(--gold-soft); }
+.contact-cta p { color: var(--stone-light); font-size: 1rem; line-height: 1.7; margin-bottom: 32px; }
+.contact-cta a {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 32px;
+  background: var(--gold);
+  color: var(--moss-deep);
+  text-decoration: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+.contact-cta a:hover { background: var(--gold-soft); }
+
+/* FOOTER */
+footer { background: var(--ink); color: var(--bone); padding: 60px 40px 40px; }
+.footer-wrap { max-width: 1240px; margin: 0 auto; }
+.footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: var(--stone-light); padding-top: 0; }
+.footer-bottom a { color: var(--stone-light); text-decoration: none; margin-left: 24px; }
+.footer-bottom a:hover { color: var(--gold-soft); }
+
+/* MOBIELE NAVIGATIE */
+.nav-hamburger { display: none; position: relative; width: 32px; height: 32px; background: transparent; border: none; cursor: pointer; padding: 0; margin-left: auto; z-index: 1001; }
+.nav-hamburger span { display: block; position: absolute; left: 4px; width: 24px; height: 1px; background: var(--ink); transition: all 0.4s cubic-bezier(0.2,0.8,0.2,1); }
+.nav-hamburger span:nth-child(1) { top: 10px; }
+.nav-hamburger span:nth-child(2) { top: 16px; }
+.nav-hamburger span:nth-child(3) { top: 22px; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { top: 16px; transform: rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { top: 16px; transform: rotate(-45deg); }
+.mobile-menu { position: fixed; top: 0; right: 0; width: 100%; max-width: 420px; height: 100vh; background: var(--bone); z-index: 1000; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.2,0.8,0.2,1); overflow-y: auto; display: flex; flex-direction: column; visibility: hidden; box-shadow: -20px 0 60px rgba(0,0,0,0.15); }
+.mobile-menu.open { transform: translateX(0); visibility: visible; }
+.mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; border-bottom: 1px solid var(--line); }
+.mobile-menu-title { font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-deep); font-weight: 500; }
+.mobile-menu-close { background: transparent; border: none; font-size: 2rem; line-height: 1; color: var(--ink); cursor: pointer; padding: 0; width: 32px; height: 32px; }
+.mobile-menu-nav { display: flex; flex-direction: column; padding: 28px; }
+.mobile-menu-nav > a { font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); text-decoration: none; padding: 14px 0; border-bottom: 1px solid rgba(212, 180, 120, 0.18); }
+.mobile-menu-sublist { display: flex; flex-direction: column; padding: 8px 0 8px 16px; border-bottom: 1px solid rgba(212, 180, 120, 0.18); }
+.mobile-menu-sublist a { font-size: 0.92rem; color: var(--ink-soft); text-decoration: none; padding: 8px 0; }
+.mobile-menu-divider { height: 1px; background: var(--gold); opacity: 0.3; margin: 20px 0; }
+body.menu-open { overflow: hidden; }
+
+@media (max-width: 1024px) {
+  .nav-hamburger { display: block; }
+  .nav-left, .nav-right { display: none !important; }
+  .nav-wrap { grid-template-columns: auto 1fr auto !important; }
+  .nav-wrap .logo { justify-self: center; }
+}
+@media (max-width: 768px) {
+  .page-hero { padding: 60px 24px 40px; }
+  .faq-page { padding: 20px 24px 80px; }
+  .faq-question { font-size: 1.05rem; padding: 22px 0; }
+  .contact-cta { padding: 60px 24px; }
+}
+
+
+/* ═══ GLOBALE MOBILE-FIX (laatste media queries — overrulen alles) ═══ */
+@media (max-width: 768px) {
+  /* Comfortabele basis font-size */
+  html { font-size: 15px; }
+  body { line-height: 1.55; }
+
+  /* Algemene sectie-padding compacter */
+  section { padding-left: 20px !important; padding-right: 20px !important; }
+
+  /* Alle sectie-paddings boven/onder begrenzen voor mobiel — geen 140px meer */
+  .hero, .signature-ritual, .ritual-section, .ritual,
+  .stories-section, .stories-list, .testimonials, .testimonial-section,
+  .magazine, .editorial, .promise, .science, .lookbook,
+  .faq-section, .feature-strip, .intro,
+  .page-hero, .product-hero, .reseller-stats,
+  .how-it-works, .partner-types, .partner-quote, .reseller-faq,
+  .application, .cta-block, .benefits,
+  .philosophy, .founder-closing, .interview, .values,
+  .story-chapters, .connect, .founder-opening,
+  .product-description, .ingredients-section, .usage-section,
+  .product-timeline, .product-reviews, .product-faq, .cross-sell-section,
+  .usps-band, .reseller-intro, .contact-cta, .faq-page {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
+  /* Headings begrenzen: nooit groter dan leesbaar */
+  h1 { font-size: clamp(1.9rem, 8vw, 2.4rem) !important; line-height: 1.1 !important; }
+  h2 { font-size: clamp(1.6rem, 6vw, 2rem) !important; line-height: 1.15 !important; }
+  h3 { font-size: clamp(1.25rem, 4.5vw, 1.5rem) !important; line-height: 1.2 !important; }
+  h4 { font-size: clamp(1.05rem, 3.6vw, 1.2rem) !important; }
+
+  /* Body-tekst comfortabel groter dan op desktop */
+  p { font-size: 0.95rem; line-height: 1.65; }
+
+  /* Knoppen groter — tap targets minimaal 44px hoog (Apple HIG / WCAG) */
+  a.btn, button.btn, .btn-primary, .btn-secondary, .btn-gold,
+  .signature-button, .cs-form button {
+    padding: 14px 24px !important;
+    font-size: 0.78rem !important;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Tekst-blokken niet te breed — comfortabele leesbreedte */
+  p, li { max-width: 100%; }
+
+  /* Forceer alles netjes binnen viewport */
+  body, html { overflow-x: hidden; max-width: 100%; }
+  img, svg, video { max-width: 100%; height: auto; }
+
+  /* Gaps niet meer dan 32px op mobiel */
+  .product-grid, .stories-list, .rituals-grid,
+  .reviews-grid, .partner-grid, .benefits-grid,
+  .usps-grid, .footer-cols {
+    gap: 20px !important;
+  }
+
+  /* Magazine-split echt klein */
+  .magazine-split { min-height: auto !important; padding: 16px !important; gap: 12px !important; }
+  .split-pane { min-height: 180px; }
+  .split-pane .label-overlay { bottom: 16px !important; left: 16px !important; right: 16px !important; }
+  .split-pane .label-overlay h3 { font-size: 1.4rem !important; }
+
+  /* Hero compacter */
+  .hero { min-height: auto !important; }
+  .hero-text, .hero-content { padding: 50px 24px 40px !important; }
+  .hero h1, .hero-content h1 { font-size: 2rem !important; }
+  .hero-image, .hero-image-wrap { min-height: 280px !important; max-height: 380px; }
+  .hero-badge { bottom: 16px !important; right: 16px !important; padding: 12px 16px !important; }
+
+  /* FAQ items: meer tap area */
+  .faq-question { padding: 20px 0 !important; min-height: 56px; }
+
+  /* Product hero (productpagina's) */
+  .product-hero { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .product-hero-image { min-height: 320px !important; max-height: 400px; }
+  .product-hero-content { padding: 40px 24px !important; }
+  .product-hero-content h1 { font-size: 2.2rem !important; }
+
+  /* Footer compacter */
+  footer { padding: 50px 20px 30px !important; }
+
+  /* Nav iets compacter */
+  .nav-wrap { padding: 14px 20px !important; gap: 12px !important; }
+  .logo-text { font-size: 1.15rem !important; }
+  .logo-mark { width: 24px !important; }
+
+  /* Mobile menu tekst iets groter voor leesbaarheid */
+  .mobile-menu-nav > a { font-size: 1.25rem !important; padding: 12px 0 !important; }
+
+  /* Ritual-cards op mobiel: geen horizontale scroll meer (was te krap) */
+  .rituals-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+  .rituals-grid > * {
+    flex: none !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  .ritual-card { padding: 28px 24px !important; }
+  .ritual-card-num { font-size: 1.6rem !important; margin-bottom: 12px !important; }
+
+  /* Stats cards compacter */
+  .reseller-stats-wrap { gap: 28px 16px !important; }
+  .reseller-stat .num { font-size: 1.7rem !important; }
+
+  /* Kleinere padding rond CTAs */
+  .cta-block, .application { padding: 60px 20px !important; }
+
+  /* Voorkom dat horizontale scroll-grids op mobiel "kleven" */
+  .product-grid, .stories-list {
+    padding-bottom: 24px !important;
+  }
+}
+
+/* Heel klein scherm — extra compact */
+@media (max-width: 380px) {
+  html { font-size: 14px; }
+  section { padding-left: 16px !important; padding-right: 16px !important; }
+  h1 { font-size: 1.75rem !important; }
+  .hero h1, .hero-content h1, .product-hero-content h1 { font-size: 1.75rem !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <nav class="nav-wrap">
+    <div class="nav-left">
+      <a href="shop.html">Shop</a>
+      <a href="supplementen.html">Supplementen</a>
+      <a href="stories.html">Stories</a>
+      <a href="over-ons.html">Ons verhaal</a>
+      <a href="faq.html">FAQ</a>
+      <a href="reseller-programma.html">Reseller</a>
+    </div>
+    <a href="index.html" class="logo">
+      <img src="images/the-swedish-glow-logo.png" class="logo-mark" alt="">
+      <span class="logo-text">The Swedish <em>Glow</em></span>
+    </a>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <a href="index.html" class="active">NL</a>
+        <a href="index.html">EN</a>
+      </div>
+      <a href="mijn-account.html">Account</a>
+      <a href="winkelwagen.html">Cart (0)</a>
+      <a href="reseller-login.html" class="reseller-login">Login Resellers</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Menu openen" aria-controls="mobile-menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <span class="mobile-menu-title">Menu</span>
+    <button class="mobile-menu-close" aria-label="Menu sluiten">&times;</button>
+  </div>
+  <nav class="mobile-menu-nav">
+    <a href="shop.html">Shop</a>
+    <a href="supplementen.html">Supplementen</a>
+    <div class="mobile-menu-sublist">
+      <a href="marine-collageen-13000-kuur.html">— Marine Collageen 13.000</a>
+      <a href="nordsilk.html">— Nordsilk</a>
+      <a href="freja.html">— FREJA</a>
+      <a href="hermade.html">— HÉRMADE</a>
+      <a href="index.html#100-dagen-kuur">— 100-dagen kuur</a>
+    </div>
+    <a href="stories.html">Stories</a>
+    <a href="over-ons.html">Ons verhaal</a>
+    <a href="faq.html">Veelgestelde vragen</a>
+    <a href="reseller-programma.html">Reseller programma</a>
+    <div class="mobile-menu-divider"></div>
+    <a href="mijn-account.html">Mijn account</a>
+    <a href="winkelwagen.html">Winkelwagen</a>
+    <a href="reseller-login.html">Login resellers</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-eyebrow">Veelgestelde vragen</div>
+  <h1>Alles wat je wilt <em>weten</em>.</h1>
+  <p>De meest gestelde vragen over onze supplementen, het 100-dagen ritueel en Nordic beauty in het algemeen — kort en helder beantwoord.</p>
+</section>
+
+<!-- FAQ -->
+<section class="faq-page">
+
+  <div class="faq-group">
+    <h2 class="faq-group-title">Over onze supplementen</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Werkt vloeibaar collageen beter dan poeder of capsules?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Vloeibaar collageen wordt door velen als prettiger ervaren omdat het direct opneembaar is en een hogere dosering per portie kan bevatten. Onze Marine Collageen levert 13.000 mg per dagelijkse shot van 20 ml — een van de hoogste doseringen op de Europese markt. Wat het beste werkt verschilt per persoon, maar consistente inname is altijd het belangrijkste.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Hoeveel mg collageen per dag heb ik nodig voor zichtbaar resultaat?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Klinisch onderzoek toont effecten op huidstevigheid en hydratatie vanaf 2.500 tot 10.000 mg collageen per dag. Onze formule met 13.000 mg per shot zit ruim boven de aanbevolen ondergrens, zodat je geen risico loopt op onderdosering. Resultaten zijn doorgaans zichtbaar tussen 6 en 12 weken bij dagelijks gebruik.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Bevat Marine Collageen vis? Is het geschikt bij visallergie?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Ja, onze Marine Collageen wordt gewonnen uit duurzame visbronnen. Bij visallergie raden we af deze te gebruiken en raden we aan eerst contact op te nemen voor persoonlijk advies.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Wat is het verschil tussen marine collageen en rundercollageen?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Marine collageen (uit vis) bestaat voornamelijk uit type I collageen, het type dat het meest voorkomt in de huid. Rundercollageen bevat naast type I ook veel type III, vooral interessant voor gewrichten. Marine collageen wordt door zijn kleinere peptidegrootte vaak sneller opgenomen. Wij kozen bewust voor marine collageen voor zijn focus op huid, haar en nagels.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Wat is het verschil tussen FREJA en Plantique Omega 3?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>FREJA is onze nieuwe vlaggenschip Omega 3, een premium vloeibare formule uit duurzame Noordzee-visserij met een hoge concentratie EPA en DHA. Plantique was onze plantaardige Omega 3 uit algen, die we momenteel uitfaseren. Plantique is nog beschikbaar zolang de voorraad strekt voor klanten die de plantaardige variant verkiezen.</p></div>
+    </div>
+
+  </div>
+
+  <div class="faq-group">
+    <h2 class="faq-group-title">Resultaat &amp; ritueel</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Wanneer zie ik resultaat van The Swedish Glow?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>De meeste klanten merken in week 4 al subtiele verschillen in huidhydratatie en energie. Vanaf week 8 zijn veranderingen in haar, nagels en huidstevigheid zichtbaar. Voor optimale resultaten raden we een kuur van 100 dagen aan, gevolgd door een onderhoudsdosering.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Zijn de supplementen geschikt tijdens de overgang?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Ja. Veel van onze klanten zijn vrouwen tussen 40 en 65 jaar, in de peri- of postmenopauze. Onze formules ondersteunen huid, haar en welzijn juist in de levensfase waarin de natuurlijke collageenproductie afneemt. Gebruik je medicatie? Raadpleeg dan altijd eerst je arts.</p></div>
+    </div>
+
+  </div>
+
+  <div class="faq-group">
+    <h2 class="faq-group-title">Productie &amp; herkomst</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Waar worden de producten gemaakt?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Alle The Swedish Glow supplementen worden geproduceerd in Zweden onder strenge kwaliteitsnormen. We zijn een Nederlands familiebedrijf met Zweedse roots: de combinatie van Nederlandse zorgvuldigheid en Scandinavische zuiverheid zit in alles wat we maken.</p></div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CONTACT CTA -->
+<section class="contact-cta">
+  <div class="contact-cta-wrap">
+    <h2>Staat je vraag er <em>niet bij</em>?</h2>
+    <p>We beantwoorden persoonlijke vragen graag rechtstreeks. Stuur ons een bericht — meestal reageren we binnen één werkdag.</p>
+    <a href="contact.html">Neem contact op →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-bottom">
+      <div>© 2026 The Swedish Glow — Een Nederlands familiemerk met Zweedse roots</div>
+      <div>
+        <a href="voorwaarden.html">Voorwaarden</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    item.classList.toggle('open');
+  });
+});
+
+// Mobile menu
+(function() {
+  var btn = document.querySelector('.nav-hamburger');
+  var menu = document.getElementById('mobile-menu');
+  var closeBtn = document.querySelector('.mobile-menu-close');
+  if (!btn || !menu) return;
+  function openMenu() { menu.classList.add('open'); menu.setAttribute('aria-hidden', 'false'); btn.setAttribute('aria-expanded', 'true'); document.body.classList.add('menu-open'); }
+  function closeMenu() { menu.classList.remove('open'); menu.setAttribute('aria-hidden', 'true'); btn.setAttribute('aria-expanded', 'false'); document.body.classList.remove('menu-open'); }
+  btn.addEventListener('click', function() { btn.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu(); });
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+  menu.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu(); });
+})();
+</script>
+
+</body>
+</html>
