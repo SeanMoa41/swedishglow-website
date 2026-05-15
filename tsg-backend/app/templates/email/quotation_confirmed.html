@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bestelling bevestigd</title>
+</head>
+<body style="margin:0;padding:0;background:#F7F4F0;font-family:Georgia,'Times New Roman',serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F4F0;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#FFFFFF;border-radius:4px;overflow:hidden;">
+          <tr>
+            <td style="background:#1A1A1A;padding:32px 40px;text-align:center;">
+              <p style="margin:0;color:#D4A96A;font-size:11px;letter-spacing:3px;text-transform:uppercase;">The Swedish Glow</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px 32px;">
+              <h1 style="margin:0 0 24px;font-size:24px;font-weight:normal;color:#1A1A1A;">Bestelling ontvangen</h1>
+              <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#444444;">
+                Beste {{ name }}, je bestelling is bevestigd.
+              </p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;border:1px solid #F0EBE5;border-radius:2px;">
+                <tr style="background:#F7F4F0;">
+                  <td style="padding:10px 16px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888888;">Product</td>
+                  <td style="padding:10px 16px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888888;text-align:right;">Aantal</td>
+                  <td style="padding:10px 16px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888888;text-align:right;">Prijs</td>
+                </tr>
+                {% for item in line_items %}
+                <tr>
+                  <td style="padding:12px 16px;font-size:14px;color:#333333;border-top:1px solid #F0EBE5;">{{ item.description }}</td>
+                  <td style="padding:12px 16px;font-size:14px;color:#333333;border-top:1px solid #F0EBE5;text-align:right;">{{ item.quantity }}</td>
+                  <td style="padding:12px 16px;font-size:14px;color:#333333;border-top:1px solid #F0EBE5;text-align:right;">€ {{ "%.2f"|format(item.unit_price) }}</td>
+                </tr>
+                {% endfor %}
+                <tr style="background:#F7F4F0;">
+                  <td colspan="2" style="padding:12px 16px;font-size:14px;font-weight:bold;color:#1A1A1A;border-top:1px solid #E0D8D0;">Totaal (excl. BTW)</td>
+                  <td style="padding:12px 16px;font-size:14px;font-weight:bold;color:#1A1A1A;border-top:1px solid #E0D8D0;text-align:right;">€ {{ "%.2f"|format(total_eur) }}</td>
+                </tr>
+              </table>
+              {% if auto_approved %}
+              <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#D4A96A;">
+                Als {{ tier | capitalize }}-reseller is je bestelling direct bevestigd.
+              </p>
+              {% else %}
+              <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#444444;">
+                We verwerken je offerte zo snel mogelijk. Je ontvangt een bevestiging zodra deze is goedgekeurd.
+              </p>
+              {% endif %}
+              <table cellpadding="0" cellspacing="0" style="margin-top:24px;">
+                <tr>
+                  <td style="background:#1A1A1A;border-radius:2px;">
+                    <a href="https://reseller.theswedishglow.com/orders" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-family:Georgia,serif;font-size:14px;letter-spacing:1px;text-decoration:none;">Bekijk mijn bestellingen</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 40px;border-top:1px solid #F0EBE5;">
+              <p style="margin:0;font-size:12px;color:#999999;line-height:1.6;">
+                Vragen over je bestelling? <a href="mailto:partner@theswedishglow.com" style="color:#D4A96A;">partner@theswedishglow.com</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
