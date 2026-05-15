@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
-<html lang="nl">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Veelgestelde vragen | The Swedish Glow</title>
-<meta name="description" content="Antwoorden op veelgestelde vragen over The Swedish Glow supplementen, het 100-dagen ritueel, marine collageen, omega 3 en Nordic beauty.">
+<title>Frequently Asked Questions | The Swedish Glow</title>
+<meta name="description" content="Answers to frequently asked questions about The Swedish Glow supplements, the 100-day ritual, marine collagen, omega 3, and Nordic beauty.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -170,7 +170,7 @@ footer { background: var(--ink); color: var(--bone); padding: 60px 40px 40px; }
 .footer-bottom a { color: var(--stone-light); text-decoration: none; margin-left: 24px; }
 .footer-bottom a:hover { color: var(--gold-soft); }
 
-/* MOBIELE NAVIGATIE */
+/* MOBILE NAVIGATION */
 .nav-hamburger { display: none; position: relative; width: 32px; height: 32px; background: transparent; border: none; cursor: pointer; padding: 0; margin-left: auto; z-index: 1001; }
 .nav-hamburger span { display: block; position: absolute; left: 4px; width: 24px; height: 1px; background: var(--ink); transition: all 0.4s cubic-bezier(0.2,0.8,0.2,1); }
 .nav-hamburger span:nth-child(1) { top: 10px; }
@@ -205,16 +205,16 @@ body.menu-open { overflow: hidden; }
 }
 
 
-/* ═══ GLOBALE MOBILE-FIX (laatste media queries — overrulen alles) ═══ */
+/* ═══ GLOBAL MOBILE-FIX (last media queries — override everything) ═══ */
 @media (max-width: 768px) {
-  /* Comfortabele basis font-size */
+  /* Comfortable base font-size */
   html { font-size: 15px; }
   body { line-height: 1.55; }
 
-  /* Algemene sectie-padding compacter */
+  /* General section padding more compact */
   section { padding-left: 20px !important; padding-right: 20px !important; }
 
-  /* Alle sectie-paddings boven/onder begrenzen voor mobiel — geen 140px meer */
+  /* Limit all section paddings top/bottom for mobile — no more 140px */
   .hero, .signature-ritual, .ritual-section, .ritual,
   .stories-section, .stories-list, .testimonials, .testimonial-section,
   .magazine, .editorial, .promise, .science, .lookbook,
@@ -231,16 +231,16 @@ body.menu-open { overflow: hidden; }
     padding-bottom: 60px !important;
   }
 
-  /* Headings begrenzen: nooit groter dan leesbaar */
+  /* Headings capped: never larger than readable */
   h1 { font-size: clamp(1.9rem, 8vw, 2.4rem) !important; line-height: 1.1 !important; }
   h2 { font-size: clamp(1.6rem, 6vw, 2rem) !important; line-height: 1.15 !important; }
   h3 { font-size: clamp(1.25rem, 4.5vw, 1.5rem) !important; line-height: 1.2 !important; }
   h4 { font-size: clamp(1.05rem, 3.6vw, 1.2rem) !important; }
 
-  /* Body-tekst comfortabel groter dan op desktop */
+  /* Body text comfortably larger than desktop */
   p { font-size: 0.95rem; line-height: 1.65; }
 
-  /* Knoppen groter — tap targets minimaal 44px hoog (Apple HIG / WCAG) */
+  /* Buttons larger — tap targets minimum 44px high (Apple HIG / WCAG) */
   a.btn, button.btn, .btn-primary, .btn-secondary, .btn-gold,
   .signature-button, .cs-form button {
     padding: 14px 24px !important;
@@ -251,54 +251,54 @@ body.menu-open { overflow: hidden; }
     justify-content: center;
   }
 
-  /* Tekst-blokken niet te breed — comfortabele leesbreedte */
+  /* Text blocks not too wide — comfortable reading width */
   p, li { max-width: 100%; }
 
-  /* Forceer alles netjes binnen viewport */
+  /* Force everything neatly within viewport */
   body, html { overflow-x: hidden; max-width: 100%; }
   img, svg, video { max-width: 100%; height: auto; }
 
-  /* Gaps niet meer dan 32px op mobiel */
+  /* Gaps no more than 32px on mobile */
   .product-grid, .stories-list, .rituals-grid,
   .reviews-grid, .partner-grid, .benefits-grid,
   .usps-grid, .footer-cols {
     gap: 20px !important;
   }
 
-  /* Magazine-split echt klein */
+  /* Magazine split really small */
   .magazine-split { min-height: auto !important; padding: 16px !important; gap: 12px !important; }
   .split-pane { min-height: 180px; }
   .split-pane .label-overlay { bottom: 16px !important; left: 16px !important; right: 16px !important; }
   .split-pane .label-overlay h3 { font-size: 1.4rem !important; }
 
-  /* Hero compacter */
+  /* Hero more compact */
   .hero { min-height: auto !important; }
   .hero-text, .hero-content { padding: 50px 24px 40px !important; }
   .hero h1, .hero-content h1 { font-size: 2rem !important; }
   .hero-image, .hero-image-wrap { min-height: 280px !important; max-height: 380px; }
   .hero-badge { bottom: 16px !important; right: 16px !important; padding: 12px 16px !important; }
 
-  /* FAQ items: meer tap area */
+  /* FAQ items: more tap area */
   .faq-question { padding: 20px 0 !important; min-height: 56px; }
 
-  /* Product hero (productpagina's) */
+  /* Product hero (product pages) */
   .product-hero { grid-template-columns: 1fr !important; min-height: auto !important; }
   .product-hero-image { min-height: 320px !important; max-height: 400px; }
   .product-hero-content { padding: 40px 24px !important; }
   .product-hero-content h1 { font-size: 2.2rem !important; }
 
-  /* Footer compacter */
+  /* Footer more compact */
   footer { padding: 50px 20px 30px !important; }
 
-  /* Nav iets compacter */
+  /* Nav slightly more compact */
   .nav-wrap { padding: 14px 20px !important; gap: 12px !important; }
   .logo-text { font-size: 1.15rem !important; }
   .logo-mark { width: 24px !important; }
 
-  /* Mobile menu tekst iets groter voor leesbaarheid */
+  /* Mobile menu text slightly larger for readability */
   .mobile-menu-nav > a { font-size: 1.25rem !important; padding: 12px 0 !important; }
 
-  /* Ritual-cards op mobiel: geen horizontale scroll meer (was te krap) */
+  /* Ritual cards on mobile: no horizontal scroll (was too tight) */
   .rituals-grid {
     display: grid !important;
     grid-template-columns: 1fr !important;
@@ -315,20 +315,20 @@ body.menu-open { overflow: hidden; }
   .ritual-card { padding: 28px 24px !important; }
   .ritual-card-num { font-size: 1.6rem !important; margin-bottom: 12px !important; }
 
-  /* Stats cards compacter */
+  /* Stats cards more compact */
   .reseller-stats-wrap { gap: 28px 16px !important; }
   .reseller-stat .num { font-size: 1.7rem !important; }
 
-  /* Kleinere padding rond CTAs */
+  /* Smaller padding around CTAs */
   .cta-block, .application { padding: 60px 20px !important; }
 
-  /* Voorkom dat horizontale scroll-grids op mobiel "kleven" */
+  /* Prevent horizontal scroll grids from "sticking" on mobile */
   .product-grid, .stories-list {
     padding-bottom: 24px !important;
   }
 }
 
-/* Heel klein scherm — extra compact */
+/* Very small screen — extra compact */
 @media (max-width: 380px) {
   html { font-size: 14px; }
   section { padding-left: 16px !important; padding-right: 16px !important; }
@@ -345,27 +345,27 @@ body.menu-open { overflow: hidden; }
 <header>
   <nav class="nav-wrap">
     <div class="nav-left">
-      <a href="shop.html">Shop</a>
-      <a href="supplementen.html">Supplementen</a>
-      <a href="stories.html">Stories</a>
-      <a href="over-ons.html">Ons verhaal</a>
-      <a href="faq.html">FAQ</a>
-      <a href="reseller-programma.html">Reseller</a>
+      <a href="shop-en.html">Shop</a>
+      <a href="supplementen-en.html">Supplements</a>
+      <a href="stories-en.html">Stories</a>
+      <a href="over-ons-en.html">Our story</a>
+      <a href="faq-en.html">FAQ</a>
+      <a href="reseller-programma-en.html">Reseller</a>
     </div>
-    <a href="index.html" class="logo">
+    <a href="index-en.html" class="logo">
       <img src="images/the-swedish-glow-logo.png" class="logo-mark" alt="">
       <span class="logo-text">The Swedish <em>Glow</em></span>
     </a>
     <div class="nav-right">
       <div class="lang-switch">
-        <a href="index.html" class="active">NL</a>
-        <a href="index.html">EN</a>
+        <a href="faq.html">NL</a>
+        <a href="faq-en.html" class="active">EN</a>
       </div>
-      <a href="mijn-account.html">Account</a>
+      <a href="mijn-account.html">My account</a>
       <a href="winkelwagen.html">Cart (0)</a>
-      <a href="reseller-login.html" class="reseller-login">Login Resellers</a>
+      <a href="reseller-login.html" class="reseller-login">Reseller Login</a>
     </div>
-    <button class="nav-hamburger" aria-label="Menu openen" aria-controls="mobile-menu" aria-expanded="false">
+    <button class="nav-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -375,90 +375,90 @@ body.menu-open { overflow: hidden; }
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <div class="mobile-menu-header">
     <span class="mobile-menu-title">Menu</span>
-    <button class="mobile-menu-close" aria-label="Menu sluiten">&times;</button>
+    <button class="mobile-menu-close" aria-label="Close menu">&times;</button>
   </div>
   <nav class="mobile-menu-nav">
-    <a href="shop.html">Shop</a>
-    <a href="supplementen.html">Supplementen</a>
+    <a href="shop-en.html">Shop</a>
+    <a href="supplementen-en.html">Supplements</a>
     <div class="mobile-menu-sublist">
-      <a href="marine-collageen-13000-kuur.html">— Marine Collageen 13.000</a>
-      <a href="nordsilk.html">— Nordsilk</a>
-      <a href="freja.html">— FREJA</a>
-      <a href="hermade.html">— HÉRMADE</a>
-      <a href="index.html#100-dagen-kuur">— 100-dagen kuur</a>
+      <a href="marine-collageen-13000-kuur-en.html">— Marine Collageen 13.000</a>
+      <a href="nordsilk-en.html">— Nordsilk</a>
+      <a href="freja-en.html">— FREJA</a>
+      <a href="hermade-en.html">— HÉRMADE</a>
+      <a href="index-en.html#100-day-treatment">— 100-day treatment</a>
     </div>
-    <a href="stories.html">Stories</a>
-    <a href="over-ons.html">Ons verhaal</a>
-    <a href="faq.html">Veelgestelde vragen</a>
-    <a href="reseller-programma.html">Reseller programma</a>
+    <a href="stories-en.html">Stories</a>
+    <a href="over-ons-en.html">Our story</a>
+    <a href="faq-en.html">FAQ</a>
+    <a href="reseller-programma-en.html">Reseller programme</a>
     <div class="mobile-menu-divider"></div>
-    <a href="mijn-account.html">Mijn account</a>
-    <a href="winkelwagen.html">Winkelwagen</a>
-    <a href="reseller-login.html">Login resellers</a>
+    <a href="mijn-account.html">My account</a>
+    <a href="winkelwagen.html">Cart</a>
+    <a href="reseller-login.html">Reseller Login</a>
   </nav>
 </div>
 
 <!-- HERO -->
 <section class="page-hero">
-  <div class="page-hero-eyebrow">Veelgestelde vragen</div>
-  <h1>Alles wat je wilt <em>weten</em>.</h1>
-  <p>De meest gestelde vragen over onze supplementen, het 100-dagen ritueel en Nordic beauty in het algemeen — kort en helder beantwoord.</p>
+  <div class="page-hero-eyebrow">Frequently Asked Questions</div>
+  <h1>Everything you want to <em>know</em>.</h1>
+  <p>The most frequently asked questions about our supplements, the 100-day ritual and Nordic beauty in general — answered clearly and concisely.</p>
 </section>
 
 <!-- FAQ -->
 <section class="faq-page">
 
   <div class="faq-group">
-    <h2 class="faq-group-title">Over onze supplementen</h2>
+    <h2 class="faq-group-title">About our supplements</h2>
 
     <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Werkt vloeibaar collageen beter dan poeder of capsules?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>Vloeibaar collageen wordt door velen als prettiger ervaren omdat het direct opneembaar is en een hogere dosering per portie kan bevatten. Onze Marine Collageen levert 13.000 mg per dagelijkse shot van 20 ml — een van de hoogste doseringen op de Europese markt. Wat het beste werkt verschilt per persoon, maar consistente inname is altijd het belangrijkste.</p></div>
+      <button class="faq-question" aria-expanded="false">Does liquid collagen work better than powder or capsules?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Liquid collagen is preferred by many because it is immediately absorbable and can contain a higher dose per serving. Our Marine Collagen delivers 13,000 mg per daily 20 ml shot — one of the highest doses on the European market. What works best varies per person, but consistent intake is always the most important factor.</p></div>
     </div>
 
     <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Hoeveel mg collageen per dag heb ik nodig voor zichtbaar resultaat?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>Klinisch onderzoek toont effecten op huidstevigheid en hydratatie vanaf 2.500 tot 10.000 mg collageen per dag. Onze formule met 13.000 mg per shot zit ruim boven de aanbevolen ondergrens, zodat je geen risico loopt op onderdosering. Resultaten zijn doorgaans zichtbaar tussen 6 en 12 weken bij dagelijks gebruik.</p></div>
+      <button class="faq-question" aria-expanded="false">How many mg of collagen per day do I need for visible results?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Clinical research shows effects on skin firmness and hydration from 2,500 to 10,000 mg of collagen per day. Our formula with 13,000 mg per shot is well above the recommended lower limit, so you won't risk under-dosing. Results are typically visible between 6 and 12 weeks with daily use.</p></div>
     </div>
 
     <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Bevat Marine Collageen vis? Is het geschikt bij visallergie?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>Ja, onze Marine Collageen wordt gewonnen uit duurzame visbronnen. Bij visallergie raden we af deze te gebruiken en raden we aan eerst contact op te nemen voor persoonlijk advies.</p></div>
+      <button class="faq-question" aria-expanded="false">Does Marine Collagen contain fish? Is it suitable for fish allergies?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Yes, our Marine Collagen is derived from sustainable fish sources. If you have a fish allergy, we advise against using it and recommend contacting us first for personal advice.</p></div>
     </div>
 
     <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Wat is het verschil tussen marine collageen en rundercollageen?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>Marine collageen (uit vis) bestaat voornamelijk uit type I collageen, het type dat het meest voorkomt in de huid. Rundercollageen bevat naast type I ook veel type III, vooral interessant voor gewrichten. Marine collageen wordt door zijn kleinere peptidegrootte vaak sneller opgenomen. Wij kozen bewust voor marine collageen voor zijn focus op huid, haar en nagels.</p></div>
+      <button class="faq-question" aria-expanded="false">What is the difference between marine collagen and bovine collagen?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Marine collagen (from fish) consists primarily of type I collagen, the type most prevalent in skin. Bovine collagen contains type I as well as a large amount of type III, which is particularly interesting for joints. Marine collagen is often absorbed more quickly due to its smaller peptide size. We deliberately chose marine collagen for its focus on skin, hair and nails.</p></div>
     </div>
 
     <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Wat is het verschil tussen FREJA en Plantique Omega 3?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>FREJA is onze nieuwe vlaggenschip Omega 3, een premium vloeibare formule uit duurzame Noordzee-visserij met een hoge concentratie EPA en DHA. Plantique was onze plantaardige Omega 3 uit algen, die we momenteel uitfaseren. Plantique is nog beschikbaar zolang de voorraad strekt voor klanten die de plantaardige variant verkiezen.</p></div>
-    </div>
-
-  </div>
-
-  <div class="faq-group">
-    <h2 class="faq-group-title">Resultaat &amp; ritueel</h2>
-
-    <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Wanneer zie ik resultaat van The Swedish Glow?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>De meeste klanten merken in week 4 al subtiele verschillen in huidhydratatie en energie. Vanaf week 8 zijn veranderingen in haar, nagels en huidstevigheid zichtbaar. Voor optimale resultaten raden we een kuur van 100 dagen aan, gevolgd door een onderhoudsdosering.</p></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Zijn de supplementen geschikt tijdens de overgang?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>Ja. Veel van onze klanten zijn vrouwen tussen 40 en 65 jaar, in de peri- of postmenopauze. Onze formules ondersteunen huid, haar en welzijn juist in de levensfase waarin de natuurlijke collageenproductie afneemt. Gebruik je medicatie? Raadpleeg dan altijd eerst je arts.</p></div>
+      <button class="faq-question" aria-expanded="false">What is the difference between FREJA and Plantique Omega 3?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>FREJA is our new flagship Omega 3 — a premium liquid formula from sustainable North Sea fisheries with a high concentration of EPA and DHA. Plantique was our plant-based Omega 3 from algae, which we are currently phasing out. Plantique is still available while stocks last for customers who prefer the plant-based option.</p></div>
     </div>
 
   </div>
 
   <div class="faq-group">
-    <h2 class="faq-group-title">Productie &amp; herkomst</h2>
+    <h2 class="faq-group-title">Results &amp; ritual</h2>
 
     <div class="faq-item">
-      <button class="faq-question" aria-expanded="false">Waar worden de producten gemaakt?<span class="icon">+</span></button>
-      <div class="faq-answer"><p>Alle The Swedish Glow supplementen worden geproduceerd in Zweden onder strenge kwaliteitsnormen. We zijn een Nederlands familiebedrijf met Zweedse roots: de combinatie van Nederlandse zorgvuldigheid en Scandinavische zuiverheid zit in alles wat we maken.</p></div>
+      <button class="faq-question" aria-expanded="false">When will I see results from The Swedish Glow?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Most customers notice subtle differences in skin hydration and energy as early as week 4. From week 8 onwards, changes in hair, nails and skin firmness become visible. For optimal results we recommend a 100-day treatment, followed by a maintenance dose.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Are the supplements suitable during menopause?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>Yes. Many of our customers are women between 40 and 65 years old, in peri- or post-menopause. Our formulas specifically support skin, hair and wellbeing during the life phase in which natural collagen production declines. If you are taking medication, always consult your doctor first.</p></div>
+    </div>
+
+  </div>
+
+  <div class="faq-group">
+    <h2 class="faq-group-title">Production &amp; origin</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Where are the products made?<span class="icon">+</span></button>
+      <div class="faq-answer"><p>All The Swedish Glow supplements are produced in Sweden under strict quality standards. We are a Dutch family company with Swedish roots: the combination of Dutch precision and Scandinavian purity is woven into everything we make.</p></div>
     </div>
 
   </div>
@@ -468,9 +468,9 @@ body.menu-open { overflow: hidden; }
 <!-- CONTACT CTA -->
 <section class="contact-cta">
   <div class="contact-cta-wrap">
-    <h2>Staat je vraag er <em>niet bij</em>?</h2>
-    <p>We beantwoorden persoonlijke vragen graag rechtstreeks. Stuur ons een bericht — meestal reageren we binnen één werkdag.</p>
-    <a href="contact.html">Neem contact op →</a>
+    <h2>Can't find your <em>answer</em>?</h2>
+    <p>We are happy to answer personal questions directly. Send us a message — we usually respond within one business day.</p>
+    <a href="contact.html">Get in touch →</a>
   </div>
 </section>
 
@@ -478,9 +478,9 @@ body.menu-open { overflow: hidden; }
 <footer>
   <div class="footer-wrap">
     <div class="footer-bottom">
-      <div>© 2026 The Swedish Glow — Een Nederlands familiemerk met Zweedse roots</div>
+      <div>© 2026 The Swedish Glow — A Dutch family brand with Swedish roots</div>
       <div>
-        <a href="voorwaarden.html">Voorwaarden</a>
+        <a href="voorwaarden.html">Terms</a>
         <a href="privacy.html">Privacy</a>
         <a href="contact.html">Contact</a>
       </div>

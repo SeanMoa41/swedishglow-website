@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
-<html lang="nl">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Algemene Voorwaarden | The Swedish Glow</title>
-<meta name="description" content="De algemene voorwaarden van The Swedish Glow.">
+<title>Stories | The Swedish Glow</title>
+<meta name="description" content="Stories about rituals, ingredients and the women behind The Swedish Glow.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -265,39 +265,48 @@ footer {
 }
 
 
-.info-content {
-  max-width: 760px; margin: 0 auto;
+.stories-list {
+  max-width: 1240px; margin: 0 auto;
   padding: 80px 40px 120px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
 }
-.info-content h2 {
+.story-card {
+  background: var(--bone); border: 1px solid var(--line);
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: all 0.4s ease;
+}
+.story-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 16px 32px -12px rgba(28, 28, 26, 0.12);
+}
+.story-card-image { aspect-ratio: 16/10; overflow: hidden; background: var(--bone-warm); }
+.story-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.story-card:hover .story-card-image img { transform: scale(1.04); }
+.story-card-info { padding: 32px; flex: 1; display: flex; flex-direction: column; }
+.story-meta {
+  display: flex; gap: 12px; font-size: 0.7rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 12px; font-weight: 500;
+}
+.story-meta .dot { color: var(--gold); opacity: 0.6; }
+.story-card-info h3 {
   font-family: var(--font-display); font-weight: 400;
-  font-size: 1.8rem; margin: 40px 0 16px; color: var(--ink);
+  font-size: 1.6rem; line-height: 1.2; margin-bottom: 12px;
 }
-.info-content h2 em { font-style: italic; color: var(--moss); }
-.info-content h3 {
-  font-family: var(--font-display); font-weight: 500;
-  font-size: 1.3rem; margin: 32px 0 12px; color: var(--ink);
+.story-card-info p {
+  font-size: 0.95rem; color: var(--ink-soft);
+  line-height: 1.65; margin-bottom: 20px; flex-grow: 1;
 }
-.info-content p {
-  font-size: 1rem; line-height: 1.8;
-  color: var(--ink-soft); margin-bottom: 16px;
+.story-card-cta {
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-deep); font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
 }
-.info-content ul, .info-content ol {
-  margin: 16px 0 24px 24px;
-  color: var(--ink-soft); line-height: 1.8;
-}
-.info-content li { margin-bottom: 8px; }
-.info-content a {
-  color: var(--gold-deep);
-  border-bottom: 1px solid var(--gold-deep);
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-.info-content a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+.story-card-cta span { transition: transform 0.3s ease; }
+.story-card:hover .story-card-cta span { transform: translateX(4px); }
 
-@media (max-width: 640px) {
-  .info-content { padding: 60px 24px 80px; }
-}
+@media (max-width: 1024px) { .stories-list { grid-template-columns: 1fr; padding: 60px 24px; } }
 
 
 /* ═══ MOBIELE NAVIGATIE — hamburger + overlay ═══ */
@@ -389,7 +398,7 @@ footer {
   border-bottom: 1px solid rgba(212, 180, 120, 0.18);
 }
 .mobile-menu-sublist a {
-  font-size: 0.92rem; color: var(--ink-soft, #6b6358);
+font-size: 0.92rem; color: var(--ink-soft, #6b6358);
   text-decoration: none;
   padding: 8px 0;
   font-weight: 300;
@@ -664,67 +673,67 @@ body.menu-open { overflow: hidden; }
 <header>
   <nav class="nav-wrap">
     <div class="nav-left">
-      <a href="shop.html">Shop</a>
+      <a href="shop-en.html">Shop</a>
       <div class="nav-dropdown">
-        <a href="supplementen.html" class="nav-dropdown-trigger">Supplementen <span class="nav-arrow">▾</span></a>
+        <a href="supplementen-en.html" class="nav-dropdown-trigger">Supplements <span class="nav-arrow">▾</span></a>
         <div class="nav-dropdown-menu" role="menu">
-          <a href="marine-collageen-13000-kuur.html" role="menuitem">
+          <a href="marine-collageen-13000-kuur-en.html" role="menuitem">
             <span class="nav-product-num">I</span>
             <span class="nav-product-info">
               <span class="nav-product-name">Marine Collageen 13.000</span>
-              <span class="nav-product-tag">Het ochtendritueel</span>
+              <span class="nav-product-tag">The morning ritual</span>
             </span>
           </a>
-          <a href="nordsilk.html" role="menuitem">
+          <a href="nordsilk-en.html" role="menuitem">
             <span class="nav-product-num">II</span>
             <span class="nav-product-info">
               <span class="nav-product-name">Nordsilk</span>
-              <span class="nav-product-tag">Het haarritueel</span>
+              <span class="nav-product-tag">The hair ritual</span>
             </span>
           </a>
-          <a href="freja.html" role="menuitem">
+          <a href="freja-en.html" role="menuitem">
             <span class="nav-product-num">III</span>
             <span class="nav-product-info">
               <span class="nav-product-name">FREJA</span>
-              <span class="nav-product-tag">Het basisritueel</span>
+              <span class="nav-product-tag">The essential ritual</span>
             </span>
           </a>
-          <a href="hermade.html" role="menuitem">
+          <a href="hermade-en.html" role="menuitem">
             <span class="nav-product-num">IV</span>
             <span class="nav-product-info">
               <span class="nav-product-name">HÉRMADE</span>
-              <span class="nav-product-tag">Het maandritueel</span>
+              <span class="nav-product-tag">The monthly ritual</span>
             </span>
           </a>
           <div class="nav-dropdown-divider"></div>
-          <a href="index.html#100-dagen-kuur" role="menuitem" class="nav-dropdown-cta">
+          <a href="index-en.html#100-dagen-kuur" role="menuitem" class="nav-dropdown-cta">
             <span class="nav-product-num">∞</span>
             <span class="nav-product-info">
-              <span class="nav-product-name">100-dagen kuur</span>
-              <span class="nav-product-tag">Het signature ritueel</span>
+              <span class="nav-product-name">100-day treatment</span>
+              <span class="nav-product-tag">The signature ritual</span>
             </span>
           </a>
         </div>
       </div>
-      <a href="stories.html">Stories</a>
-      <a href="over-ons.html">Ons verhaal</a>
-      <a href="faq.html">FAQ</a>
-      <a href="reseller-programma.html">Reseller</a>
+      <a href="stories-en.html" class="current">Stories</a>
+      <a href="over-ons-en.html">Our story</a>
+      <a href="faq-en.html">FAQ</a>
+      <a href="reseller-programma-en.html">Reseller</a>
     </div>
-    <a href="index.html" class="logo">
+    <a href="index-en.html" class="logo">
       <img src="images/the-swedish-glow-logo.png" class="logo-mark" alt="">
       <span class="logo-text">The Swedish <em>Glow</em></span>
     </a>
     <div class="nav-right">
       <div class="lang-switch">
-        <a href="index.html" class="active">NL</a>
-        <a href="index.html">EN</a>
+        <a href="stories.html">NL</a>
+        <a href="stories-en.html" class="active">EN</a>
       </div>
-      <a href="mijn-account.html">Account</a>
+      <a href="mijn-account.html">My account</a>
       <a href="winkelwagen.html">Cart (0)</a>
-      <a href="reseller-login.html" class="reseller-login">Login Resellers</a>
+      <a href="reseller-login.html" class="reseller-login">Reseller Login</a>
     </div>
-      <button class="nav-hamburger" aria-label="Menu openen" aria-controls="mobile-menu" aria-expanded="false">
+      <button class="nav-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -733,70 +742,172 @@ body.menu-open { overflow: hidden; }
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <div class="mobile-menu-header">
     <span class="mobile-menu-title">Menu</span>
-    <button class="mobile-menu-close" aria-label="Menu sluiten">&times;</button>
+    <button class="mobile-menu-close" aria-label="Close menu">&times;</button>
   </div>
   <nav class="mobile-menu-nav" aria-label="Mobile navigation">
-    <a href="shop.html">Shop</a>
-    <a href="supplementen.html">Supplementen</a>
+    <a href="shop-en.html">Shop</a>
+    <a href="supplementen-en.html">Supplements</a>
     <div class="mobile-menu-sublist">
-      <a href="marine-collageen-13000-kuur.html">— Marine Collageen 13.000</a>
-      <a href="nordsilk.html">— Nordsilk</a>
-      <a href="freja.html">— FREJA</a>
-      <a href="hermade.html">— HÉRMADE</a>
-      <a href="index.html#100-dagen-kuur">— 100-dagen kuur</a>
+      <a href="marine-collageen-13000-kuur-en.html">— Marine Collageen 13.000</a>
+      <a href="nordsilk-en.html">— Nordsilk</a>
+      <a href="freja-en.html">— FREJA</a>
+      <a href="hermade-en.html">— HÉRMADE</a>
+      <a href="index-en.html#100-dagen-kuur">— 100-day treatment</a>
     </div>
-    <a href="stories.html">Stories</a>
-    <a href="over-ons.html">Ons verhaal</a>
-    <a href="faq.html">Veelgestelde vragen</a>
-    <a href="reseller-programma.html">Reseller programma</a>
+    <a href="stories-en.html">Stories</a>
+    <a href="over-ons-en.html">Our story</a>
+    <a href="faq-en.html">FAQ</a>
+    <a href="reseller-programma-en.html">Reseller programme</a>
     <div class="mobile-menu-divider"></div>
-    <a href="mijn-account.html">Mijn account</a>
-    <a href="winkelwagen.html">Winkelwagen</a>
-    <a href="reseller-login.html">Login resellers</a>
+    <a href="mijn-account.html">My account</a>
+    <a href="winkelwagen.html">Cart</a>
+    <a href="reseller-login.html">Reseller Login</a>
   </nav>
 </div>
 
 
 
 <div class="breadcrumb">
-  <a href="index.html">Home</a>
+  <a href="index-en.html">Home</a>
   <span class="sep">/</span>
-  <span class="current">Algemene Voorwaarden</span>
+  <span class="current">Stories</span>
 </div>
 
 <section class="page-hero">
-  <div class="page-hero-eyebrow">Juridisch</div>
-  <h1>Algemene <em>Voorwaarden</em>.</h1>
-  <p>Onze voorwaarden voor het gebruik van deze website en de aankoop van onze producten.</p>
+  <div class="page-hero-eyebrow">The journal</div>
+  <h1>Stories &amp; <em>insights</em>.</h1>
+  <p>Stories about rituals, ingredients and the women behind The Swedish Glow. Dive deep into what beauty from within truly means.</p>
 </section>
 
-<div class="info-content">
-  <p><em>Laatst bijgewerkt: 6 mei 2026</em></p>
-
-  <h2>1. <em>Toepasselijkheid</em></h2>
-  <p>Deze algemene voorwaarden zijn van toepassing op alle aanbiedingen van The Swedish Glow en op alle overeenkomsten tussen The Swedish Glow en haar klanten. Door een bestelling te plaatsen, ga je akkoord met deze voorwaarden.</p>
-
-  <h2>2. <em>Bestellingen</em></h2>
-  <p>Een overeenkomst komt tot stand op het moment dat je een bestelling plaatst en wij je bestelling per e-mail bevestigen. We behouden ons het recht voor bestellingen zonder opgaaf van redenen te weigeren.</p>
-
-  <h2>3. <em>Prijzen en betaling</em></h2>
-  <p>Alle prijzen op onze website zijn in Euro's, inclusief BTW en exclusief eventuele verzendkosten. We accepteren betaling via iDEAL, Bancontact, creditcard, PayPal en Klarna.</p>
-
-  <h2>4. <em>Levering</em></h2>
-  <p>We streven ernaar je bestelling binnen 1-2 werkdagen te leveren. Voor uitgebreide informatie verwijzen we naar onze <a href="levering.html">leverings- en retourvoorwaarden</a>.</p>
-
-  <h2>5. <em>Herroepingsrecht</em></h2>
-  <p>Je hebt het recht om binnen 14 dagen na ontvangst zonder opgave van redenen je bestelling te retourneren. Geopende voedingssupplementen kunnen om hygiënische redenen niet retour worden genomen.</p>
-
-  <h2>6. <em>Garantie en aansprakelijkheid</em></h2>
-  <p>We staan garant voor de kwaliteit van onze producten. Onze producten zijn voedingssupplementen en geen vervanging voor medische behandelingen. Bij twijfel raadpleeg altijd je arts.</p>
-
-  <h2>7. <em>Privacy</em></h2>
-  <p>Voor informatie over hoe we omgaan met je persoonsgegevens verwijzen we naar ons <a href="privacy.html">privacy statement</a>.</p>
-
-  <h2>8. <em>Contact</em></h2>
-  <p>Vragen over deze voorwaarden? Neem <a href="contact.html">contact met ons op</a>.</p>
-</div>
+<section class="stories-list">
+  <a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/freja.jpg" alt="Omega 3 for rosacea: natural calm for sensitive skin">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Skincare &amp; lifestyle</span>
+          <span class="dot">·</span>
+          <span>6 min read</span>
+        </div>
+        <h3>Omega 3 for rosacea: natural calm for sensitive skin</h3>
+        <p>Discover how omega-3 fatty acids help with rosacea. Calm inflammation, strengthen your skin barrier and give your sensitive skin the support it needs.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/the-swedish-glow-productcollectie-met-marine-colla.jpg" alt="Eating more, nourishing less: why supplementation is not a luxury">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Skincare &amp; lifestyle</span>
+          <span class="dot">·</span>
+          <span>5 min read</span>
+        </div>
+        <h3>Eating more, nourishing less: why supplementation is not a luxury</h3>
+        <p>We live in an age of abundance, yet still fall short on nutrients. Discover why supplementation is not a luxury, but sometimes a genuine necessity.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/marine-collageen-13000-het-ochtendritueel-van-the-.jpg" alt="Do collagen supplements really work?">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Collagen &amp; skincare</span>
+          <span class="dot">·</span>
+          <span>8 min read</span>
+        </div>
+        <h3>Do collagen supplements really work?</h3>
+        <p>Collagen supplements promise a great deal — but do they actually make a difference for your skin? We explore the facts, share real experiences and give you smart tips.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/marine-collageen-13000-lifestyle.jpg" alt="Omega-3 supplement: everything about DHA, EPA and algae oil">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Know your ingredient</span>
+          <span class="dot">·</span>
+          <span>7 min read</span>
+        </div>
+        <h3>Omega-3 supplement: everything about DHA, EPA and algae oil</h3>
+        <p>Omega-3 fatty acids are essential for your heart, brain and overall health — yet most people don't get enough. Read all about the benefits.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/nordsilk-het-haarritueel-van-the-swedish-glow.jpg" alt="Hair &amp; Hormones: what oestrogen, testosterone and stress do to your hair">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Nutrition &amp; health</span>
+          <span class="dot">·</span>
+          <span>9 min read</span>
+        </div>
+        <h3>Hair &amp; Hormones: what oestrogen, testosterone and stress do to your hair</h3>
+        <p>Hormones have a profound influence on hair growth and loss. From pregnancy to stress and menopause: discover how your hormonal balance relates to the condition of your hair.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/marine-collagen-13000-ritueel-voor-stralende-huid-.jpg" alt="Do collagen supplements really work?">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>The science</span>
+          <span class="dot">·</span>
+          <span>8 min read</span>
+        </div>
+        <h3>The science behind collagen</h3>
+        <p>Discover what 25+ clinical studies say about collagen and skin results — and what that means for your ritual.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/het-verhaal-achter-hermade.jpg" alt="The story behind HÉRMADE">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Behind the scenes</span>
+          <span class="dot">·</span>
+          <span>6 min read</span>
+        </div>
+        <h3>The story behind HÉRMADE</h3>
+        <p>How Elin developed a supplement for the menopause — women-friendly, natural and without taboos.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/waarom-we-kozen-voor-branno.jpg" alt="Why we chose Brännö">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>The brand</span>
+          <span class="dot">·</span>
+          <span>5 min read</span>
+        </div>
+        <h3>Why we chose Brännö</h3>
+        <p>An island in the far north, a family brand and the silence that changed everything.</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a><a href="#" class="story-card">
+      <div class="story-card-image">
+        <img src="images/nordsilk.jpg" alt="Marine or plant-based: which collagen?">
+      </div>
+      <div class="story-card-info">
+        <div class="story-meta">
+          <span>Product advice</span>
+          <span class="dot">·</span>
+          <span>7 min read</span>
+        </div>
+        <h3>Marine or plant-based: which collagen?</h3>
+        <p>An honest comparison between fish collagen and plant-based alternatives — which one suits you?</p>
+        <div class="story-card-cta">Read more <span>→</span></div>
+      </div>
+    </a>
+</section>
 
 
 <footer>
@@ -804,41 +915,41 @@ body.menu-open { overflow: hidden; }
     <div class="footer-top">
       <div class="footer-brand">
         <span class="logo-text">The Swedish <em>Glow</em></span>
-        <p>Premium Zweedse vloeibare supplementen voor stralende huid, sterk haar en innerlijke balans. Een Nordic beauty-ritueel, voor élke vrouw.</p>
+        <p>Premium Swedish liquid supplements for radiant skin, strong hair and inner balance. A Nordic beauty ritual, for every woman.</p>
       </div>
       <div class="footer-col">
-        <h4>Supplementen</h4>
+        <h4>Supplements</h4>
         <ul>
-          <li><a href="marine-collageen-13000-kuur.html">Marine Collageen 13.000</a></li>
-          <li><a href="nordsilk.html">Nordsilk</a></li>
-          <li><a href="freja.html">FREJA</a></li>
-          <li><a href="hermade.html">HÉRMADE</a></li>
-          <li><a href="shop.html">Alle producten</a></li>
+          <li><a href="marine-collageen-13000-kuur-en.html">Marine Collageen 13.000</a></li>
+          <li><a href="nordsilk-en.html">Nordsilk</a></li>
+          <li><a href="freja-en.html">FREJA</a></li>
+          <li><a href="hermade-en.html">HÉRMADE</a></li>
+          <li><a href="shop-en.html">All products</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Het merk</h4>
+        <h4>The brand</h4>
         <ul>
-          <li><a href="over-ons.html">Ons verhaal</a></li>
-          <li><a href="stories.html">Stories</a></li>
-          <li><a href="reseller-programma.html">Reseller worden</a></li>
+          <li><a href="over-ons-en.html">Our story</a></li>
+          <li><a href="stories-en.html">Stories</a></li>
+          <li><a href="reseller-programma-en.html">Become a reseller</a></li>
           <li><a href="reseller-login.html">Reseller portal</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Klantenservice</h4>
+        <h4>Customer service</h4>
         <ul>
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="levering.html">Levering &amp; retour</a></li>
-          <li><a href="mijn-account.html">Mijn account</a></li>
-          <li><a href="nieuwsbrief.html">Nieuwsbrief</a></li>
+          <li><a href="levering-en.html">Delivery &amp; returns</a></li>
+          <li><a href="mijn-account.html">My account</a></li>
+          <li><a href="nieuwsbrief.html">Newsletter</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <div>© 2026 The Swedish Glow — Een Nederlands familiemerk met Zweedse roots</div>
+      <div>© 2026 The Swedish Glow — A Dutch family brand with Swedish roots</div>
       <div class="legal">
-        <a href="voorwaarden.html">Voorwaarden</a>
+        <a href="voorwaarden.html">Terms</a>
         <a href="privacy.html">Privacy</a>
         <a href="cookies.html">Cookies</a>
       </div>
@@ -873,11 +984,11 @@ body.menu-open { overflow: hidden; }
     btn.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu();
   });
   if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-  // Sluit menu als links worden geklikt
+  // Close menu when links are clicked
   menu.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', closeMenu);
   });
-  // Sluit met Escape
+  // Close with Escape
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
   });

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -1250,6 +1250,7 @@ body.menu-open { overflow: hidden; }
 }
 
 </style>
+<script src="lang.js"></script>
 </head>
 <body>
 
@@ -1654,6 +1655,28 @@ body.menu-open { overflow: hidden; }
     </div>
   </div>
 </footer>
+
+<script src="cart.js"></script>
+<script>
+(function () {
+  var VARIANTS = [
+    { cartId: '9003241321124976', wcProductId: '9003241321124958', wcVariationId: '9003241321124976', name: 'Nordsilk', variant: '33 dagen · 1 × 500 ml', price: 47 },
+    { cartId: '9003241321124974', wcProductId: '9003241321124958', wcVariationId: '9003241321124974', name: 'Nordsilk', variant: '100 dagen · 3 × 500 ml', price: 126 }
+  ];
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.querySelector('.purchase-actions .btn-primary');
+    var radios = document.querySelectorAll('input[name="variant-nordsilk"]');
+    btn.addEventListener('click', function () {
+      var idx = Array.from(radios).findIndex(function (r) { return r.checked; });
+      TSGCart.addToCart(VARIANTS[idx < 0 ? 0 : idx]);
+      var orig = btn.innerHTML;
+      btn.textContent = 'Toegevoegd ✓';
+      btn.disabled = true;
+      setTimeout(function () { btn.innerHTML = orig; btn.disabled = false; }, 1500);
+    });
+  });
+})();
+</script>
 
 <script>
 // FAQ accordion

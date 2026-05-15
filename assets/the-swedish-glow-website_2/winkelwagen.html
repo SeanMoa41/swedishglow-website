@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -284,6 +284,69 @@ footer {
 }
 .cart-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 @media (max-width: 640px) { .cart-content { padding: 60px 24px; } }
+
+/* Cart populated state */
+.cart-layout {
+  max-width: 960px; margin: 0 auto; padding: 60px 40px 100px;
+  display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start;
+}
+.cart-items { display: flex; flex-direction: column; }
+.cart-item {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: start; gap: 20px;
+  padding: 24px 0; border-bottom: 1px solid var(--line);
+}
+.cart-item-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 500; margin-bottom: 4px; }
+.cart-item-variant { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 14px; }
+.cart-item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.cart-item-price { font-family: var(--font-display); font-size: 1.15rem; }
+.cart-item-controls { display: flex; align-items: center; gap: 8px; }
+.qty-btn {
+  width: 28px; height: 28px; border: 1px solid var(--line);
+  background: transparent; cursor: pointer; font-size: 1.1rem; line-height: 1;
+  color: var(--ink); transition: border-color 0.2s ease; display: flex;
+  align-items: center; justify-content: center; font-family: var(--font-body);
+}
+.qty-btn:hover { border-color: var(--gold); }
+.qty-display { font-size: 0.9rem; min-width: 20px; text-align: center; }
+.cart-remove {
+  font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--stone); background: none; border: none; cursor: pointer;
+  padding: 0; text-decoration: underline; text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+.cart-remove:hover { color: var(--ink); }
+.cart-summary {
+  border: 1px solid var(--line); padding: 32px;
+  position: sticky; top: 100px;
+}
+.cart-summary-title {
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 500;
+  margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
+}
+.cart-summary-row {
+  display: flex; justify-content: space-between;
+  font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 10px;
+}
+.cart-summary-total {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);
+  font-family: var(--font-display); font-size: 1.3rem;
+}
+.cart-checkout-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; margin-top: 20px; padding: 18px;
+  background: var(--moss); color: var(--bone); border: 1px solid var(--moss);
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+  font-family: var(--font-body); text-decoration: none;
+}
+.cart-checkout-btn:hover { background: var(--moss-deep); border-color: var(--gold); }
+.cart-shipping-note { font-size: 0.75rem; color: var(--ink-soft); margin-top: 12px; text-align: center; line-height: 1.5; }
+@media (max-width: 768px) {
+  .cart-layout { grid-template-columns: 1fr; padding: 40px 24px 80px; gap: 32px; }
+  .cart-summary { position: static; }
+}
 
 
 /* ═══ MOBIELE NAVIGATIE — hamburger + overlay ═══ */
@@ -643,6 +706,7 @@ body.menu-open { overflow: hidden; }
 }
 
 </style>
+<script src="lang.js"></script>
 </head>
 <body>
 
@@ -754,21 +818,7 @@ body.menu-open { overflow: hidden; }
   <h1>Jouw <em>winkelwagen</em>.</h1>
 </section>
 
-<section class="cart-content">
-  <div class="cart-icon">
-    <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M14 20 h8 l8 36 h36 l8-26 H26"/>
-      <circle cx="32" cy="64" r="3"/>
-      <circle cx="60" cy="64" r="3"/>
-    </svg>
-  </div>
-  <h2>Je winkelwagen is nog <em>leeg</em>.</h2>
-  <p>Ontdek onze rituelen en voeg je favoriete supplementen toe. Vandaag besteld, morgen in huis.</p>
-  <div class="cart-actions">
-    <a href="shop.html" class="btn-primary">Naar de collectie <span class="arrow">→</span></a>
-    <a href="marine-collageen-13000-kuur.html" class="btn-secondary">Bestseller bekijken</a>
-  </div>
-</section>
+<div id="cart-root"></div>
 
 
 <footer>
@@ -820,6 +870,65 @@ body.menu-open { overflow: hidden; }
 
 
 
+
+<script src="cart.js"></script>
+<script>
+(function () {
+  var EMPTY_HTML = '<section class="cart-content">'
+    + '<div class="cart-icon"><svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 20 h8 l8 36 h36 l8-26 H26"/><circle cx="32" cy="64" r="3"/><circle cx="60" cy="64" r="3"/></svg></div>'
+    + '<h2>Je winkelwagen is nog <em>leeg</em>.</h2>'
+    + '<p>Ontdek onze rituelen en voeg je favoriete supplementen toe. Vandaag besteld, morgen in huis.</p>'
+    + '<div class="cart-actions">'
+    + '<a href="shop.html" class="btn-primary">Naar de collectie <span class="arrow">→</span></a>'
+    + '<a href="marine-collageen-13000-kuur.html" class="btn-secondary">Bestseller bekijken</a>'
+    + '</div></section>';
+
+  function fmt(n) { return '€' + n.toFixed(2).replace('.', ','); }
+
+  function renderCart() {
+    var cart = TSGCart.load();
+    var root = document.getElementById('cart-root');
+    if (!cart.length) { root.innerHTML = EMPTY_HTML; return; }
+
+    var subtotal = cart.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
+    var freeShipping = subtotal >= 60;
+
+    var itemsHTML = cart.map(function (item) {
+      return '<div class="cart-item" data-id="' + item.cartId + '">'
+        + '<div>'
+        + '<div class="cart-item-name">' + item.name + '</div>'
+        + '<div class="cart-item-variant">' + item.variant + '</div>'
+        + '<div class="cart-item-controls">'
+        + '<button class="qty-btn" onclick="TSGCart.setQty(\'' + item.cartId + '\',' + (item.qty - 1) + ');renderWinkelwagen()">&#8722;</button>'
+        + '<span class="qty-display">' + item.qty + '</span>'
+        + '<button class="qty-btn" onclick="TSGCart.setQty(\'' + item.cartId + '\',' + (item.qty + 1) + ');renderWinkelwagen()">+</button>'
+        + '<button class="cart-remove" onclick="TSGCart.removeItem(\'' + item.cartId + '\');renderWinkelwagen()">Verwijderen</button>'
+        + '</div></div>'
+        + '<div class="cart-item-right">'
+        + '<div class="cart-item-price">' + fmt(item.price * item.qty) + '</div>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+
+    var url = TSGCart.buildCheckoutUrl();
+
+    root.innerHTML = '<div class="cart-layout">'
+      + '<div class="cart-items">' + itemsHTML + '</div>'
+      + '<div class="cart-summary">'
+      + '<div class="cart-summary-title">Overzicht</div>'
+      + '<div class="cart-summary-row"><span>Subtotaal</span><span>' + fmt(subtotal) + '</span></div>'
+      + '<div class="cart-summary-row"><span>Verzending</span><span>' + (freeShipping ? 'Gratis' : 'Vanaf €60 gratis') + '</span></div>'
+      + '<div class="cart-summary-total"><span>Totaal</span><span>' + fmt(subtotal) + '</span></div>'
+      + '<a href="' + url + '" class="cart-checkout-btn">Afrekenen <span>→</span></a>'
+      + '<p class="cart-shipping-note">Veilig betalen via iDEAL &amp; Wero.<br>Vandaag besteld, morgen in huis.</p>'
+      + '</div>'
+      + '</div>';
+  }
+
+  window.renderWinkelwagen = renderCart;
+  document.addEventListener('DOMContentLoaded', renderCart);
+})();
+</script>
 
 <script>
 // Mobile menu toggle
