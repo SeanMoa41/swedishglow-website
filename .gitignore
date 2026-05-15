@@ -39,3 +39,6 @@ obj/
 
 # Defensive: node at repo root
 node_modules/
+
+# Local docs (not for repo)
+docs/DEPLOYMENT.md
