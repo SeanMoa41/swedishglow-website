@@ -1,6 +1,8 @@
 import json
 import logging
 import time
+from contextlib import asynccontextmanager
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -13,7 +15,21 @@ logging.basicConfig(
 )
 request_logger = logging.getLogger("tsg.request")
 
-app = FastAPI(title="TSG Backend", version="1.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if not settings.local_dev:
+        from app.services.tier import recalculate_all_tiers
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(recalculate_all_tiers, "cron", hour=2, minute=0)
+        scheduler.start()
+        yield
+        scheduler.shutdown()
+    else:
+        yield
+
+
+app = FastAPI(title="TSG Backend", version="1.0.0", lifespan=lifespan)
 
 
 @app.middleware("http")
