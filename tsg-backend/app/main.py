@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
-from app.routers import auth, resellers, products, orders, files, admin, webhooks
+from app.routers import auth, resellers, products, orders, files, admin, webhooks, chat
 
 logging.basicConfig(
     level=logging.DEBUG if settings.local_dev else logging.INFO,
@@ -56,6 +56,7 @@ _origins = [
 ]
 if settings.local_dev:
     _origins += [f"http://localhost:{p}" for p in range(3001, 3010)]
+    _origins.append("http://localhost:8080")
 
 app.add_middleware(
     CORSMiddleware,
@@ -72,6 +73,7 @@ app.include_router(orders.router)
 app.include_router(files.router)
 app.include_router(admin.router)
 app.include_router(webhooks.router)
+app.include_router(chat.router)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 

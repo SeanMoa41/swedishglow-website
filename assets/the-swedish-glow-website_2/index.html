@@ -5312,128 +5312,31 @@ document.querySelector('.faq-item .faq-question').setAttribute('aria-expanded', 
   const input = document.getElementById('tsgChatInput');
   const suggestions = document.getElementById('tsgChatSuggestions');
 
-  // Knowledge base — getrained op alle TSG content uit deze sessie
-  const responses = {
-    'welk product past bij mij': {
-      text: 'Goeie vraag. Onze rituelen zijn ontworpen voor specifieke behoeften:\n\n· **Het ochtendritueel** (Marine Collageen 13.000) voor stralende huid en stevigheid\n· **Het haarritueel** (Nordsilk) voor wie merkt dat haar dunner wordt\n· **Het basisritueel** (FREJA) — het Omega 3 fundament onder elk ander ritueel\n· **Het maandritueel** (HÉRMADE) voor vrouwen in de overgang',
-      followup: 'Wat is voor jou nu het belangrijkste: je huid, je haar, of algemene balans?'
-    },
-    'wat doet marine collageen': {
-      text: 'Marine Collageen 13.000 is onze bestseller en het ochtendritueel van honderdduizenden vrouwen. Eén shot van 20 ml per dag bevat 13.000 mg vloeibare viscollageen, plus hyaluronzuur, vitamine C, A, B-complex, zink en selenium.\n\nWat je mag verwachten: vanaf week 4 subtiele veranderingen in hydratatie, vanaf week 8 voelt je huid steviger en je haar voller, en vanaf week 12 zie je verschil op fijne lijntjes.',
-      followup: 'Wil je horen waarom we voor 100 dagen aanraden, of meer over de ingrediënten?'
-    },
-    'hoe werkt het 100-dagen ritueel': {
-      text: 'Het 100-dagen ritueel is geen quick fix, maar een seizoen voor jezelf. Wetenschappelijk gezien heeft je huid drie maanden nodig om zichtbaar te vernieuwen.\n\nDe kuur bestaat uit vier flessen Marine Collageen 13.000 (4 × 500 ml). Je neemt elke ochtend één shot. In de eerste 30 dagen activeert je lichaam de ingrediënten, dag 31 tot 60 zie je verdieping, dag 61 tot 90 de glow, en daarna onderhoud.\n\n94% van onze klanten ziet zichtbaar verschil.',
-      followup: 'Zal ik je naar de 100-dagen kuur brengen?'
-    },
-    'is freja geschikt voor mij': {
-      text: 'FREJA is onze premium vloeibare Omega 3 uit duurzame Noordzee-visserij. Eén lepel per dag levert hoog gedoseerde EPA en DHA voor hart, brein en huid.\n\nFREJA past bij je als je:\n· Geen vis genoeg eet\n· Een droge of geïrriteerde huid hebt\n· Helderheid en focus wilt\n· Een fundament zoekt onder andere supplementen\n\nNiet geschikt bij visallergie of strikt veganisme.',
-      followup: 'Heb je specifieke gezondheidsdoelen waar ik je over kan informeren?'
-    },
-    'vertel me over the swedish glow': {
-      text: 'The Swedish Glow is een Nederlands familiemerk met Zweedse roots, opgericht in 2022 door Elin Hellqvist-Moayedi. Geboren op een eiland in Zweden, werkte Elin bij IKEA, Shimano en ASML voordat ze besloot een merk te bouwen dat vrouwen op een voetstuk zet.\n\nVandaag zijn we actief in 23 landen met meer dan 100.000 klanten. Onze missie: vrouwen laten stralen met de beste ingrediënten, een ritueel dat tijd vraagt, en uitstekende werking.',
-      followup: 'Wil je het volledige verhaal lezen, of meer over onze producten weten?'
-    },
-    'verschil freja plantique': {
-      text: 'FREJA is onze nieuwe vlaggenschip Omega 3, een premium vloeibare formule uit duurzame Noordzee-vis met hoge concentratie EPA en DHA.\n\nPlantique was onze plantaardige Omega 3 uit algen, die we momenteel uitfaseren. Plantique is nog beschikbaar zolang de voorraad strekt voor klanten die de plantaardige variant verkiezen.',
-      followup: 'Wil je weten welke voor jou beter is?'
-    },
-    'overgang menopauze': {
-      text: 'HÉRMADE is speciaal ontwikkeld voor vrouwen in de peri- en postmenopauze. Het is een 30-dagen ritueel met sachets met zorgvuldig geselecteerde botanicals, ontworpen om balans en welzijn te ondersteunen in een nieuwe levensfase.\n\nGebruik je medicatie? Raadpleeg dan altijd eerst je arts.',
-      followup: 'Wil je weten wat HÉRMADE concreet kan doen, of heb je een andere vraag?'
-    },
-    'verzending levering': {
-      text: 'Vandaag besteld voor 16:00, morgen in huis (NL/BE). Vanaf €60 verzenden we gratis. We versturen naar 23 landen wereldwijd.',
-      followup: 'Heb je nog andere praktische vragen?'
-    },
-    'prijs kosten': {
-      text: 'Onze rituelen:\n· FREJA — vanaf €42\n· Nordsilk — vanaf €47\n· Marine Collageen 13.000 — vanaf €59\n· HÉRMADE — €39\n· 100-dagen kuur (4 × 500 ml Marine Collageen) — €216\n\nVanaf €60 is verzending gratis.',
-      followup: 'Wil je advies welke combinatie voor jou werkt?'
-    },
-    'ingrediënten ingredienten': {
-      text: 'Al onze formules zijn gemaakt in Zweden, GMO-vrij, glutenvrij en zonder toegevoegde suikers. Onze kerningrediënten zijn:\n\n· Marine collageen — type I peptiden uit duurzame visserij\n· Hyaluronzuur — voor hydratatie en elasticiteit\n· Vitamine C — voor natuurlijke collageensynthese\n· Omega 3 — premium visolie uit Noordzee\n· Biotine, zink en selenium — voor sterk haar en nagels',
-      followup: 'Wil je over een specifiek ingrediënt meer weten?'
-    },
-    'fallback': {
-      text: 'Goede vraag — daar heb ik nog geen kant-en-klaar antwoord op, maar ons team helpt je graag persoonlijk verder. Stuur je vraag naar info@theswedishglow.com of via WhatsApp +31 6 30 53 74 52.\n\nIn de tussentijd kan ik je vertellen over onze producten, het 100-dagen ritueel, of het verhaal achter het merk.',
-      followup: 'Waarover zou je graag meer weten?'
-    }
-  };
-
-  function matchResponse(query) {
-    const q = query.toLowerCase().trim();
-
-    // Direct keyword matching
-    if (q.match(/welk.*product|wat.*kies|advies|past bij/)) return responses['welk product past bij mij'];
-    if (q.match(/marine.*collageen|13.000|13000|collageen shot/)) return responses['wat doet marine collageen'];
-    if (q.match(/100.dagen|100 dagen|kuur|seizoen|lange termijn/)) return responses['hoe werkt het 100-dagen ritueel'];
-    if (q.match(/freja|omega.?3.*vis|noordzee/) && q.match(/plantique|verschil|vergelijk/)) return responses['verschil freja plantique'];
-    if (q.match(/freja|omega/)) return responses['is freja geschikt voor mij'];
-    if (q.match(/the swedish glow|merk|verhaal|elin|oprichtster|founder/)) return responses['vertel me over the swedish glow'];
-    if (q.match(/overgang|menopauze|hermade|hérmade|peri/)) return responses['overgang menopauze'];
-    if (q.match(/verzending|levering|bezorg|wanneer.*komt/)) return responses['verzending levering'];
-    if (q.match(/prijs|kosten|wat kost|hoeveel/)) return responses['prijs kosten'];
-    if (q.match(/ingrediënt|ingredient|wat zit|formule|samenstelling/)) return responses['ingrediënten ingredienten'];
-
-    return responses['fallback'];
-  }
-
-  function addMessage(text, isUser, followup) {
-    const msg = document.createElement('div');
-    msg.className = 'chat-message ' + (isUser ? 'chat-message--user' : 'chat-message--assistant');
-
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble';
-
-    const paragraphs = text.split('\n\n');
-    paragraphs.forEach(p => {
-      const para = document.createElement('p');
-      // Convert **bold** to <strong>
-      para.innerHTML = p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-      bubble.appendChild(para);
-    });
-
-    if (followup) {
-      const fu = document.createElement('p');
-      fu.className = 'chat-bubble-followup';
-      fu.textContent = followup;
-      bubble.appendChild(fu);
-    }
-
-    msg.appendChild(bubble);
-    body.appendChild(msg);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function showTyping() {
-    const msg = document.createElement('div');
-    msg.className = 'chat-message chat-message--assistant';
-    msg.id = 'tsgChatTyping';
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble chat-typing';
-    bubble.innerHTML = '<span></span><span></span><span></span>';
-    msg.appendChild(bubble);
-    body.appendChild(msg);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function hideTyping() {
-    const t = document.getElementById('tsgChatTyping');
-    if (t) t.remove();
-  }
+  const CHAT_API = window.TSG_CHAT_API || 'http://localhost:8001';
+  const chatHistory = [];
 
   function handleQuery(query) {
     addMessage(query, true);
     if (suggestions) suggestions.style.display = 'none';
     showTyping();
+    chatHistory.push({ role: 'user', content: query });
 
-    setTimeout(() => {
-      hideTyping();
-      const response = matchResponse(query);
-      addMessage(response.text, false, response.followup);
-    }, 800 + Math.random() * 600);
+    fetch(CHAT_API + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory, lang: 'nl' })
+    })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(data => {
+        hideTyping();
+        chatHistory.push({ role: 'assistant', content: data.reply });
+        addMessage(data.reply, false);
+      })
+      .catch(() => {
+        hideTyping();
+        addMessage('Er ging iets mis. Probeer het opnieuw of neem contact op via info@theswedishglow.com.', false);
+      });
   }
-
   // Event listeners
   function openChat() {
     panel.hidden = false;

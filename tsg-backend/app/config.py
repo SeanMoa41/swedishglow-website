@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     azure_blob_container: str = "marketing-files"
     webhook_secret: str
     resend_api_key: str = ""
+    anthropic_api_key: str = ""
     local_dev: bool = False
     local_dev_reseller_email: str = "dev@theswedishglow.com"
     cors_origins: list[str] = []
