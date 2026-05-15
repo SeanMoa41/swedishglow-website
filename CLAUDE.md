@@ -20,11 +20,12 @@ Azure Container App — FastAPI (Python 3.12)       ← this repo
   ├── reads/writes → Azure PostgreSQL Flexible Server
   ├── auth verify → Supabase Auth
   ├── file storage → Azure Blob Storage
-  └── live API calls → TeamLeader Focus API
+  ├── live API calls → TeamLeader Focus API
+  ├── transactional email → Resend
+  └── nightly tier recalc → APScheduler (02:00 AM, internal)
 Azure Functions (ETL, Python) — scheduled timers
   ├── wc_orders_sync     (every 30 min → PostgreSQL)
-  ├── tl_invoices_sync   (every 30 min → PostgreSQL)
-  └── tier_recalculate   (nightly → resellers.tier)
+  └── tl_invoices_sync   (every 30 min → PostgreSQL)
 ```
 
 ---
@@ -64,7 +65,7 @@ Each tier has a `discount_pct` and `min_revenue_eur` threshold stored in the `ti
 **Ordering flow:** Reseller selects products in portal → FastAPI creates a **TeamLeader quotation** (draft) → TSG staff approves in TeamLeader → becomes invoice. No payment processing on the B2B side.
 
 **Tier recalculation logic:**
-- Run nightly via Azure Function
+- Run nightly at 02:00 AM via APScheduler (inside FastAPI)
 - `SUM(invoices.total_eur) WHERE status='paid' AND invoice_date >= Jan 1 current year`
 - Skip resellers where `tier_override = true` (admin has manually locked their tier)
 - Upgrade only — never auto-downgrade (business decision, revisit if needed)
@@ -137,7 +138,7 @@ POST  /webhooks/teamleader              TL invoice status changes (secret header
 | Table | Purpose |
 |---|---|
 | `resellers` | Partner accounts, tier, TeamLeader link |
-| `tier_thresholds` | Configurable tier revenue thresholds + discounts |
+| `tier_thresholds` | Configurable tier revenue thresholds, discounts, and auto-approve flag |
 | `applications` | Pending partner applications (pre-account) |
 | `products` | Product catalog with list prices |
 | `quotations` | B2B orders created in TeamLeader |
@@ -176,6 +177,12 @@ Key field: `resellers.tier_override` — when `true`, nightly ETL skips this res
 - JWT verification via Supabase public key (JWKS endpoint)
 - Admin API used for: create user on application approval, invite email
 
+### Resend
+- **Auth:** API key (`RESEND_API_KEY`)
+- **From:** noreply@theswedishglow.com
+- **Templates:** account_approved, tier_upgraded, quotation_confirmed
+- **Client:** `app/integrations/email.py`
+
 ### Azure Blob Storage
 - Marketing files stored in a private container
 - Download endpoint generates short-lived signed URLs (SAS tokens)
@@ -203,11 +210,11 @@ tsg-backend/
 │   └── integrations/
 │       ├── teamleader.py
 │       ├── woocommerce.py
-│       └── supabase.py
+│       ├── supabase.py
+│       └── email.py
 ├── etl/                     # Azure Functions
 │   ├── tl_invoices_sync/
-│   ├── wc_orders_sync/
-│   └── tier_recalculate/
+│   └── wc_orders_sync/
 ├── migrations/              # Alembic
 ├── tests/
 ├── Dockerfile
@@ -243,6 +250,9 @@ WC_CONSUMER_SECRET=cs_...
 # Azure Blob
 AZURE_STORAGE_CONNECTION_STRING=...
 AZURE_BLOB_CONTAINER=marketing-files
+
+# Resend
+RESEND_API_KEY=...
 
 # Webhooks
 WEBHOOK_SECRET=...

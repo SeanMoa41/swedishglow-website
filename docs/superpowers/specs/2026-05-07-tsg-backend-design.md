@@ -39,9 +39,9 @@ The backend connects TeamLeader Focus (B2B invoices + quotations), WooCommerce (
 ┌────────▼───────┐   ┌───────▼──────────────────────────┐
 │  Azure         │   │  Azure Functions (ETL)           │
 │  PostgreSQL    │   │  ├── wc_orders_sync (30 min)      │
-│  Flexible      │◄──┤  ├── tl_invoices_sync (30 min)   │
-│  Server        │   │  └── tier_recalculate (nightly)  │
-└────────────────┘   └──────────────────────────────────┘
+│  Flexible      │◄──┤  └── tl_invoices_sync (30 min)   │
+│  Server        │   └──────────────────────────────────┘
+└────────────────┘
          │
 ┌────────▼───────┐   ┌─────────────────┐
 │  Supabase Auth │   │  Azure Blob      │
@@ -61,6 +61,7 @@ The backend connects TeamLeader Focus (B2B invoices + quotations), WooCommerce (
 | Auth | Supabase Auth (JWT) |
 | File Storage | Azure Blob Storage |
 | ETL | Azure Functions (Python, timer triggers) |
+| Email | Resend |
 | Deployment | Azure Container Apps (API) |
 | Local Dev | Docker Compose (app + postgres) |
 
@@ -256,9 +257,9 @@ Custom Netlify checkout → POST /checkout/create-payment (FastAPI → Mollie AP
 Mollie webhook → POST /webhooks/mollie → confirm order → store in b2c_orders
 ```
 
-### Tier recalculation (ETL, nightly)
+### Tier recalculation (APScheduler, nightly)
 ```
-Azure Function timer trigger
+APScheduler job inside FastAPI (02:00 AM)
   → For each active reseller WHERE tier_override = false:
       SELECT SUM(total_eur) FROM invoices
       WHERE reseller_id = ? AND status = 'paid'
@@ -315,12 +316,12 @@ tsg-backend/
 │   └── integrations/
 │       ├── teamleader.py        # TL API client
 │       ├── woocommerce.py       # WC REST client
-│       └── supabase.py          # Supabase Admin API client
+│       ├── supabase.py          # Supabase Admin API client
+    └── email.py             # Resend transactional email client
 │
 ├── etl/                         # Azure Functions
 │   ├── tl_invoices_sync/
-│   ├── wc_orders_sync/
-│   └── tier_recalculate/
+│   └── wc_orders_sync/
 │
 ├── migrations/                  # Alembic
 │   └── versions/

@@ -4,13 +4,15 @@ on:
   push:
     branches: [main]
     paths:
-      - 'tsg-backend/etl/**'
+      - 'tsg-backend/etl/wc_orders_sync/**'
+      - 'tsg-backend/etl/tl_invoices_sync/**'
       - 'tsg-backend/requirements.txt'
       - '.github/workflows/etl.yml'
   pull_request:
     branches: [main]
     paths:
-      - 'tsg-backend/etl/**'
+      - 'tsg-backend/etl/wc_orders_sync/**'
+      - 'tsg-backend/etl/tl_invoices_sync/**'
       - 'tsg-backend/requirements.txt'
       - '.github/workflows/etl.yml'
 
@@ -49,7 +51,7 @@ jobs:
           EOF
 
       - name: Run ETL tests
-        run: pytest tests/test_etl_*.py tests/test_tier_service.py -v --tb=short
+        run: pytest tests/test_etl_wc_orders.py tests/test_etl_tl_invoices.py tests/test_tier_service.py -v --tb=short
 
   deploy-staging:
     needs: test
