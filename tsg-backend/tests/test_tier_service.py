@@ -89,3 +89,36 @@ async def test_recalculate_does_not_downgrade():
     await recalculate_reseller_tier(mock_db, "uuid-1")
 
     mock_db.commit.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_recalculate_reseller_tier_returns_new_tier_on_upgrade():
+    mock_db = AsyncMock()
+    reseller_result = MagicMock()
+    reseller_result.one_or_none.return_value = MagicMock(tier="pearl", tier_override=False)
+    thresholds_result = MagicMock()
+    thresholds_result.all.return_value = [("pearl", "0"), ("rose", "1000")]
+    revenue_result = MagicMock()
+    revenue_result.scalar.return_value = 2000.0
+    update_result = MagicMock()
+    mock_db.execute.side_effect = [reseller_result, thresholds_result, revenue_result, update_result]
+
+    result = await recalculate_reseller_tier(mock_db, "uuid-1")
+
+    assert result == "rose"
+
+
+@pytest.mark.asyncio
+async def test_recalculate_reseller_tier_returns_none_when_no_upgrade():
+    mock_db = AsyncMock()
+    reseller_result = MagicMock()
+    reseller_result.one_or_none.return_value = MagicMock(tier="pro", tier_override=False)
+    thresholds_result = MagicMock()
+    thresholds_result.all.return_value = [("pearl", "0"), ("rose", "1000"), ("pro", "5000")]
+    revenue_result = MagicMock()
+    revenue_result.scalar.return_value = 2000.0
+    mock_db.execute.side_effect = [reseller_result, thresholds_result, revenue_result]
+
+    result = await recalculate_reseller_tier(mock_db, "uuid-1")
+
+    assert result is None

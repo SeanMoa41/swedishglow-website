@@ -15,14 +15,14 @@ def calculate_tier(revenue_eur: float, thresholds: list[dict]) -> str:
     return result
 
 
-async def recalculate_reseller_tier(db: AsyncSession, reseller_id: str) -> None:
+async def recalculate_reseller_tier(db: AsyncSession, reseller_id: str) -> str | None:
     result = await db.execute(
         text("SELECT tier, tier_override FROM resellers WHERE id = :id AND status = 'active'"),
         {"id": reseller_id},
     )
     reseller = result.one_or_none()
     if not reseller or reseller.tier_override:
-        return
+        return None
 
     current_tier = reseller.tier
     current_year = datetime.now(timezone.utc).year
@@ -49,7 +49,7 @@ async def recalculate_reseller_tier(db: AsyncSession, reseller_id: str) -> None:
     current_idx = TIER_ORDER.index(current_tier) if current_tier in TIER_ORDER else 0
     new_idx = TIER_ORDER.index(new_tier) if new_tier in TIER_ORDER else 0
     if new_idx <= current_idx:
-        return
+        return None
 
     await db.execute(
         text("UPDATE resellers SET tier = :tier, updated_at = now() WHERE id = :id"),
@@ -57,3 +57,32 @@ async def recalculate_reseller_tier(db: AsyncSession, reseller_id: str) -> None:
     )
     await db.commit()
     logging.info(f"Tier upgraded: reseller {reseller_id} → {new_tier}")
+    return new_tier
+
+
+async def recalculate_all_tiers() -> None:
+    from app.database import AsyncSessionLocal
+    from app.integrations.email import send_email
+    import asyncio
+    logger = logging.getLogger("tsg.tier")
+    logger.info("Starting nightly tier recalculation")
+    async with AsyncSessionLocal() as db:
+        result = await db.execute(
+            text("SELECT id, email, first_name FROM resellers WHERE status = 'active'")
+        )
+        resellers = result.all()
+
+    upgraded = 0
+    for row in resellers:
+        async with AsyncSessionLocal() as db:
+            new_tier = await recalculate_reseller_tier(db, str(row.id))
+            if new_tier:
+                upgraded += 1
+                await asyncio.to_thread(
+                    send_email,
+                    to=row.email,
+                    subject="Gefeliciteerd met je nieuwe tier!",
+                    template="tier_upgraded",
+                    context={"name": row.first_name or row.email, "new_tier": new_tier},
+                )
+    logger.info(f"Tier recalculation complete: {upgraded} resellers upgraded")
