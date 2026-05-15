@@ -19,3 +19,8 @@ def test_all_models_importable():
     assert Invoice.__tablename__ == "invoices"
     assert MarketingFile.__tablename__ == "marketing_files"
     assert FileDownload.__tablename__ == "file_downloads"
+
+
+def test_tier_threshold_has_auto_approve_field():
+    from app.models.reseller import TierThreshold
+    assert hasattr(TierThreshold, "auto_approve")

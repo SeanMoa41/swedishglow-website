@@ -27,18 +27,19 @@ async def seed():
     async with Session() as db:
         # 1. Tier thresholds
         tiers = [
-            ("pearl",  0,       10, ["10% korting", "Toegang tot productcatalogus"]),
-            ("rose",   5000,    15, ["15% korting", "Prioriteit support", "Rose marketingmateriaal"]),
-            ("pro",    15000,   20, ["20% korting", "Dedicated accountmanager", "Pro productpresentaties"]),
-            ("elite",  40000,   25, ["25% korting", "Early access nieuwe producten", "Elite evenementen"]),
-            ("black",  100000,  30, ["30% korting", "Co-marketing budget", "Black concierge support"]),
+            ("pearl",  0,       10, ["10% korting", "Toegang tot productcatalogus"],              False),
+            ("rose",   5000,    15, ["15% korting", "Prioriteit support", "Rose marketingmateriaal"], False),
+            ("pro",    15000,   20, ["20% korting", "Dedicated accountmanager", "Pro productpresentaties"], False),
+            ("elite",  40000,   25, ["25% korting", "Early access nieuwe producten", "Elite evenementen"], True),
+            ("black",  100000,  30, ["30% korting", "Co-marketing budget", "Black concierge support"], True),
         ]
-        for tier, min_rev, disc, benefits in tiers:
+        for tier, min_rev, disc, benefits, auto_approve in tiers:
             await db.execute(text("""
-                INSERT INTO tier_thresholds (tier, min_revenue_eur, discount_pct, benefits)
-                VALUES (:tier, :min_rev, :disc, CAST(:benefits AS jsonb))
-                ON CONFLICT (tier) DO NOTHING
-            """), {"tier": tier, "min_rev": min_rev, "disc": disc, "benefits": json.dumps(benefits)})
+                INSERT INTO tier_thresholds (tier, min_revenue_eur, discount_pct, benefits, auto_approve)
+                VALUES (:tier, :min_rev, :disc, CAST(:benefits AS jsonb), :auto_approve)
+                ON CONFLICT (tier) DO UPDATE SET auto_approve = EXCLUDED.auto_approve
+            """), {"tier": tier, "min_rev": min_rev, "disc": disc,
+                   "benefits": json.dumps(benefits), "auto_approve": auto_approve})
         print("✓ Tier thresholds")
 
         # 2. Dev reseller

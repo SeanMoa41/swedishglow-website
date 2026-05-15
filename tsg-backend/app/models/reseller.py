@@ -53,3 +53,4 @@ class TierThreshold(Base):
     min_revenue_eur: Mapped[float] = mapped_column(Numeric(10, 2), default=0)
     discount_pct: Mapped[float] = mapped_column(Numeric(5, 2), default=0)
     benefits: Mapped[list] = mapped_column(JSONB, default=list)
+    auto_approve: Mapped[bool] = mapped_column(Boolean, default=False)
