@@ -328,7 +328,7 @@ footer {
 .partner-types .section-header h2 em { font-style: italic; color: var(--moss); }
 .partner-types .section-header p { color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; }
 
-/* ═══ Sjieke partner-cards: ademruimte, gouden accent, zachte hover ═══ */
+/* ═══ Elegant partner cards: breathing room, golden accent, soft hover ═══ */
 .partner-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 24px;
@@ -389,7 +389,7 @@ footer {
   .partner-type, .partner-type:hover, .partner-type-icon { transition: none; transform: none; }
 }
 
-/* ═══ STATS-BAND — vertrouwencijfers ═══ */
+/* ═══ STATS-BAND — trust figures ═══ */
 .reseller-stats {
   background: var(--bone-warm);
   padding: 80px 40px;
@@ -440,7 +440,7 @@ footer {
   .reseller-stat { padding: 0 8px; }
 }
 
-/* ═══ HOE HET WERKT — 3 stappen ═══ */
+/* ═══ HOW IT WORKS — 3 steps ═══ */
 .how-it-works {
   padding: 130px 40px;
   background: var(--bone);
@@ -629,7 +629,7 @@ footer {
   max-width: 90%;
 }
 
-/* ═══ Verfijning benefits-hover ═══ */
+/* ═══ Benefits hover refinement ═══ */
 .benefit {
   position: relative;
   overflow: hidden;
@@ -715,7 +715,7 @@ footer {
 }
 
 
-/* ═══ MOBIELE NAVIGATIE — hamburger + overlay ═══ */
+/* ═══ MOBILE NAVIGATION — hamburger + overlay ═══ */
 .nav-hamburger {
   display: none;
   position: relative;
@@ -823,9 +823,9 @@ body.menu-open { overflow: hidden; }
   .nav-wrap .logo { justify-self: center; }
 }
 
-/* ═══ Mobile-only finetuning voor nieuwe secties ═══ */
+/* ═══ Mobile-only fine-tuning for new sections ═══ */
 @media (max-width: 768px) {
-  /* Hero HÉRMADE-foto fade aanpassen voor mobiel */
+  /* Adjust HÉRMADE hero image fade for mobile */
   .hero-image-wrap::before {
     width: 100%;
     height: 80px;
@@ -839,15 +839,15 @@ body.menu-open { overflow: hidden; }
   }
   .hero-badge .name { font-size: 1.4rem; }
 
-  /* Reseller stats: 2x2 → maar kleiner padding */
+  /* Reseller stats: 2x2 → smaller padding */
   .reseller-stats { padding: 56px 20px; }
   .reseller-stat .num { font-size: 2rem; }
 
-  /* Hoe-het-werkt cirkels iets kleiner */
+  /* How-it-works circles slightly smaller */
   .how-step-num { width: 90px; height: 90px; font-size: 1.8rem; margin-bottom: 20px; }
   .how-it-works { padding: 80px 24px; }
 
-  /* Partner-quote */
+  /* Partner quote */
   .partner-quote { padding: 80px 24px; }
   .partner-quote::before { font-size: 8rem; top: 20px; }
 
@@ -855,23 +855,23 @@ body.menu-open { overflow: hidden; }
   .reseller-faq { padding: 80px 24px; }
   .faq-item summary { font-size: 1.05rem; padding: 22px 8px 22px 0; }
 
-  /* Filosofie blokken on over-ons */
+  /* Philosophy blocks on about-us */
   .philosophy { padding: 80px 24px; }
   .founder-closing { padding: 80px 24px; }
 
-  /* Stories cards op mobiel */
+  /* Stories cards on mobile */
   .stories-list { padding: 60px 20px 80px; gap: 20px; }
 
-  /* Reseller partner-types */
+  /* Reseller partner types */
   .partner-types { padding: 80px 20px; }
 
   /* Benefits */
   .benefits { padding: 80px 24px; }
 }
 
-/* ═══ HORIZONTALE SCROLL voor producten/stories op mobiel ═══ */
+/* ═══ HORIZONTAL SCROLL for products/stories on mobile ═══ */
 @media (max-width: 768px) {
-  /* Maak product-grid horizontaal scrolbaar */
+  /* Make product grid horizontally scrollable */
   .product-grid {
     display: flex !important;
     overflow-x: auto;
@@ -891,7 +891,7 @@ body.menu-open { overflow: hidden; }
   .product-grid::-webkit-scrollbar-track { background: rgba(212, 180, 120, 0.1); }
   .product-grid::-webkit-scrollbar-thumb { background: var(--gold, #c9a557); border-radius: 2px; }
 
-  /* Stories list horizontaal */
+  /* Stories list horizontal */
   .stories-list {
     display: flex !important;
     overflow-x: auto;
@@ -907,7 +907,7 @@ body.menu-open { overflow: hidden; }
     min-width: 280px;
   }
 
-  /* Rituals grid horizontaal */
+  /* Rituals grid horizontal */
   .rituals-grid {
     display: flex !important;
     overflow-x: auto;
@@ -923,7 +923,7 @@ body.menu-open { overflow: hidden; }
     min-width: 260px;
   }
 
-  /* Hint dat je kan scrollen */
+  /* Hint that you can scroll */
   .product-grid + .scroll-hint,
   .stories-list + .scroll-hint,
   .rituals-grid + .scroll-hint {
@@ -940,16 +940,16 @@ body.menu-open { overflow: hidden; }
 
 
 
-/* ═══ GLOBALE MOBILE-FIX (laatste media queries — overrulen alles) ═══ */
+/* ═══ GLOBAL MOBILE-FIX (final media queries — override everything) ═══ */
 @media (max-width: 768px) {
-  /* Comfortabele basis font-size */
+  /* Comfortable base font-size */
   html { font-size: 15px; }
   body { line-height: 1.55; }
 
-  /* Algemene sectie-padding compacter */
+  /* General section padding more compact */
   section { padding-left: 20px !important; padding-right: 20px !important; }
 
-  /* Alle sectie-paddings boven/onder begrenzen voor mobiel — geen 140px meer */
+  /* Cap all section top/bottom padding on mobile — no more 140px */
   .hero, .signature-ritual, .ritual-section, .ritual,
   .stories-section, .stories-list, .testimonials, .testimonial-section,
   .magazine, .editorial, .promise, .science, .lookbook,
@@ -966,16 +966,16 @@ body.menu-open { overflow: hidden; }
     padding-bottom: 60px !important;
   }
 
-  /* Headings begrenzen: nooit groter dan leesbaar */
+  /* Cap headings: never larger than readable */
   h1 { font-size: clamp(1.9rem, 8vw, 2.4rem) !important; line-height: 1.1 !important; }
   h2 { font-size: clamp(1.6rem, 6vw, 2rem) !important; line-height: 1.15 !important; }
   h3 { font-size: clamp(1.25rem, 4.5vw, 1.5rem) !important; line-height: 1.2 !important; }
   h4 { font-size: clamp(1.05rem, 3.6vw, 1.2rem) !important; }
 
-  /* Body-tekst comfortabel groter dan op desktop */
+  /* Body text comfortably larger than on desktop */
   p { font-size: 0.95rem; line-height: 1.65; }
 
-  /* Knoppen groter — tap targets minimaal 44px hoog (Apple HIG / WCAG) */
+  /* Buttons larger — tap targets minimum 44px high (Apple HIG / WCAG) */
   a.btn, button.btn, .btn-primary, .btn-secondary, .btn-gold,
   .signature-button, .cs-form button {
     padding: 14px 24px !important;
@@ -986,37 +986,37 @@ body.menu-open { overflow: hidden; }
     justify-content: center;
   }
 
-  /* Tekst-blokken niet te breed — comfortabele leesbreedte */
+  /* Text blocks not too wide — comfortable reading width */
   p, li { max-width: 100%; }
 
-  /* Forceer alles netjes binnen viewport */
+  /* Force everything neatly within viewport */
   body, html { overflow-x: hidden; max-width: 100%; }
   img, svg, video { max-width: 100%; height: auto; }
 
-  /* Gaps niet meer dan 32px op mobiel */
+  /* Gaps no more than 32px on mobile */
   .product-grid, .stories-list, .rituals-grid,
   .reviews-grid, .partner-grid, .benefits-grid,
   .usps-grid, .footer-cols {
     gap: 20px !important;
   }
 
-  /* Magazine-split echt klein */
+  /* Magazine split very small */
   .magazine-split { min-height: auto !important; padding: 16px !important; gap: 12px !important; }
   .split-pane { min-height: 180px; }
   .split-pane .label-overlay { bottom: 16px !important; left: 16px !important; right: 16px !important; }
   .split-pane .label-overlay h3 { font-size: 1.4rem !important; }
 
-  /* Hero compacter */
+  /* Hero more compact */
   .hero { min-height: auto !important; }
   .hero-text, .hero-content { padding: 50px 24px 40px !important; }
   .hero h1, .hero-content h1 { font-size: 2rem !important; }
   .hero-image, .hero-image-wrap { min-height: 280px !important; max-height: 380px; }
   .hero-badge { bottom: 16px !important; right: 16px !important; padding: 12px 16px !important; }
 
-  /* FAQ items: meer tap area */
+  /* FAQ items: more tap area */
   .faq-question { padding: 20px 0 !important; min-height: 56px; }
 
-  /* Product hero (productpagina's) */
+  /* Product hero (product pages) */
   .product-hero { grid-template-columns: 1fr !important; min-height: auto !important; }
   .product-hero-image { min-height: 320px !important; max-height: 400px; }
   .product-hero-content { padding: 40px 24px !important; }
@@ -1025,15 +1025,15 @@ body.menu-open { overflow: hidden; }
   /* Footer compacter */
   footer { padding: 50px 20px 30px !important; }
 
-  /* Nav iets compacter */
+  /* Nav slightly more compact */
   .nav-wrap { padding: 14px 20px !important; gap: 12px !important; }
   .logo-text { font-size: 1.15rem !important; }
   .logo-mark { width: 24px !important; }
 
-  /* Mobile menu tekst iets groter voor leesbaarheid */
+  /* Mobile menu text slightly larger for readability */
   .mobile-menu-nav > a { font-size: 1.25rem !important; padding: 12px 0 !important; }
 
-  /* Ritual-cards op mobiel: geen horizontale scroll meer (was te krap) */
+  /* Ritual cards on mobile: no horizontal scroll (was too cramped) */
   .rituals-grid {
     display: grid !important;
     grid-template-columns: 1fr !important;
@@ -1050,20 +1050,20 @@ body.menu-open { overflow: hidden; }
   .ritual-card { padding: 28px 24px !important; }
   .ritual-card-num { font-size: 1.6rem !important; margin-bottom: 12px !important; }
 
-  /* Stats cards compacter */
+  /* Stats cards more compact */
   .reseller-stats-wrap { gap: 28px 16px !important; }
   .reseller-stat .num { font-size: 1.7rem !important; }
 
-  /* Kleinere padding rond CTAs */
+  /* Smaller padding around CTAs */
   .cta-block, .application { padding: 60px 20px !important; }
 
-  /* Voorkom dat horizontale scroll-grids op mobiel "kleven" */
+  /* Prevent horizontal scroll grids from "sticking" on mobile */
   .product-grid, .stories-list {
     padding-bottom: 24px !important;
   }
 }
 
-/* Heel klein scherm — extra compact */
+/* Very small screen — extra compact */
 @media (max-width: 380px) {
   html { font-size: 14px; }
   section { padding-left: 16px !important; padding-right: 16px !important; }
@@ -1324,7 +1324,7 @@ body.menu-open { overflow: hidden; }
   </div>
 </section>
 
-<!-- ═══ HOE HET WERKT ═══ -->
+<!-- ═══ HOW IT WORKS ═══ -->
 <section class="how-it-works">
   <div class="how-wrap">
     <div class="how-header">
