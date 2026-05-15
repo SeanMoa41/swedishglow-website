@@ -71,3 +71,18 @@ async def list_invoices(updated_since: str | None = None, customer_id: str | Non
         )
         response.raise_for_status()
         return response.json().get("data", [])
+
+
+# Verify endpoint path against TL API docs: https://developer.teamleader.eu/#/reference/quotations
+async def accept_quotation(tl_quotation_id: str) -> None:
+    if settings.local_dev:
+        logger.warning("[LOCAL_DEV] mocked accept_quotation for %s", tl_quotation_id)
+        return
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{BASE_URL}/quotations.accept",
+            json={"id": tl_quotation_id},
+            headers={"Authorization": f"Bearer {settings.teamleader_access_token}"},
+        )
+        response.raise_for_status()
